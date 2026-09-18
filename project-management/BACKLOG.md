@@ -74,8 +74,8 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [ ] P1 comparison viewer data
 
 ## Epic G — Product Design
-- [ ] P0 page map
-- [ ] P0 customer vs internal/admin UX boundary
+- [x] P0 page map
+- [x] P0 customer vs internal/admin UX boundary
 - [ ] P0 Dashboard
 - [ ] P0 Source Intake
 - [ ] P0 Visualization Studio
@@ -86,7 +86,7 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [ ] P1 Campaign Studio
 - [ ] P1 Internal Settings
 - [ ] P1 component states
-- [ ] P1 image-slot plan
+- [x] P1 image-slot plan
 - [ ] P2 design documentation
 
 ## Epic H — Backend MVP
