@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
 import re
@@ -36,10 +37,12 @@ class KnowledgeUnit:
 
 
 class BrainIndex:
-    def __init__(self, root: Path):
+    def __init__(self, root: Path, stale_after_seconds: int = 3600):
         self.root = root
+        self.stale_after_seconds = stale_after_seconds
         self.revision = "uninitialized"
         self.units: list[KnowledgeUnit] = []
+        self.last_sync_at: datetime | None = None
 
     @staticmethod
     def _eligible(relative_path: str) -> bool:
@@ -134,7 +137,24 @@ class BrainIndex:
 
         self.revision = digest.hexdigest()[:24]
         self.units = units
+        self.last_sync_at = datetime.now(timezone.utc)
         return self.revision
+
+    def health(self) -> dict[str, object]:
+        if not self.units or self.last_sync_at is None:
+            state = "degraded"
+            age_seconds = None
+        else:
+            now = datetime.now(timezone.utc)
+            age_seconds = max(0, int((now - self.last_sync_at).total_seconds()))
+            state = "stale" if age_seconds > self.stale_after_seconds else "healthy"
+        return {
+            "state": state,
+            "activeRevision": self.revision,
+            "indexUnitCount": len(self.units),
+            "lastSyncAt": self.last_sync_at.isoformat() if self.last_sync_at else None,
+            "ageSeconds": age_seconds,
+        }
 
     @staticmethod
     def _tokens(text: str) -> set[str]:
