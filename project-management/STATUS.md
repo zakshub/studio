@@ -1,9 +1,10 @@
 # FashionOS Intelligence Integration — Current Status
 
 ## Overall
-Phase: Foundation complete -> Integration specification
+Phase: Integration implementation
 Program health: GREEN
-Primary next milestone: M1 Backend Domain Model + API Contract
+Completed milestone: M1 Backend Domain Model + API Contract
+Current milestone: M2 Studio Brain Service + Retrieval Layer
 
 ## Completed
 - Studio Brain repository established
@@ -20,20 +21,44 @@ Primary next milestone: M1 Backend Domain Model + API Contract
 - benchmark framework defined
 - anti-hallucination rules defined
 - repository QA passed
+- M1 backend domain model defined
+- public/private API boundary defined
+- v1 endpoint map defined
+- task/job state machines defined
+- persistence model defined
+- permissions/admin boundary defined
+- error contract defined
+- audit event model defined
+- v1 API contract frozen
+- M1 contract QA passed
+- Studio Brain Service architecture specified
+- sync policy specified
+- indexing/retrieval policy specified
+- health/cache/revision behavior specified
+- Creative Organism architecture added
+- Expert Intelligence architecture added
+- Sensory Harvester architecture added
 - previous FashionOS Figma file reviewed
 - new Figma file identified for redesign
 - weekly research process established
 
+## Implemented in code
+None yet. Current repository work is architecture/contracts. This status intentionally distinguishes specification from running software.
+
 ## Not yet implemented
-- FashionOS backend/API
-- GitHub brain sync/index service
+- running FashionOS API service
+- GitHub brain sync/index runtime
+- database migrations
+- object storage integration
 - executor gateway
 - Gemini/OpenAI runtime adapters
 - capability benchmark runner
-- website asset crawler/collector
-- persistent database
-- provenance store
-- runtime QC service
+- website/social asset collector
+- visual/video sensory harvester runtime
+- 50 evidence-backed expert intelligence profiles
+- expert council aggregator runtime
+- provenance store runtime
+- QC runtime
 - approval service
 - asset library backend
 - learning-candidate runtime
@@ -42,21 +67,21 @@ Primary next milestone: M1 Backend Domain Model + API Contract
 - deployment/observability/security hardening
 
 ## Immediate next actions
-1. Freeze M1 domain model.
-2. Define internal/public API boundary.
-3. Define task lifecycle state machine.
-4. Define endpoint list.
-5. Define backend storage model.
-6. Then begin Figma v2 using those contracts.
-7. In parallel after contract freeze, begin Studio Brain Service implementation.
+1. Select and freeze MVP implementation stack.
+2. Create backend service skeleton.
+3. Implement Brain Sync + local normalized index.
+4. Implement retrieval endpoint against local repository snapshot/cache.
+5. Add database schema/migrations for core M1 entities.
+6. Begin Figma v2 in parallel now that M1 contract is frozen.
+7. Start evidence-backed Expert Intelligence ingestion as a parallel research track.
 
-## Do not do yet
-- do not redesign all Figma pages before the API contract exists
-- do not hard-code Gemini as research or OpenAI as generation
-- do not expose GitHub/model methodology to customers
+## Do not do
+- do not expose internal methodology to customer UI
+- do not hard-code a provider as universally best
 - do not auto-promote research into canonical knowledge
-- do not build provider-specific frontend controls into normal user flows
-- do not use client-specific branding as universal defaults
+- do not allow client/workspace context to contaminate universal intelligence
+- do not represent specification as implemented runtime
+- do not claim QA for components that have not been executed
 
 ## Next decision gate
-M1 is approved when the API/domain specification is complete enough that both backend implementation and Figma can proceed without inventing system behavior.
+M2 reaches implementation-ready exit when a real task can query a synced/indexed brain revision and receive an internally traceable compact rule bundle.
