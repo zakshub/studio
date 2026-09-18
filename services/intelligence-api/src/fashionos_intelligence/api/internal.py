@@ -3,6 +3,8 @@ import hmac
 from fastapi import APIRouter, Depends, Header, HTTPException, Request
 
 from fashionos_intelligence.domain.models import (
+    AttentionItemOut,
+    AttentionRequest,
     BackgroundSynthesisItem,
     BackgroundSynthesisRequest,
     BrainRetrieveRequest,
@@ -25,14 +27,18 @@ from fashionos_intelligence.domain.models import (
     PracticeRequest,
     NoveltyRequest,
     NoveltyResponse,
+    CuriosityRequest,
+    ResearchQuestionOut,
     SensorySourceCreate,
     SensorySourceOut,
 )
+from fashionos_intelligence.services.attention import AttentionService
 from fashionos_intelligence.services.background_synthesis import BackgroundSynthesisService
 from fashionos_intelligence.services.brain import BrainIndex
 from fashionos_intelligence.services.cognition import CognitionService
 from fashionos_intelligence.services.contamination import ContaminationMonitor
 from fashionos_intelligence.services.creative_synthesis import CreativeSynthesisService
+from fashionos_intelligence.services.curiosity import CuriosityService
 from fashionos_intelligence.services.failure_learning import FailureLearningService
 from fashionos_intelligence.services.learning import LearningService
 from fashionos_intelligence.services.memory import MemoryService
@@ -440,4 +446,75 @@ def creative_diverge(
             councils=list(item.councils),
         )
         for item in directions
+    ]
+
+
+def get_attention(request: Request) -> AttentionService:
+    return request.app.state.attention_service
+
+
+def get_curiosity(request: Request) -> CuriosityService:
+    return request.app.state.curiosity_service
+
+
+@router.post(
+    "/attention/rank",
+    response_model=list[AttentionItemOut],
+    response_model_by_alias=True,
+    dependencies=[Depends(require_internal_access)],
+)
+def rank_attention(
+    payload: AttentionRequest,
+    service: AttentionService = Depends(get_attention),
+) -> list[AttentionItemOut]:
+    items = [
+        {
+            "item_id": item.item_id,
+            "relevance": item.relevance,
+            "risk": item.risk,
+            "uncertainty": item.uncertainty,
+            "novelty": item.novelty,
+            "user_priority": item.user_priority,
+            "cost": item.cost,
+        }
+        for item in payload.items
+    ]
+    ranked = service.rank(items)
+    return [
+        AttentionItemOut(
+            itemId=item.item_id,
+            score=item.score,
+            reasons=list(item.reasons),
+        )
+        for item in ranked
+    ]
+
+
+@router.post(
+    "/curiosity/questions",
+    response_model=list[ResearchQuestionOut],
+    response_model_by_alias=True,
+    dependencies=[Depends(require_internal_access)],
+)
+def generate_curiosity_questions(
+    payload: CuriosityRequest,
+    service: CuriosityService = Depends(get_curiosity),
+) -> list[ResearchQuestionOut]:
+    questions = service.generate(
+        repeated_uncertainties=payload.repeated_uncertainties,
+        recurring_failures=payload.recurring_failures,
+        contradictions=payload.contradictions,
+        coverage_gaps=payload.coverage_gaps,
+        affected_domains=payload.affected_domains,
+    )
+    return [
+        ResearchQuestionOut(
+            questionId=item.question_id,
+            question=item.question,
+            reason=item.reason,
+            affectedDomains=list(item.affected_domains),
+            urgency=item.urgency,
+            evidenceNeeded=list(item.evidence_needed),
+        )
+        for item in questions
     ]
