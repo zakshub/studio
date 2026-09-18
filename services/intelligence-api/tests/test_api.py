@@ -96,3 +96,41 @@ def test_created_task_is_persisted_and_retrievable(tmp_path: Path):
         fetched = client.get(f"/api/v1/tasks/{task_id}")
         assert fetched.status_code == 200
         assert fetched.json()["data"]["taskId"] == task_id
+
+def test_internal_retrieval_is_traceable(tmp_path: Path):
+    _configure(tmp_path)
+    p = tmp_path / "knowledge" / "source-preservation"
+    p.mkdir(parents=True)
+    (p / "source-preservation.md").write_text(
+        "# Preservation\nIdentity and garment are hard locks.",
+        encoding="utf-8",
+    )
+    q = tmp_path / "qc"
+    q.mkdir(parents=True)
+    (q / "forensic-reality-qc.md").write_text(
+        "# QC\nPreservation failures require rework.",
+        encoding="utf-8",
+    )
+
+    from fashionos_intelligence.main import app
+
+    headers = {"X-Internal-Token": "test-secret"}
+    with TestClient(app) as client:
+        client.post("/internal/v1/brain/sync", headers=headers)
+        response = client.post(
+            "/internal/v1/brain/retrieve",
+            headers=headers,
+            json={
+                "taskId": "task_1",
+                "mode": "STRICT_PRESERVATION_EDIT",
+                "sourceRoles": ["primary"],
+                "realityClass": "professional_lifestyle",
+                "requiredCapabilities": ["preservation", "qc"],
+            },
+        )
+        assert response.status_code == 200
+        body = response.json()
+        assert body["brainRevision"]
+        assert "source_preservation" in body["domains"]
+        assert body["rules"]
+        assert all(rule["unitId"] for rule in body["rules"])
