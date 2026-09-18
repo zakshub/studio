@@ -111,3 +111,21 @@ A result is not approved because it is attractive. It is approved only when it i
 - [Definition of Done](./project-management/DEFINITION-OF-DONE.md)
 - [Risk Register](./project-management/RISK-REGISTER.md)
 - [Decision Log](./project-management/DECISION-LOG.md)
+
+## Backend implementation
+- [MVP Technical Stack](./backend/TECH-STACK.md)
+- [Backend Domain Model](./backend/domain-model.md)
+- [API Contract Freeze](./backend/API-CONTRACT-V1-FREEZE.md)
+- [Endpoint Map](./backend/api/endpoint-map-v1.md)
+- [Public API](./backend/api/public-api-v1.md)
+- [Internal API](./backend/api/internal-api-v1.md)
+- [Task Lifecycle](./backend/state-machines/task-lifecycle.md)
+- [Persistence Model](./backend/storage/persistence-model.md)
+- [Intelligence API Service](./services/intelligence-api/README.md)
+
+## Creative Organism
+- [Creative Organism Architecture](./architecture/creative-organism.md)
+- [Expert Intelligence System](./architecture/expert-intelligence-system.md)
+- [Sensory Harvester](./architecture/sensory-harvester.md)
+- [Expert Candidate Roster](./expert-intelligence/roster-v1.md)
+- [Expert Profile Schema](./expert-intelligence/profile-schema.md)
