@@ -22,13 +22,14 @@ Environment used:
 Tests executed locally against the exact code prepared for repository commit:
 
 ```
-3 passed in 0.25s
+4 passed in 0.28s
 ```
 
 Tests:
 1. strict preservation retrieval includes source_preservation and qc domains
 2. public task response does not expose provider information
 3. internal brain sync and health endpoints return a healthy indexed state
+4. private brain endpoints reject requests without the internal secret
 
 ## Limitations
 Not implemented/tested:
