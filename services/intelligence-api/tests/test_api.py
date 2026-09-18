@@ -134,3 +134,12 @@ def test_internal_retrieval_is_traceable(tmp_path: Path):
         assert "source_preservation" in body["domains"]
         assert body["rules"]
         assert all(rule["unitId"] for rule in body["rules"])
+
+def test_public_docs_are_disabled(tmp_path: Path):
+    _configure(tmp_path)
+
+    from fashionos_intelligence.main import app
+
+    with TestClient(app) as client:
+        assert client.get("/docs").status_code == 404
+        assert client.get("/openapi.json").status_code == 404
