@@ -3,10 +3,18 @@ import hmac
 from fastapi import APIRouter, Depends, Header, HTTPException, Request
 
 from fashionos_intelligence.domain.models import (
+    BackgroundSynthesisItem,
+    BackgroundSynthesisRequest,
     BrainRetrieveRequest,
     BrainRetrieveResponse,
     CognitionRequest,
     CognitionResponse,
+    ContaminationRequest,
+    ContaminationResponse,
+    CreativeDirectionOut,
+    CreativeSynthesisRequest,
+    FailureLearningRequest,
+    FailureLearningResponse,
     KnowledgeUnitOut,
     LearningCandidateCreate,
     LearningCandidateOut,
@@ -15,13 +23,20 @@ from fashionos_intelligence.domain.models import (
     MemoryOut,
     PracticePlanOut,
     PracticeRequest,
+    NoveltyRequest,
+    NoveltyResponse,
     SensorySourceCreate,
     SensorySourceOut,
 )
+from fashionos_intelligence.services.background_synthesis import BackgroundSynthesisService
 from fashionos_intelligence.services.brain import BrainIndex
 from fashionos_intelligence.services.cognition import CognitionService
+from fashionos_intelligence.services.contamination import ContaminationMonitor
+from fashionos_intelligence.services.creative_synthesis import CreativeSynthesisService
+from fashionos_intelligence.services.failure_learning import FailureLearningService
 from fashionos_intelligence.services.learning import LearningService
 from fashionos_intelligence.services.memory import MemoryService
+from fashionos_intelligence.services.novelty import NoveltyService
 from fashionos_intelligence.services.practice import PracticeService
 from fashionos_intelligence.services.sensory import SensoryRegistry
 from fashionos_intelligence.settings import Settings
@@ -292,3 +307,137 @@ def register_sensory_source(
         rightsStatus=source.rights_status,
         lastFingerprint=source.last_fingerprint,
     )
+
+
+def get_novelty(request: Request) -> NoveltyService:
+    return request.app.state.novelty_service
+
+
+def get_contamination(request: Request) -> ContaminationMonitor:
+    return request.app.state.contamination_monitor
+
+
+def get_background_synthesis(request: Request) -> BackgroundSynthesisService:
+    return request.app.state.background_synthesis_service
+
+
+def get_failure_learning(request: Request) -> FailureLearningService:
+    return request.app.state.failure_learning_service
+
+
+def get_creative_synthesis(request: Request) -> CreativeSynthesisService:
+    return request.app.state.creative_synthesis_service
+
+
+@router.post(
+    "/novelty/evaluate",
+    response_model=NoveltyResponse,
+    response_model_by_alias=True,
+    dependencies=[Depends(require_internal_access)],
+)
+def evaluate_novelty(
+    payload: NoveltyRequest,
+    service: NoveltyService = Depends(get_novelty),
+) -> NoveltyResponse:
+    result = service.evaluate(payload.candidate, payload.references)
+    return NoveltyResponse(
+        score=result.score,
+        nearestSimilarity=result.nearest_similarity,
+        label=result.label,
+    )
+
+
+@router.post(
+    "/contamination/check",
+    response_model=ContaminationResponse,
+    response_model_by_alias=True,
+    dependencies=[Depends(require_internal_access)],
+)
+def check_contamination(
+    payload: ContaminationRequest,
+    service: ContaminationMonitor = Depends(get_contamination),
+) -> ContaminationResponse:
+    result = service.evaluate(
+        payload.origins,
+        dominance_threshold=payload.dominance_threshold,
+        minimum_sample=payload.minimum_sample,
+    )
+    return ContaminationResponse(
+        dominantGroup=result.dominant_group,
+        dominantShare=result.dominant_share,
+        flags=list(result.flags),
+        promotionBlocked=result.promotion_blocked,
+    )
+
+
+@router.post(
+    "/background/synthesize",
+    response_model=list[BackgroundSynthesisItem],
+    response_model_by_alias=True,
+    dependencies=[Depends(require_internal_access)],
+)
+def background_synthesize(
+    payload: BackgroundSynthesisRequest,
+    service: BackgroundSynthesisService = Depends(get_background_synthesis),
+) -> list[BackgroundSynthesisItem]:
+    results = service.synthesize(
+        payload.observations,
+        minimum_repeat=payload.minimum_repeat,
+    )
+    return [
+        BackgroundSynthesisItem(
+            clusterKey=item.cluster_key,
+            evidenceCount=item.evidence_count,
+            observations=list(item.observations),
+            proposedAction=item.proposed_action,
+        )
+        for item in results
+    ]
+
+
+@router.post(
+    "/failure/analyze",
+    response_model=FailureLearningResponse,
+    response_model_by_alias=True,
+    dependencies=[Depends(require_internal_access)],
+)
+def analyze_failure(
+    payload: FailureLearningRequest,
+    service: FailureLearningService = Depends(get_failure_learning),
+) -> FailureLearningResponse:
+    result = service.analyze(
+        payload.failure_code,
+        recurrence_count=payload.recurrence_count,
+    )
+    return FailureLearningResponse(
+        failureCode=result.failure_code,
+        likelyCategory=result.likely_category,
+        remediationQuestions=list(result.remediation_questions),
+        createLearningCandidate=result.create_learning_candidate,
+    )
+
+
+@router.post(
+    "/creative/diverge",
+    response_model=list[CreativeDirectionOut],
+    response_model_by_alias=True,
+    dependencies=[Depends(require_internal_access)],
+)
+def creative_diverge(
+    payload: CreativeSynthesisRequest,
+    service: CreativeSynthesisService = Depends(get_creative_synthesis),
+) -> list[CreativeDirectionOut]:
+    directions = service.diverge(
+        principles=payload.principles,
+        councils=payload.councils,
+        max_directions=payload.max_directions,
+    )
+    return [
+        CreativeDirectionOut(
+            directionId=item.direction_id,
+            principles=list(item.principles),
+            tension=item.tension,
+            councils=list(item.councils),
+        )
+        for item in directions
+    ]
