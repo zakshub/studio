@@ -43,6 +43,7 @@ class BrainIndex:
         self.revision = "uninitialized"
         self.units: list[KnowledgeUnit] = []
         self.last_sync_at: datetime | None = None
+        self._snapshots: dict[str, tuple[KnowledgeUnit, ...]] = {}
 
     @staticmethod
     def _eligible(relative_path: str) -> bool:
@@ -137,8 +138,40 @@ class BrainIndex:
 
         self.revision = digest.hexdigest()[:24]
         self.units = units
+        self._snapshots[self.revision] = tuple(units)
         self.last_sync_at = datetime.now(timezone.utc)
         return self.revision
+
+    def available_revisions(self) -> tuple[str, ...]:
+        return tuple(self._snapshots.keys())
+
+    def rollback(self, revision: str) -> str:
+        snapshot = self._snapshots.get(revision)
+        if snapshot is None:
+            raise KeyError("BRAIN_REVISION_NOT_FOUND")
+        self.units = list(snapshot)
+        self.revision = revision
+        self.last_sync_at = datetime.now(timezone.utc)
+        return self.revision
+
+    def retrieve_at_revision(
+        self,
+        request: BrainRetrieveRequest,
+        revision: str,
+        limit: int = 16,
+    ) -> list[KnowledgeUnit]:
+        current_revision = self.revision
+        current_units = self.units
+        snapshot = self._snapshots.get(revision)
+        if snapshot is None:
+            raise KeyError("BRAIN_REVISION_NOT_FOUND")
+        try:
+            self.revision = revision
+            self.units = list(snapshot)
+            return self.retrieve(request, limit=limit)
+        finally:
+            self.revision = current_revision
+            self.units = current_units
 
     def health(self) -> dict[str, object]:
         if not self.units or self.last_sync_at is None:
@@ -154,6 +187,7 @@ class BrainIndex:
             "indexUnitCount": len(self.units),
             "lastSyncAt": self.last_sync_at.isoformat() if self.last_sync_at else None,
             "ageSeconds": age_seconds,
+            "availableRevisionCount": len(self._snapshots),
         }
 
     @staticmethod
