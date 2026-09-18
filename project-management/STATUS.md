@@ -43,6 +43,17 @@ Implemented:
 - confidence/metacognition checks
 - human-review escalation
 
+### Expert aggregation / execution body
+- expert-content aggregator runtime bootstrap
+- distinct expert identities preserved during aggregation
+- disagreements preserved rather than averaged away
+- provider-neutral executor gateway bootstrap
+- deterministic executor adapter
+- QC runtime policy bootstrap
+- provenance/lineage runtime bootstrap
+- background scheduler bootstrap
+- in-process brain revision snapshots + rollback controls
+
 ### Learning / development layer
 - child-learning cycle documented
 - internal practice planner
@@ -63,8 +74,11 @@ Implemented:
 - private source registry
 - deterministic content fingerprint/change detection
 - source authority/rights metadata
+- normalized observation service for image/video/text/web findings
+- structured video segment intelligence contract
+- multidimensional coverage/bias monitor
 
-This is a bootstrap sensory layer, not yet a production crawler or video-understanding service.
+This is a bootstrap sensory layer, not yet a production crawler or model-backed video-understanding service.
 
 ## Expert Intelligence progress
 Canonical roster: 50 experts.
@@ -103,20 +117,20 @@ Remaining expert profiles: 46.
 - Gemini/OpenAI/other adapters
 - capability benchmark runner
 - website/social crawler runtime
-- image understanding intake pipeline
-- video understanding runtime
+- model-backed image understanding intake pipeline
+- production video decode/keyframe/model-analysis runtime (structured video-analysis contract exists)
 - full 50 expert intelligence profiles
-- expert-content aggregator runtime
-- production QC service
-- approval/provenance service
+- production expert-profile loading/indexing into aggregator
+- model-backed production QC evaluators (QC policy runtime exists)
+- full approval service + durable provenance persistence (provenance runtime bootstrap exists)
 - Figma v2 high-fidelity screens
 - frontend application integration
 - deployment/monitoring/backup/security hardening
 
 ## Immediate next actions
-1. Finish M2 hardening: conflict integration, revision pinning/rollback, persistent index/cache, remote refresh.
+1. Finish M2 hardening: conflict integration into retrieval, durable revision snapshots, persistent index/cache, remote refresh.
 2. Validate migrations against PostgreSQL and extend persistence to Asset/Execution/QC/Approval/Provenance.
-3. Research and synthesize the next expert-intelligence batch.
+3. Research and synthesize the next expert-intelligence batch; connect validated profiles to the new aggregator.
 4. Build real Source Harvester adapters + image/video observation pipeline.
 5. Implement Executor Gateway + provider-neutral benchmark routing.
 6. Implement runtime QC/provenance.
