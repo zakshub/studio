@@ -54,14 +54,19 @@ First executable M2 bootstrap is now present:
 - traceable internal knowledge-unit IDs
 - stale/healthy brain state
 - internal-token protection for private brain endpoints
+- MVP task persistence through SQLAlchemy
+- public task retrieval endpoint
+- PostgreSQL core schema migration authored
+- public API documentation/OpenAPI disabled by default
+- public/internal ingress boundary documented
 - executable tests
 
-Local bootstrap QA: 4 tests passed.
+Local bootstrap QA: 7 tests passed.
 
 ## Not yet implemented
 - production-deployed FashionOS API service
 - remote GitHub fetch/webhook sync runtime (local checked-out brain sync is implemented)
-- database migrations
+- PostgreSQL migration execution against a real server (migration file exists)
 - object storage integration
 - executor gateway
 - Gemini/OpenAI runtime adapters
@@ -80,13 +85,14 @@ Local bootstrap QA: 4 tests passed.
 - deployment/observability/security hardening
 
 ## Immediate next actions
-1. Add PostgreSQL core schema/migration.
-2. Persist Task/Asset/Execution/QC/Approval entities.
-3. Add remote repository sync strategy implementation or deployment-side checkout refresh.
-4. Add retrieval regression cases for generation/research/website-treatment modes.
-5. Begin Figma v2 in parallel now that M1 contract is frozen.
-6. Build source packs for the first expert-intelligence batch.
-7. Start executor-gateway interface after persistence foundations.
+1. Execute/validate the core migration against PostgreSQL.
+2. Extend persistence beyond Task into Asset/Execution/QC/Approval.
+3. Add conflict detection/resolution to Brain retrieval.
+4. Add remote repository refresh mechanism or deployment-side checkout refresh.
+5. Add retrieval regression cases for generation/research/website-treatment modes.
+6. Begin Figma v2 in parallel now that M1 contract is frozen.
+7. Build source packs for the first expert-intelligence batch.
+8. Start executor-gateway interface after persistence foundations.
 
 ## Do not do
 - do not expose internal methodology to customer UI
