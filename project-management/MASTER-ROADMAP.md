@@ -45,7 +45,7 @@ Result: PASSED
 ---
 
 ## Milestone M1 — Backend Domain Model + API Contract
-Status: NEXT
+Status: COMPLETE
 
 Goal: turn brain concepts into a concrete contract the frontend and backend can both implement.
 
@@ -83,25 +83,36 @@ Goal: turn brain concepts into a concrete contract the frontend and backend can 
 ### Exit criteria
 A developer can implement the backend without inventing product behavior.
 
+Result: PASSED — contract frozen in `backend/API-CONTRACT-V1-FREEZE.md` and QA recorded in `qc/reports/2026-09-18-m1-backend-contract-qa.md`.
+
 ---
 
 ## Milestone M2 — Studio Brain Service + Retrieval Layer
-Status: PLANNED
+Status: IN PROGRESS
 Depends on: M1
 
 Goal: make the repository consumable by FashionOS programmatically.
 
 ### Tasks
-- Brain sync service
-- GitHub pull/update strategy
-- local cache/index
-- knowledge-domain indexing
-- task-to-knowledge retrieval
-- rule precedence
-- conflict handling
-- brain-health status
-- stale-cache behavior
-- internal version tracking
+- [ ] Brain sync service implementation
+- [x] GitHub pull/update strategy specification
+- [ ] local cache/index implementation
+- [x] knowledge-domain indexing specification
+- [x] task-to-knowledge retrieval specification
+- [x] rule precedence specification
+- [x] conflict handling specification
+- [x] brain-health status specification
+- [x] stale-cache behavior specification
+- [x] internal version tracking specification
+
+### Creative Organism parallel track
+- [x] Creative Organism architecture defined
+- [x] Expert Intelligence system architecture defined
+- [x] Sensory Harvester architecture defined
+- [ ] Build 50 expert intelligence profiles with evidence
+- [ ] Build expert councils + aggregator runtime
+- [ ] Build visual/video sensory collector runtime
+- [ ] Add metacognition, curiosity, background synthesis and contamination monitoring as governed services
 
 ### Exit criteria
 Given a task context, the service returns the relevant intelligence without loading the entire repository.
