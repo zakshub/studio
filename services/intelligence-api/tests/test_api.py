@@ -4,12 +4,17 @@ import os
 from fastapi.testclient import TestClient
 
 
-def test_public_response_does_not_expose_provider(tmp_path: Path):
+def _configure(tmp_path: Path) -> None:
     (tmp_path / "SKILL.md").write_text(
         "# Constitution\nNeutral brain.",
         encoding="utf-8",
     )
     os.environ["FASHIONOS_BRAIN_ROOT"] = str(tmp_path)
+    os.environ["FASHIONOS_INTERNAL_TOKEN"] = "test-secret"
+
+
+def test_public_response_does_not_expose_provider(tmp_path: Path):
+    _configure(tmp_path)
 
     from fashionos_intelligence.main import app
 
@@ -37,19 +42,32 @@ def test_public_response_does_not_expose_provider(tmp_path: Path):
         assert "provider" not in str(body).lower()
         assert body["status"] == "queued"
 
-def test_internal_sync_and_health(tmp_path: Path):
-    (tmp_path / "SKILL.md").write_text(
-        "# Constitution\nNeutral brain.",
-        encoding="utf-8",
-    )
-    os.environ["FASHIONOS_BRAIN_ROOT"] = str(tmp_path)
+
+def test_internal_endpoints_require_secret(tmp_path: Path):
+    _configure(tmp_path)
 
     from fashionos_intelligence.main import app
 
     with TestClient(app) as client:
-        sync = client.post("/internal/v1/brain/sync")
+        denied = client.get("/internal/v1/brain/health")
+        assert denied.status_code == 403
+        allowed = client.get(
+            "/internal/v1/brain/health",
+            headers={"X-Internal-Token": "test-secret"},
+        )
+        assert allowed.status_code == 200
+
+
+def test_internal_sync_and_health(tmp_path: Path):
+    _configure(tmp_path)
+
+    from fashionos_intelligence.main import app
+
+    headers = {"X-Internal-Token": "test-secret"}
+    with TestClient(app) as client:
+        sync = client.post("/internal/v1/brain/sync", headers=headers)
         assert sync.status_code == 200
         assert sync.json()["indexUnitCount"] >= 1
-        health = client.get("/internal/v1/brain/health")
+        health = client.get("/internal/v1/brain/health", headers=headers)
         assert health.status_code == 200
         assert health.json()["state"] == "healthy"
