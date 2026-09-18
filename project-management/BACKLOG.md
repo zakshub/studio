@@ -23,8 +23,8 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [x] P0 local cache/index bootstrap (in-memory index; persistent cache still pending)
 - [x] P0 domain tagging
 - [x] P0 retrieval service bootstrap
-- [ ] P0 precedence/conflict rules
-- [ ] P1 cache freshness
+- [ ] P0 precedence/conflict integration into retrieval (structured resolver implemented)
+- [x] P1 cache freshness / stale health bootstrap
 - [x] P1 health endpoint
 - [ ] P1 rollback/version pinning
 
@@ -131,13 +131,35 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [x] P0 Define Expert Intelligence architecture
 - [x] P0 Define Sensory Harvester architecture
 - [ ] P0 Create evidence-backed roster for 50 expert intelligences
-- [ ] P0 Create expert-profile schema and source requirements
-- [ ] P0 Research and populate first 10 expert profiles
+- [x] P0 Create expert-profile schema and source requirements
+- [ ] P0 Research and populate first 10 expert profiles (4/10 synthesized, not validated)
 - [ ] P1 Complete all 50 expert profiles
-- [ ] P1 Implement expert councils
+- [x] P1 Implement expert council selector runtime
 - [ ] P1 Implement expert aggregator
 - [ ] P1 Implement visual sensory intake
 - [ ] P1 Implement video intelligence intake
-- [ ] P1 Implement novelty/weak-signal detection
-- [ ] P1 Implement contamination/bias monitoring
-- [ ] P2 Implement scheduled background synthesis
+- [ ] P1 Implement novelty/weak-signal detection (novelty + synthesis bootstrap done; production weak-signal pipeline pending)
+- [ ] P1 Implement contamination/bias monitoring (source-concentration runtime done; multidimensional bias runtime pending)
+- [ ] P2 Implement scheduled background synthesis (synthesis service done; scheduler pending)
+
+## Epic L — Creative Cognition Runtime
+- [x] P0 Implement value-system gate
+- [x] P0 Implement deliberative cognition planner
+- [x] P0 Implement attention prioritization
+- [x] P0 Implement metacognition checks
+- [x] P0 Implement curiosity-question generation
+- [x] P0 Implement internal practice planner
+- [x] P0 Implement governed learning-candidate runtime
+- [x] P0 Implement persistent memory bootstrap
+- [x] P0 Implement memory decay/deprecation
+- [x] P1 Implement failure-to-learning bootstrap
+- [x] P1 Implement creative synthesis/divergence bootstrap
+- [x] P1 Implement structured conflict resolver
+- [x] P1 Implement concise decision records
+- [x] P1 Implement sensory registry + change detection
+- [x] P1 Implement background synthesis service
+- [ ] P1 Add scheduler/worker for background synthesis
+- [ ] P1 Connect practice engine to real executors + QC
+- [ ] P1 Connect creativity engine to real generation/editing executors
+- [ ] P1 Persist DecisionRecord, PracticeSession and Observation records
+- [ ] P1 Build multidimensional bias/coverage monitor
