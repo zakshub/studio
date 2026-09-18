@@ -40,7 +40,9 @@ def test_public_response_does_not_expose_provider(tmp_path: Path):
         assert response.status_code == 200
         body = response.json()
         assert "provider" not in str(body).lower()
-        assert body["status"] == "queued"
+        assert body["data"]["status"] == "queued"
+        assert body["meta"]["requestId"].startswith("req_")
+        assert body["meta"]["correlationId"].startswith("cor_")
 
 
 def test_internal_endpoints_require_secret(tmp_path: Path):
