@@ -5,6 +5,8 @@ from fastapi import FastAPI
 from fashionos_intelligence.api.internal import router as internal_router
 from fashionos_intelligence.api.public import router as public_router
 from fashionos_intelligence.persistence.db import build_session_factory
+from fashionos_intelligence.persistence.learning import LearningRepository
+from fashionos_intelligence.persistence.memory import MemoryRepository
 from fashionos_intelligence.persistence.tasks import TaskRepository
 from fashionos_intelligence.services.attention import AttentionService
 from fashionos_intelligence.services.background_synthesis import BackgroundSynthesisService
@@ -35,8 +37,8 @@ async def lifespan(app: FastAPI):
     app.state.brain = brain
     app.state.task_repository = TaskRepository(sessions)
     app.state.cognition_service = CognitionService()
-    app.state.learning_service = LearningService()
-    app.state.memory_service = MemoryService()
+    app.state.learning_service = LearningService(LearningRepository(sessions))
+    app.state.memory_service = MemoryService(MemoryRepository(sessions))
     app.state.practice_service = PracticeService()
     app.state.sensory_registry = SensoryRegistry()
     app.state.novelty_service = NoveltyService()
