@@ -67,3 +67,16 @@ class BrainRetrieveResponse(BaseModel):
     conflicts: list[dict[str, Any]] = Field(default_factory=list)
 
     model_config = {"populate_by_name": True}
+
+
+class ResponseMeta(BaseModel):
+    request_id: str = Field(alias="requestId")
+    correlation_id: str = Field(alias="correlationId")
+
+    model_config = {"populate_by_name": True}
+
+
+class PublicTaskEnvelope(BaseModel):
+    data: PublicTaskResponse
+    meta: ResponseMeta
+    error: None = None
