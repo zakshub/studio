@@ -225,3 +225,128 @@ def test_memory_practice_and_sensory_endpoints_are_private(tmp_path: Path):
         )
         assert source.status_code == 200
         assert source.json()["sourceId"].startswith("source_")
+
+
+def test_novelty_contamination_background_and_failure_services():
+    from fashionos_intelligence.services.background_synthesis import BackgroundSynthesisService
+    from fashionos_intelligence.services.contamination import ContaminationMonitor
+    from fashionos_intelligence.services.failure_learning import FailureLearningService
+    from fashionos_intelligence.services.novelty import NoveltyService
+
+    novelty = NoveltyService().evaluate(
+        "soft daylight against raw concrete",
+        ["soft daylight against raw concrete", "hard flash in studio"],
+    )
+    assert novelty.label == "low"
+
+    contamination = ContaminationMonitor().evaluate(
+        ["source_a", "source_a", "source_a", "source_a", "source_b"],
+        dominance_threshold=0.6,
+        minimum_sample=5,
+    )
+    assert "SOURCE_CONCENTRATION" in contamination.flags
+    assert contamination.promotion_blocked is True
+
+    synthesis = BackgroundSynthesisService().synthesize(
+        [
+            "raw concrete contrast garment",
+            "raw concrete contrast garment",
+            "soft botanical daylight",
+        ]
+    )
+    assert synthesis
+    assert synthesis[0].evidence_count == 2
+
+    failure = FailureLearningService().analyze(
+        "GARMENT_DRIFT",
+        recurrence_count=2,
+    )
+    assert failure.likely_category == "preservation"
+    assert failure.create_learning_candidate is True
+
+
+def test_creative_synthesis_produces_cross_principle_directions():
+    from fashionos_intelligence.services.creative_synthesis import CreativeSynthesisService
+
+    directions = CreativeSynthesisService().diverge(
+        principles=[
+            "material contrast",
+            "motivated side light",
+            "asymmetric hierarchy",
+        ],
+        councils=["fashion_garment", "lighting", "art_direction"],
+        max_directions=3,
+    )
+    assert len(directions) == 3
+    assert all(direction.principles for direction in directions)
+    assert all(direction.tension for direction in directions)
+
+
+def test_extended_internal_intelligence_endpoints(tmp_path: Path):
+    _configure(tmp_path)
+    from fashionos_intelligence.main import app
+
+    headers = {"X-Internal-Token": "test-secret"}
+    with TestClient(app) as client:
+        novelty = client.post(
+            "/internal/v1/novelty/evaluate",
+            headers=headers,
+            json={
+                "candidate": "soft daylight against raw concrete",
+                "references": ["soft daylight against raw concrete"],
+            },
+        )
+        assert novelty.status_code == 200
+        assert novelty.json()["label"] == "low"
+
+        contamination = client.post(
+            "/internal/v1/contamination/check",
+            headers=headers,
+            json={
+                "origins": ["a", "a", "a", "a", "b"],
+                "dominanceThreshold": 0.6,
+                "minimumSample": 5,
+            },
+        )
+        assert contamination.status_code == 200
+        assert contamination.json()["promotionBlocked"] is True
+
+        background = client.post(
+            "/internal/v1/background/synthesize",
+            headers=headers,
+            json={
+                "observations": [
+                    "raw concrete contrast garment",
+                    "raw concrete contrast garment",
+                ]
+            },
+        )
+        assert background.status_code == 200
+        assert background.json()
+
+        failure = client.post(
+            "/internal/v1/failure/analyze",
+            headers=headers,
+            json={
+                "failureCode": "IDENTITY_DRIFT",
+                "recurrenceCount": 2,
+            },
+        )
+        assert failure.status_code == 200
+        assert failure.json()["createLearningCandidate"] is True
+
+        creative = client.post(
+            "/internal/v1/creative/diverge",
+            headers=headers,
+            json={
+                "principles": [
+                    "material contrast",
+                    "motivated light",
+                    "hierarchy",
+                ],
+                "councils": ["fashion_garment", "lighting"],
+                "maxDirections": 2,
+            },
+        )
+        assert creative.status_code == 200
+        assert len(creative.json()) == 2
