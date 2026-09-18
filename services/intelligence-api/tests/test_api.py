@@ -11,6 +11,7 @@ def _configure(tmp_path: Path) -> None:
     )
     os.environ["FASHIONOS_BRAIN_ROOT"] = str(tmp_path)
     os.environ["FASHIONOS_INTERNAL_TOKEN"] = "test-secret"
+    os.environ["FASHIONOS_DATABASE_URL"] = "sqlite+pysqlite:///:memory:"
 
 
 def test_public_response_does_not_expose_provider(tmp_path: Path):
@@ -73,3 +74,25 @@ def test_internal_sync_and_health(tmp_path: Path):
         health = client.get("/internal/v1/brain/health", headers=headers)
         assert health.status_code == 200
         assert health.json()["state"] == "healthy"
+
+
+def test_created_task_is_persisted_and_retrievable(tmp_path: Path):
+    _configure(tmp_path)
+
+    from fashionos_intelligence.main import app
+
+    with TestClient(app) as client:
+        created = client.post(
+            "/api/v1/tasks",
+            json={
+                "workspaceId": "ws_1",
+                "objective": "Create a test task",
+                "mode": "NEW_GENERATION",
+                "target": {"type": "image"},
+            },
+        )
+        assert created.status_code == 200
+        task_id = created.json()["data"]["taskId"]
+        fetched = client.get(f"/api/v1/tasks/{task_id}")
+        assert fetched.status_code == 200
+        assert fetched.json()["data"]["taskId"] == task_id
