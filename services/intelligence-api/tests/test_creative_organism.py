@@ -350,3 +350,93 @@ def test_extended_internal_intelligence_endpoints(tmp_path: Path):
         )
         assert creative.status_code == 200
         assert len(creative.json()) == 2
+
+
+def test_attention_and_curiosity_services():
+    from fashionos_intelligence.services.attention import AttentionService
+    from fashionos_intelligence.services.curiosity import CuriosityService
+
+    ranked = AttentionService().rank(
+        [
+            {
+                "item_id": "a",
+                "relevance": 0.9,
+                "risk": 0.8,
+                "uncertainty": 0.7,
+                "novelty": 0.2,
+                "user_priority": 0.9,
+                "cost": 0.2,
+            },
+            {
+                "item_id": "b",
+                "relevance": 0.4,
+                "risk": 0.1,
+                "uncertainty": 0.2,
+                "novelty": 0.9,
+                "user_priority": 0.1,
+                "cost": 0.1,
+            },
+        ]
+    )
+    assert ranked[0].item_id == "a"
+    assert "HIGH_RELEVANCE" in ranked[0].reasons
+
+    questions = CuriosityService().generate(
+        repeated_uncertainties=["fabric sheen under mixed light"],
+        recurring_failures=["GARMENT_DRIFT"],
+        contradictions=["hard light reads premium vs hard light reads harsh"],
+        coverage_gaps=["Pakistani menswear motion references"],
+        affected_domains=["lighting", "fashion_garment"],
+    )
+    assert len(questions) == 4
+    assert any(item.reason == "RECURRING_FAILURE" for item in questions)
+
+
+def test_attention_and_curiosity_endpoints(tmp_path: Path):
+    _configure(tmp_path)
+    from fashionos_intelligence.main import app
+
+    headers = {"X-Internal-Token": "test-secret"}
+    with TestClient(app) as client:
+        attention = client.post(
+            "/internal/v1/attention/rank",
+            headers=headers,
+            json={
+                "items": [
+                    {
+                        "itemId": "important",
+                        "relevance": 0.95,
+                        "risk": 0.8,
+                        "uncertainty": 0.7,
+                        "novelty": 0.4,
+                        "userPriority": 0.9,
+                        "cost": 0.2,
+                    },
+                    {
+                        "itemId": "minor",
+                        "relevance": 0.2,
+                        "risk": 0.1,
+                        "uncertainty": 0.1,
+                        "novelty": 0.2,
+                        "userPriority": 0.1,
+                        "cost": 0.1,
+                    },
+                ]
+            },
+        )
+        assert attention.status_code == 200
+        assert attention.json()[0]["itemId"] == "important"
+
+        curiosity = client.post(
+            "/internal/v1/curiosity/questions",
+            headers=headers,
+            json={
+                "repeatedUncertainties": ["mixed light fabric response"],
+                "recurringFailures": ["GARMENT_DRIFT"],
+                "contradictions": [],
+                "coverageGaps": [],
+                "affectedDomains": ["lighting", "fashion_garment"],
+            },
+        )
+        assert curiosity.status_code == 200
+        assert len(curiosity.json()) == 2
