@@ -20,12 +20,12 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 
 ## Epic B — Brain Service
 - [ ] P0 GitHub sync
-- [ ] P0 local cache/index
-- [ ] P0 domain tagging
-- [ ] P0 retrieval service
+- [x] P0 local cache/index bootstrap (in-memory index; persistent cache still pending)
+- [x] P0 domain tagging
+- [x] P0 retrieval service bootstrap
 - [ ] P0 precedence/conflict rules
 - [ ] P1 cache freshness
-- [ ] P1 health endpoint
+- [x] P1 health endpoint
 - [ ] P1 rollback/version pinning
 
 ## Epic C — Executor Gateway
@@ -112,6 +112,9 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [ ] P1 internal admin
 
 ## Epic J — Production Readiness
+- [x] P1 internal endpoint authentication bootstrap
+- [x] P1 public docs/OpenAPI disabled
+- [x] P1 public/internal ingress boundary documented
 - [ ] P1 authentication/authorization
 - [ ] P1 secret management
 - [ ] P1 logging
