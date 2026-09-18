@@ -88,7 +88,7 @@ Result: PASSED — contract frozen in `backend/API-CONTRACT-V1-FREEZE.md` and QA
 ---
 
 ## Milestone M2 — Studio Brain Service + Retrieval Layer
-Status: IN PROGRESS
+Status: IN PROGRESS — CORE RETRIEVAL EXIT CRITERION MET; HARDENING REMAINS
 Depends on: M1
 
 Goal: make the repository consumable by FashionOS programmatically.
@@ -107,15 +107,36 @@ Goal: make the repository consumable by FashionOS programmatically.
 
 ### Creative Organism parallel track
 - [x] Creative Organism architecture defined
+- [x] Subconscious/value-system architecture defined
+- [x] Deliberative cognition architecture defined
+- [x] Child-learning cycle defined
+- [x] Practice/simulation architecture defined
+- [x] Memory/forgetting architecture defined
+- [x] Creative synthesis architecture defined
+- [x] Metacognition + curiosity architecture defined
+- [x] Background synthesis architecture defined
+- [x] Contamination/coverage architecture defined
 - [x] Expert Intelligence system architecture defined
 - [x] Sensory Harvester architecture defined
-- [ ] Build 50 expert intelligence profiles with evidence
-- [ ] Build expert councils + aggregator runtime
-- [ ] Build visual/video sensory collector runtime
-- [ ] Add metacognition, curiosity, background synthesis and contamination monitoring as governed services
+- [x] Value-system runtime bootstrap
+- [x] Cognition + attention + council-selection runtime bootstrap
+- [x] Metacognition + curiosity runtime bootstrap
+- [x] Practice + memory + governed-learning runtime bootstrap
+- [x] Novelty + contamination + failure-learning + background-synthesis bootstrap
+- [x] Creative synthesis runtime bootstrap
+- [x] Sensory source registry + change-detection bootstrap
+- [x] First 4 expert source packs/profiles synthesized
+- [ ] Validate and activate expert profiles
+- [ ] Complete all 50 expert intelligence profiles
+- [ ] Build expert-content aggregator runtime
+- [ ] Build production visual/video sensory collector runtime
+- [ ] Connect practice and creative synthesis to real executors/QC
 
 ### Exit criteria
 Given a task context, the service returns the relevant intelligence without loading the entire repository.
+
+Core exit behavior: MET by the local indexed/retrieval runtime.
+M2 remains open for production hardening: remote refresh, persistent index/cache, conflict integration, revision rollback/pinning, and broader regression coverage.
 
 ---
 
