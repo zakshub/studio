@@ -3,20 +3,20 @@
 Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 
 ## Epic A — Backend Contract
-- [ ] P0 Define Workspace entity
-- [ ] P0 Define Task entity
-- [ ] P0 Define SourceAsset entity
-- [ ] P0 Define ProductionPlan entity
-- [ ] P0 Define ExecutionRecord entity
-- [ ] P0 Define QCResult entity
-- [ ] P0 Define Approval entity
-- [ ] P0 Define AssetVersion entity
-- [ ] P0 Define task state machine
-- [ ] P0 Define public API schema
-- [ ] P0 Define internal API schema
-- [ ] P0 Define error contract
-- [ ] P0 Define permissions/admin model
-- [ ] P1 Define event/audit model
+- [x] P0 Define Workspace entity
+- [x] P0 Define Task entity
+- [x] P0 Define SourceAsset entity
+- [x] P0 Define ProductionPlan entity
+- [x] P0 Define ExecutionRecord entity
+- [x] P0 Define QCResult entity
+- [x] P0 Define Approval entity
+- [x] P0 Define AssetVersion entity
+- [x] P0 Define task state machine
+- [x] P0 Define public API schema
+- [x] P0 Define internal API schema
+- [x] P0 Define error contract
+- [x] P0 Define permissions/admin model
+- [x] P1 Define event/audit model
 
 ## Epic B — Brain Service
 - [ ] P0 GitHub sync
@@ -122,3 +122,19 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [ ] P1 privacy/legal review
 - [ ] P1 security review
 - [ ] P2 multi-tenant hardening
+
+## Epic K — Creative Organism Intelligence
+- [x] P0 Define Creative Organism architecture
+- [x] P0 Define Expert Intelligence architecture
+- [x] P0 Define Sensory Harvester architecture
+- [ ] P0 Create evidence-backed roster for 50 expert intelligences
+- [ ] P0 Create expert-profile schema and source requirements
+- [ ] P0 Research and populate first 10 expert profiles
+- [ ] P1 Complete all 50 expert profiles
+- [ ] P1 Implement expert councils
+- [ ] P1 Implement expert aggregator
+- [ ] P1 Implement visual sensory intake
+- [ ] P1 Implement video intelligence intake
+- [ ] P1 Implement novelty/weak-signal detection
+- [ ] P1 Implement contamination/bias monitoring
+- [ ] P2 Implement scheduled background synthesis
