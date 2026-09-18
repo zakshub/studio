@@ -9,9 +9,15 @@ import os
 class Settings:
     brain_root: Path
     stale_after_seconds: int = 3600
+    internal_token: str | None = None
 
     @classmethod
     def from_env(cls) -> "Settings":
         root = Path(os.getenv("FASHIONOS_BRAIN_ROOT", ".")).resolve()
         stale = int(os.getenv("FASHIONOS_BRAIN_STALE_AFTER_SECONDS", "3600"))
-        return cls(brain_root=root, stale_after_seconds=stale)
+        token = os.getenv("FASHIONOS_INTERNAL_TOKEN") or None
+        return cls(
+            brain_root=root,
+            stale_after_seconds=stale,
+            internal_token=token,
+        )
