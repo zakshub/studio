@@ -27,3 +27,21 @@ Physically plausible hard shadows from architecture or sunlight can be deliberat
 
 ### EF-008 Material-aware analogue texture
 Film grain/analogue character should vary perceptually with material, exposure and depth. Avoid uniform grain overlays that flatten fabric, skin and environment into one texture field.
+
+### EF-009 Visible production provenance
+For campaigns where authenticity is part of the concept, the production process itself can become image evidence: crew, waiting time, bystander captures, BTS/off-duty frames, or a deliberate film-within-film reveal. These cues must be motivated by the campaign concept, not added as fake documentary clutter.
+
+### EF-010 Diurnal light continuity
+A location story can deliberately span morning, afternoon, evening or a long summer day. When time advances, evolve sun angle, color temperature, shadow length, atmospheric softness, reflections and subject behavior together. Do not change only the grade and call it a new time of day.
+
+### EF-011 Semantic environment collision
+Surreal editorial contrast can be built by physically combining two believable but semantically opposing realities (for example, beach material on an urban rooftop). Keep contact, gravity, scale, texture and lighting physically coherent. Control how much of the contradiction is revealed across the shot family.
+
+### EF-012 Motion-stress garment validation
+When appropriate, include at least one frame with meaningful body/garment motion—jump, turn, climb, fast walk, fabric lift—to expose whether fabric weight, attachment, inertia, hem/sleeve lag, hair motion and shutter behavior remain coherent. Motion is a realism test, not only an energy device.
+
+### EF-013 Cross-release concept continuity
+Campaign continuity can extend beyond one shoot. Carry a concept from runway/set to campaign/location through recurring environment motifs, weather, practical-light families, surface behavior, sound/cultural cues and garment context. Matching LUTs alone is weak continuity.
+
+### EF-014 Terrain-responsive posing
+On visibly irregular, slippery, soft or hard terrain, stance, foot placement, balance, hand contact and garment fall must respond to the ground. Do not paste a neutral studio pose onto terrain that would physically change how a person stands.
