@@ -58,6 +58,8 @@ This is not fashion-only and not tied to one brand. It covers:
 - [Source Acquisition](./architecture/source-acquisition.md)
 - [Learning Loop](./architecture/learning-loop.md)
 - [Runtime Contract](./architecture/runtime-contract.md)
+- [Memory Layers](./architecture/memory-layers.md)
+- [Retrieval Policy](./architecture/retrieval-policy.md)
 
 ## Core production files
 - [SKILL.md](./SKILL.md)
@@ -69,14 +71,21 @@ This is not fashion-only and not tied to one brand. It covers:
 - [Website Source Treatment](./workflows/website-source-treatment.md)
 - [Forensic Reality QC](./qc/forensic-reality-qc.md)
 - [Repository QA Checklist](./qc/repository-qa-checklist.md)
+- [Benchmark Framework](./qc/benchmark-framework.md)
+- [Failure Taxonomy](./qc/failure-taxonomy.md)
 - [Image Task Report Template](./templates/image-task-report.md)
 
 ## Runtime schemas
 - [Task Context](./schemas/task-context.md)
 - [Execution Record](./schemas/execution-record.md)
 - [Learning Candidate](./schemas/learning-candidate.md)
+- [Public Response](./schemas/public-response.md)
+- [Source Record](./schemas/source-record.md)
+- [QC Result](./schemas/qc-result.md)
 
 ## Research
+- [Research Policy](./research/research-policy.md)
+
 Research produces **candidate knowledge**, not automatic canonical truth.
 
 New observations must be compared with existing intelligence, classified, validated, and explicitly promoted before they become durable rules. Client-specific preferences and one-off campaign decisions must remain scoped and must not contaminate the universal brain.
