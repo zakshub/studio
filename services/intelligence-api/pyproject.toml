@@ -1,0 +1,16 @@
+[project]
+name = "fashionos-intelligence-api"
+version = "0.1.0"
+description = "FashionOS private intelligence/orchestration API"
+requires-python = ">=3.13"
+dependencies = [
+  "fastapi>=0.128,<1",
+  "pydantic>=2.13,<3",
+  "uvicorn>=0.35,<1"
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<9", "httpx>=0.28,<1"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
