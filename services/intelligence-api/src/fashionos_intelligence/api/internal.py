@@ -26,6 +26,16 @@ def brain_health(brain: BrainIndex = Depends(get_brain)) -> dict[str, object]:
     }
 
 
+@router.post("/brain/sync")
+def brain_sync(brain: BrainIndex = Depends(get_brain)) -> dict[str, object]:
+    revision = brain.sync_local()
+    return {
+        "state": "healthy" if brain.units else "degraded",
+        "activeRevision": revision,
+        "indexUnitCount": len(brain.units),
+    }
+
+
 @router.post(
     "/brain/retrieve",
     response_model=BrainRetrieveResponse,
