@@ -3,107 +3,129 @@
 ## Overall
 Phase: Integration implementation
 Program health: GREEN
-Completed milestone: M1 Backend Domain Model + API Contract
+Completed milestones: M0 Canonical Foundation, M1 Backend Domain Model + API Contract
 Current milestone: M2 Studio Brain Service + Retrieval Layer
+Parallel track: Creative Organism Intelligence runtime
 
-## Completed
-- Studio Brain repository established
-- brand neutrality enforced
-- provider neutrality enforced
-- private methodology boundary defined
-- source authority hierarchy defined
-- website-source workflow defined
-- preservation rules defined
-- forensic QC defined
-- learning governance defined
-- memory layers defined
-- retrieval policy defined
-- benchmark framework defined
-- anti-hallucination rules defined
-- repository QA passed
-- M1 backend domain model defined
-- public/private API boundary defined
-- v1 endpoint map defined
-- task/job state machines defined
-- persistence model defined
-- permissions/admin boundary defined
-- error contract defined
-- audit event model defined
-- v1 API contract frozen
-- M1 contract QA passed
-- Studio Brain Service architecture specified
-- sync policy specified
-- indexing/retrieval policy specified
-- health/cache/revision behavior specified
-- Creative Organism architecture added
-- Expert Intelligence architecture added
-- Sensory Harvester architecture added
+## M2 core capability now working
+A task can query a synced local canonical brain revision and receive a compact, internally traceable knowledge bundle without loading the whole repository.
+
+Implemented:
+- FastAPI/Pydantic/SQLAlchemy application shell
+- customer-safe task create/read API
+- private brain sync/health/retrieve API
+- deterministic Markdown knowledge indexing
+- domain tagging and authority-aware retrieval
+- traceable knowledge-unit IDs
+- brain revision hashing
+- stale/healthy state
+- private internal-token boundary
+- public OpenAPI/docs disabled
+- task persistence
+- PostgreSQL core migration authored
+- persistent organism-memory migration authored
+- persistent governed-learning migration authored
+- CI workflow added
+
+## Creative Organism runtime implemented
+### Value / subconscious layer
+- explicit value hierarchy
+- rights/source gate
+- source-preservation priority
+- hard-lock conflict detection
+- critical-uncertainty escalation
+- neutral-core and specialization-without-contamination rules
+
+### Deliberative / conscious layer
+- ORIENT -> ATTEND -> FRAME -> RECALL -> DIVERGE -> SIMULATE -> CONSULT -> CRITIQUE -> CONVERGE -> DECIDE -> EXECUTE -> VERIFY -> REFLECT -> LEARN cycle
+- capability-to-expert-council selection
+- attention prioritization
+- confidence/metacognition checks
+- human-review escalation
+
+### Learning / development layer
+- child-learning cycle documented
+- internal practice planner
+- governed learning candidates
+- evidence + human approval required for promotion
+- persistent episodic/semantic/procedural-style memory bootstrap
+- memory decay/deprecation
+- failure-to-learning analysis
+- novelty estimation bootstrap
+- source-concentration/contamination monitor
+- background synthesis service
+- curiosity/research-question generator
+- creative cross-principle divergence/synthesis bootstrap
+- structured rule-conflict resolver
+- concise DecisionRecord service
+
+### Sensory bootstrap
+- private source registry
+- deterministic content fingerprint/change detection
+- source authority/rights metadata
+
+This is a bootstrap sensory layer, not yet a production crawler or video-understanding service.
+
+## Expert Intelligence progress
+Canonical roster: 50 experts.
+
+Evidence-ready source packs + synthesized first-pass profiles now exist for:
+1. Nick Knight
+2. Tim Walker
+3. Mert Alas
+4. Marcus Piggott
+
+These profiles are deliberately NOT marked ACTIVE yet. They require validation and, where evidence is limited, additional first-party sourcing.
+
+Remaining expert profiles: 46.
+
+## Product design progress
 - FashionOS v2 page map frozen for first pass
 - customer/internal UX boundary documented
-- initial image-slot plan documented
-- previous FashionOS Figma file reviewed
-- new Figma file identified for redesign
-- weekly research process established
+- image-slot plan documented
+- Figma high-fidelity build still pending
 
-## Implemented in code
-First executable M2 bootstrap is now present:
-- Python 3.13 / FastAPI service skeleton
-- public task-creation endpoint
-- customer-safe response envelope + correlation IDs
-- private brain health endpoint
-- private brain sync endpoint for local checked-out canonical brain
-- deterministic Markdown knowledge indexing
-- authority-aware compact retrieval
-- traceable internal knowledge-unit IDs
-- stale/healthy brain state
-- internal-token protection for private brain endpoints
-- MVP task persistence through SQLAlchemy
-- public task retrieval endpoint
-- PostgreSQL core schema migration authored
-- public API documentation/OpenAPI disabled by default
-- public/internal ingress boundary documented
-- executable tests
+## QA state
+- M0 repository QA: PASS
+- M1 backend contract QA: PASS
+- previous M2 bootstrap suite: PASS
+- GitHub Actions Intelligence API CI has produced a successful run
+- a fresh full CI run was requested after the latest intelligence-runtime changes; check the latest workflow result before declaring the new runtime fully regression-passed
 
-Local bootstrap QA: 7 tests passed.
-
-## Not yet implemented
-- production-deployed FashionOS API service
-- remote GitHub fetch/webhook sync runtime (local checked-out brain sync is implemented)
-- PostgreSQL migration execution against a real server (migration file exists)
-- object storage integration
+## Not yet complete
+- remote GitHub/webhook brain refresh
+- persistent semantic/vector index
+- integration of structured conflict resolver directly into BrainIndex retrieval
+- real PostgreSQL migration execution/validation
+- object storage
+- full asset/execution/QC/approval/provenance persistence
 - executor gateway
-- Gemini/OpenAI runtime adapters
+- Gemini/OpenAI/other adapters
 - capability benchmark runner
-- website/social asset collector
-- visual/video sensory harvester runtime
-- 50 evidence-backed expert intelligence profiles
-- expert council aggregator runtime
-- provenance store runtime
-- QC runtime
-- approval service
-- asset library backend
-- learning-candidate runtime
-- frontend redesign in new Figma file
+- website/social crawler runtime
+- image understanding intake pipeline
+- video understanding runtime
+- full 50 expert intelligence profiles
+- expert-content aggregator runtime
+- production QC service
+- approval/provenance service
+- Figma v2 high-fidelity screens
 - frontend application integration
-- deployment/observability/security hardening
+- deployment/monitoring/backup/security hardening
 
 ## Immediate next actions
-1. Execute/validate the core migration against PostgreSQL.
-2. Extend persistence beyond Task into Asset/Execution/QC/Approval.
-3. Add conflict detection/resolution to Brain retrieval.
-4. Add remote repository refresh mechanism or deployment-side checkout refresh.
-5. Add retrieval regression cases for generation/research/website-treatment modes.
-6. Begin Figma v2 in parallel now that M1 contract is frozen.
-7. Build source packs for the first expert-intelligence batch.
-8. Start executor-gateway interface after persistence foundations.
+1. Finish M2 hardening: conflict integration, revision pinning/rollback, persistent index/cache, remote refresh.
+2. Validate migrations against PostgreSQL and extend persistence to Asset/Execution/QC/Approval/Provenance.
+3. Research and synthesize the next expert-intelligence batch.
+4. Build real Source Harvester adapters + image/video observation pipeline.
+5. Implement Executor Gateway + provider-neutral benchmark routing.
+6. Implement runtime QC/provenance.
+7. Begin high-fidelity Figma v2 against the frozen public contract.
 
-## Do not do
-- do not expose internal methodology to customer UI
-- do not hard-code a provider as universally best
-- do not auto-promote research into canonical knowledge
-- do not allow client/workspace context to contaminate universal intelligence
-- do not represent specification as implemented runtime
-- do not claim QA for components that have not been executed
-
-## Next decision gate
-M2 reaches implementation-ready exit when a real task can query a synced/indexed brain revision and receive an internally traceable compact rule bundle.
+## Guardrails
+- no provider or repository methodology in customer UI
+- no automatic universal promotion from research/practice
+- no workspace/client contamination of universal memory
+- no claim of source verification without evidence
+- no signature-style copying from expert profiles
+- no failed preservation output labeled successful
