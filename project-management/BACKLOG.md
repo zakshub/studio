@@ -26,14 +26,15 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [ ] P0 precedence/conflict integration into retrieval (structured resolver implemented)
 - [x] P1 cache freshness / stale health bootstrap
 - [x] P1 health endpoint
-- [ ] P1 rollback/version pinning
+- [x] P1 in-process rollback/version pinning bootstrap
+- [ ] P1 durable revision snapshot persistence
 
 ## Epic C — Executor Gateway
-- [ ] P0 common executor interface
+- [x] P0 common executor interface bootstrap
 - [ ] P0 Gemini adapter
 - [ ] P0 OpenAI adapter
-- [ ] P0 deterministic-processing adapter
-- [ ] P0 fallback routing
+- [x] P0 deterministic-processing adapter bootstrap
+- [x] P0 fallback-capable executor gateway bootstrap
 - [ ] P1 competitive routing
 - [ ] P1 verifier mode
 - [ ] P1 cost/latency capture
@@ -63,6 +64,8 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [ ] P1 change detection
 
 ## Epic F — QC / Provenance
+- [x] P0 QC policy runtime bootstrap
+- [x] P0 provenance/lineage runtime bootstrap
 - [ ] P0 execution record
 - [ ] P0 source lineage
 - [ ] P0 preservation QC
@@ -135,12 +138,12 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [ ] P0 Research and populate first 10 expert profiles (4/10 synthesized, not validated)
 - [ ] P1 Complete all 50 expert profiles
 - [x] P1 Implement expert council selector runtime
-- [ ] P1 Implement expert aggregator
-- [ ] P1 Implement visual sensory intake
-- [ ] P1 Implement video intelligence intake
+- [x] P1 Implement expert aggregator bootstrap
+- [x] P1 Implement normalized visual observation intake bootstrap
+- [x] P1 Implement structured video intelligence intake bootstrap
 - [ ] P1 Implement novelty/weak-signal detection (novelty + synthesis bootstrap done; production weak-signal pipeline pending)
-- [ ] P1 Implement contamination/bias monitoring (source-concentration runtime done; multidimensional bias runtime pending)
-- [ ] P2 Implement scheduled background synthesis (synthesis service done; scheduler pending)
+- [x] P1 Implement contamination/bias monitoring bootstrap (source concentration + multidimensional coverage)
+- [x] P2 Implement scheduled background synthesis bootstrap (in-process scheduler; production worker pending)
 
 ## Epic L — Creative Cognition Runtime
 - [x] P0 Implement value-system gate
@@ -158,8 +161,9 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [x] P1 Implement concise decision records
 - [x] P1 Implement sensory registry + change detection
 - [x] P1 Implement background synthesis service
-- [ ] P1 Add scheduler/worker for background synthesis
+- [x] P1 Add in-process scheduler bootstrap for background synthesis
+- [ ] P1 Replace bootstrap scheduler with durable production worker
 - [ ] P1 Connect practice engine to real executors + QC
 - [ ] P1 Connect creativity engine to real generation/editing executors
 - [ ] P1 Persist DecisionRecord, PracticeSession and Observation records
-- [ ] P1 Build multidimensional bias/coverage monitor
+- [x] P1 Build multidimensional bias/coverage monitor
