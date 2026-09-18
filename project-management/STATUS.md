@@ -38,6 +38,9 @@ Current milestone: M2 Studio Brain Service + Retrieval Layer
 - Creative Organism architecture added
 - Expert Intelligence architecture added
 - Sensory Harvester architecture added
+- FashionOS v2 page map frozen for first pass
+- customer/internal UX boundary documented
+- initial image-slot plan documented
 - previous FashionOS Figma file reviewed
 - new Figma file identified for redesign
 - weekly research process established
