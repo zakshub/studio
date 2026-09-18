@@ -440,3 +440,49 @@ def test_attention_and_curiosity_endpoints(tmp_path: Path):
         )
         assert curiosity.status_code == 200
         assert len(curiosity.json()) == 2
+
+
+def test_memory_and_learning_persist_through_repository(tmp_path: Path):
+    from fashionos_intelligence.persistence.db import build_session_factory
+    from fashionos_intelligence.persistence.learning import LearningRepository
+    from fashionos_intelligence.persistence.memory import MemoryRepository
+
+    db_url = f"sqlite+pysqlite:///{tmp_path / 'organism.db'}"
+    sessions = build_session_factory(db_url)
+
+    memory_repo = MemoryRepository(sessions)
+    memory_a = MemoryService(memory_repo)
+    remembered = memory_a.remember(
+        memory_type="episodic",
+        scope="campaign_x",
+        content="Approved lighting decision.",
+        evidence_ids=["decision_1"],
+    )
+
+    memory_b = MemoryService(memory_repo)
+    recalled = memory_b.retrieve(
+        memory_type="episodic",
+        scope="campaign_x",
+    )
+    assert recalled
+    assert recalled[0].memory_id == remembered.memory_id
+
+    learning_repo = LearningRepository(sessions)
+    learning_a = LearningService(learning_repo)
+    candidate = learning_a.create(
+        observation="Repeated result across independent tests.",
+        proposed_principle="Scoped reusable principle.",
+        scope="practice",
+        evidence_ids=["e1", "e2"],
+        confidence="high",
+    )
+
+    learning_b = LearningService(learning_repo)
+    restored = learning_b.get(candidate.candidate_id)
+    assert restored is not None
+    assert restored.decision_status == "pending"
+    promoted = learning_b.promote(
+        candidate.candidate_id,
+        human_approved=True,
+    )
+    assert promoted.decision_status == "promoted"
