@@ -6,11 +6,13 @@ from fashionos_intelligence.api.internal import router as internal_router
 from fashionos_intelligence.api.public import router as public_router
 from fashionos_intelligence.persistence.db import build_session_factory
 from fashionos_intelligence.persistence.tasks import TaskRepository
+from fashionos_intelligence.services.attention import AttentionService
 from fashionos_intelligence.services.background_synthesis import BackgroundSynthesisService
 from fashionos_intelligence.services.brain import BrainIndex
 from fashionos_intelligence.services.cognition import CognitionService
 from fashionos_intelligence.services.contamination import ContaminationMonitor
 from fashionos_intelligence.services.creative_synthesis import CreativeSynthesisService
+from fashionos_intelligence.services.curiosity import CuriosityService
 from fashionos_intelligence.services.failure_learning import FailureLearningService
 from fashionos_intelligence.services.learning import LearningService
 from fashionos_intelligence.services.memory import MemoryService
@@ -42,6 +44,8 @@ async def lifespan(app: FastAPI):
     app.state.background_synthesis_service = BackgroundSynthesisService()
     app.state.failure_learning_service = FailureLearningService()
     app.state.creative_synthesis_service = CreativeSynthesisService()
+    app.state.attention_service = AttentionService()
+    app.state.curiosity_service = CuriosityService()
     yield
 
 
