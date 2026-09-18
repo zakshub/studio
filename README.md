@@ -102,3 +102,12 @@ The supplied Production Intelligence Engine 170-Protocol Manual remains the mast
 
 ## Approval principle
 A result is not approved because it is attractive. It is approved only when it is coherent with the task intent, respects locks and source authority, and can be explained as a plausible production/capture/edit/delivery chain for the selected reality class.
+
+## Project management
+- [Project Charter](./project-management/PROJECT-CHARTER.md)
+- [Master Roadmap](./project-management/MASTER-ROADMAP.md)
+- [Current Status](./project-management/STATUS.md)
+- [Backlog](./project-management/BACKLOG.md)
+- [Definition of Done](./project-management/DEFINITION-OF-DONE.md)
+- [Risk Register](./project-management/RISK-REGISTER.md)
+- [Decision Log](./project-management/DECISION-LOG.md)
