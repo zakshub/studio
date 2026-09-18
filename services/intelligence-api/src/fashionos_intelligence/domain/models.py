@@ -207,3 +207,82 @@ class SensorySourceOut(BaseModel):
     last_fingerprint: str | None = Field(default=None, alias="lastFingerprint")
 
     model_config = {"populate_by_name": True}
+
+
+class NoveltyRequest(BaseModel):
+    candidate: str
+    references: list[str] = Field(default_factory=list)
+
+
+class NoveltyResponse(BaseModel):
+    score: float
+    nearest_similarity: float = Field(alias="nearestSimilarity")
+    label: str
+
+    model_config = {"populate_by_name": True}
+
+
+class ContaminationRequest(BaseModel):
+    origins: list[str]
+    dominance_threshold: float = Field(default=0.6, alias="dominanceThreshold", ge=0.0, le=1.0)
+    minimum_sample: int = Field(default=5, alias="minimumSample", ge=1)
+
+    model_config = {"populate_by_name": True}
+
+
+class ContaminationResponse(BaseModel):
+    dominant_group: str | None = Field(alias="dominantGroup")
+    dominant_share: float = Field(alias="dominantShare")
+    flags: list[str]
+    promotion_blocked: bool = Field(alias="promotionBlocked")
+
+    model_config = {"populate_by_name": True}
+
+
+class BackgroundSynthesisRequest(BaseModel):
+    observations: list[str]
+    minimum_repeat: int = Field(default=2, alias="minimumRepeat", ge=2)
+
+    model_config = {"populate_by_name": True}
+
+
+class BackgroundSynthesisItem(BaseModel):
+    cluster_key: str = Field(alias="clusterKey")
+    evidence_count: int = Field(alias="evidenceCount")
+    observations: list[str]
+    proposed_action: str = Field(alias="proposedAction")
+
+    model_config = {"populate_by_name": True}
+
+
+class FailureLearningRequest(BaseModel):
+    failure_code: str = Field(alias="failureCode")
+    recurrence_count: int = Field(default=1, alias="recurrenceCount", ge=1)
+
+    model_config = {"populate_by_name": True}
+
+
+class FailureLearningResponse(BaseModel):
+    failure_code: str = Field(alias="failureCode")
+    likely_category: str = Field(alias="likelyCategory")
+    remediation_questions: list[str] = Field(alias="remediationQuestions")
+    create_learning_candidate: bool = Field(alias="createLearningCandidate")
+
+    model_config = {"populate_by_name": True}
+
+
+class CreativeSynthesisRequest(BaseModel):
+    principles: list[str]
+    councils: list[str] = Field(default_factory=list)
+    max_directions: int = Field(default=4, alias="maxDirections", ge=1, le=12)
+
+    model_config = {"populate_by_name": True}
+
+
+class CreativeDirectionOut(BaseModel):
+    direction_id: str = Field(alias="directionId")
+    principles: list[str]
+    tension: str | None
+    councils: list[str]
+
+    model_config = {"populate_by_name": True}
