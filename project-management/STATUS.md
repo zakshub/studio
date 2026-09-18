@@ -43,11 +43,24 @@ Current milestone: M2 Studio Brain Service + Retrieval Layer
 - weekly research process established
 
 ## Implemented in code
-None yet. Current repository work is architecture/contracts. This status intentionally distinguishes specification from running software.
+First executable M2 bootstrap is now present:
+- Python 3.13 / FastAPI service skeleton
+- public task-creation endpoint
+- customer-safe response envelope + correlation IDs
+- private brain health endpoint
+- private brain sync endpoint for local checked-out canonical brain
+- deterministic Markdown knowledge indexing
+- authority-aware compact retrieval
+- traceable internal knowledge-unit IDs
+- stale/healthy brain state
+- internal-token protection for private brain endpoints
+- executable tests
+
+Local bootstrap QA: 4 tests passed.
 
 ## Not yet implemented
-- running FashionOS API service
-- GitHub brain sync/index runtime
+- production-deployed FashionOS API service
+- remote GitHub fetch/webhook sync runtime (local checked-out brain sync is implemented)
 - database migrations
 - object storage integration
 - executor gateway
@@ -67,13 +80,13 @@ None yet. Current repository work is architecture/contracts. This status intenti
 - deployment/observability/security hardening
 
 ## Immediate next actions
-1. Select and freeze MVP implementation stack.
-2. Create backend service skeleton.
-3. Implement Brain Sync + local normalized index.
-4. Implement retrieval endpoint against local repository snapshot/cache.
-5. Add database schema/migrations for core M1 entities.
-6. Begin Figma v2 in parallel now that M1 contract is frozen.
-7. Start evidence-backed Expert Intelligence ingestion as a parallel research track.
+1. Add PostgreSQL core schema/migration.
+2. Persist Task/Asset/Execution/QC/Approval entities.
+3. Add remote repository sync strategy implementation or deployment-side checkout refresh.
+4. Add retrieval regression cases for generation/research/website-treatment modes.
+5. Begin Figma v2 in parallel now that M1 contract is frozen.
+6. Build source packs for the first expert-intelligence batch.
+7. Start executor-gateway interface after persistence foundations.
 
 ## Do not do
 - do not expose internal methodology to customer UI
