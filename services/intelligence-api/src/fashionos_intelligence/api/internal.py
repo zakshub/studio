@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, Request
+import hmac
+
+from fastapi import APIRouter, Depends, Header, HTTPException, Request
 
 from fashionos_intelligence.domain.models import (
     BrainRetrieveRequest,
@@ -6,8 +8,21 @@ from fashionos_intelligence.domain.models import (
     KnowledgeUnitOut,
 )
 from fashionos_intelligence.services.brain import BrainIndex
+from fashionos_intelligence.settings import Settings
 
 router = APIRouter(prefix="/internal/v1", tags=["internal"])
+
+
+def require_internal_access(
+    request: Request,
+    x_internal_token: str | None = Header(default=None),
+) -> None:
+    settings: Settings = request.app.state.settings
+    expected = settings.internal_token
+    if not expected:
+        raise HTTPException(status_code=503, detail="INTERNAL_AUTH_NOT_CONFIGURED")
+    if not x_internal_token or not hmac.compare_digest(x_internal_token, expected):
+        raise HTTPException(status_code=403, detail="INTERNAL_ENDPOINT_FORBIDDEN")
 
 
 def get_brain(request: Request) -> BrainIndex:
@@ -17,29 +32,22 @@ def get_brain(request: Request) -> BrainIndex:
     return brain
 
 
-@router.get("/brain/health")
+@router.get("/brain/health", dependencies=[Depends(require_internal_access)])
 def brain_health(brain: BrainIndex = Depends(get_brain)) -> dict[str, object]:
-    return {
-        "state": "healthy" if brain.units else "degraded",
-        "activeRevision": brain.revision,
-        "indexUnitCount": len(brain.units),
-    }
+    return brain.health()
 
 
-@router.post("/brain/sync")
+@router.post("/brain/sync", dependencies=[Depends(require_internal_access)])
 def brain_sync(brain: BrainIndex = Depends(get_brain)) -> dict[str, object]:
-    revision = brain.sync_local()
-    return {
-        "state": "healthy" if brain.units else "degraded",
-        "activeRevision": revision,
-        "indexUnitCount": len(brain.units),
-    }
+    brain.sync_local()
+    return brain.health()
 
 
 @router.post(
     "/brain/retrieve",
     response_model=BrainRetrieveResponse,
     response_model_by_alias=True,
+    dependencies=[Depends(require_internal_access)],
 )
 def retrieve_brain(
     payload: BrainRetrieveRequest,
