@@ -518,3 +518,25 @@ def generate_curiosity_questions(
         )
         for item in questions
     ]
+
+@router.get("/brain/revisions", dependencies=[Depends(require_internal_access)])
+def brain_revisions(brain: BrainIndex = Depends(get_brain)) -> dict[str, object]:
+    return {
+        "activeRevision": brain.revision,
+        "availableRevisions": list(brain.available_revisions()),
+    }
+
+
+@router.post("/brain/rollback/{revision}", dependencies=[Depends(require_internal_access)])
+def brain_rollback(
+    revision: str,
+    brain: BrainIndex = Depends(get_brain),
+) -> dict[str, object]:
+    try:
+        active = brain.rollback(revision)
+    except KeyError:
+        raise HTTPException(status_code=404, detail="BRAIN_REVISION_NOT_FOUND")
+    return {
+        "activeRevision": active,
+        "state": brain.health()["state"],
+    }
