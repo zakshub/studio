@@ -52,6 +52,49 @@ class MemoryRow(Base):
     )
 
 
+class DecisionRow(Base):
+    __tablename__ = "decision_records"
+
+    decision_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    task_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    payload: Mapped[dict] = mapped_column(JSON, default=dict)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+    )
+
+
+class PracticeSessionRow(Base):
+    __tablename__ = "practice_sessions"
+
+    session_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    target_principle: Mapped[str] = mapped_column(Text)
+    mode: Mapped[str] = mapped_column(String(64))
+    status: Mapped[str] = mapped_column(String(24), default="planned", index=True)
+    payload: Mapped[dict] = mapped_column(JSON, default=dict)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+    )
+
+
+class ObservationRow(Base):
+    __tablename__ = "observations"
+
+    observation_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    source_id: Mapped[str] = mapped_column(String(64), index=True)
+    media_type: Mapped[str] = mapped_column(String(24), index=True)
+    dimension: Mapped[str] = mapped_column(String(64), index=True)
+    value: Mapped[str] = mapped_column(Text)
+    confidence: Mapped[str] = mapped_column(String(16))
+    evidence_ref: Mapped[str | None] = mapped_column(Text, nullable=True)
+    interpretation: Mapped[bool] = mapped_column(default=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+    )
+
+
 class LearningCandidateRow(Base):
     __tablename__ = "learning_candidates_runtime"
 
