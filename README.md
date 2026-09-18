@@ -125,7 +125,30 @@ A result is not approved because it is attractive. It is approved only when it i
 
 ## Creative Organism
 - [Creative Organism Architecture](./architecture/creative-organism.md)
+- [Subconscious Value System](./architecture/subconscious-value-system.md)
+- [Deliberative Cognition](./architecture/conscious-cognition.md)
+- [Child-Learning Cycle](./architecture/child-learning-cycle.md)
+- [Practice & Simulation](./architecture/practice-simulation.md)
+- [Metacognition & Curiosity](./architecture/metacognition-curiosity.md)
+- [Memory / Forgetting](./architecture/memory-forgetting.md)
+- [Background Synthesis](./architecture/background-synthesis.md)
+- [Contamination / Coverage Monitor](./architecture/contamination-bias-monitor.md)
+- [Creative Synthesis](./architecture/creative-synthesis.md)
 - [Expert Intelligence System](./architecture/expert-intelligence-system.md)
 - [Sensory Harvester](./architecture/sensory-harvester.md)
 - [Expert Candidate Roster](./expert-intelligence/roster-v1.md)
 - [Expert Profile Schema](./expert-intelligence/profile-schema.md)
+- [Expert Source-Pack Schema](./schemas/expert-source-pack.md)
+- [Observation Schema](./schemas/observation.md)
+- [Decision Record Schema](./schemas/decision-record.md)
+- [Practice Session Schema](./schemas/practice-session.md)
+- [Memory Record Schema](./schemas/memory-record.md)
+
+### Expert intelligence ingestion
+First-pass evidence packs and synthesized profiles currently exist for:
+- Nick Knight
+- Tim Walker
+- Mert Alas
+- Marcus Piggott
+
+These are not yet ACTIVE; validation is still required.
