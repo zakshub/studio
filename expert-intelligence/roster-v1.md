@@ -69,7 +69,13 @@ Purpose: seed the first 50 distinct expert intelligences. This file is a candida
 50. Hussain Rehar — Pakistan
 
 ## Current ingestion status
-All 50: CANDIDATE
+- EXP-001 Nick Knight — SYNTHESIZED / NOT VALIDATED
+- EXP-003 Tim Walker — SYNTHESIZED / NOT VALIDATED
+- EXP-005 Mert Alas — SYNTHESIZED / NOT VALIDATED
+- EXP-006 Marcus Piggott — SYNTHESIZED / EVIDENCE LIMITED / NOT VALIDATED
+- Remaining 46 experts — CANDIDATE
+
+No profile is ACTIVE yet. Activation requires evidence review, contradiction check, anti-copy review, and human validation.
 
 Next process per expert:
 1. source pack
