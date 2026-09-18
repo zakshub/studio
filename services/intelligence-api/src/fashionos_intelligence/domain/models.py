@@ -286,3 +286,48 @@ class CreativeDirectionOut(BaseModel):
     councils: list[str]
 
     model_config = {"populate_by_name": True}
+
+
+class AttentionItemIn(BaseModel):
+    item_id: str = Field(alias="itemId")
+    relevance: float = Field(default=0.0, ge=0.0, le=1.0)
+    risk: float = Field(default=0.0, ge=0.0, le=1.0)
+    uncertainty: float = Field(default=0.0, ge=0.0, le=1.0)
+    novelty: float = Field(default=0.0, ge=0.0, le=1.0)
+    user_priority: float = Field(default=0.0, alias="userPriority", ge=0.0, le=1.0)
+    cost: float = Field(default=0.0, ge=0.0, le=1.0)
+
+    model_config = {"populate_by_name": True}
+
+
+class AttentionRequest(BaseModel):
+    items: list[AttentionItemIn]
+
+
+class AttentionItemOut(BaseModel):
+    item_id: str = Field(alias="itemId")
+    score: float
+    reasons: list[str]
+
+    model_config = {"populate_by_name": True}
+
+
+class CuriosityRequest(BaseModel):
+    repeated_uncertainties: list[str] = Field(default_factory=list, alias="repeatedUncertainties")
+    recurring_failures: list[str] = Field(default_factory=list, alias="recurringFailures")
+    contradictions: list[str] = Field(default_factory=list)
+    coverage_gaps: list[str] = Field(default_factory=list, alias="coverageGaps")
+    affected_domains: list[str] = Field(default_factory=list, alias="affectedDomains")
+
+    model_config = {"populate_by_name": True}
+
+
+class ResearchQuestionOut(BaseModel):
+    question_id: str = Field(alias="questionId")
+    question: str
+    reason: str
+    affected_domains: list[str] = Field(alias="affectedDomains")
+    urgency: str
+    evidence_needed: list[str] = Field(alias="evidenceNeeded")
+
+    model_config = {"populate_by_name": True}
