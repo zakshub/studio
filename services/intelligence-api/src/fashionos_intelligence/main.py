@@ -11,7 +11,10 @@ from fashionos_intelligence.settings import Settings
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings = Settings.from_env()
-    brain = BrainIndex(settings.brain_root)
+    brain = BrainIndex(
+        settings.brain_root,
+        stale_after_seconds=settings.stale_after_seconds,
+    )
     brain.sync_local()
     app.state.settings = settings
     app.state.brain = brain
