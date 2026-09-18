@@ -4,6 +4,8 @@ from fastapi import FastAPI
 
 from fashionos_intelligence.api.internal import router as internal_router
 from fashionos_intelligence.api.public import router as public_router
+from fashionos_intelligence.persistence.db import build_session_factory
+from fashionos_intelligence.persistence.tasks import TaskRepository
 from fashionos_intelligence.services.brain import BrainIndex
 from fashionos_intelligence.settings import Settings
 
@@ -16,8 +18,10 @@ async def lifespan(app: FastAPI):
         stale_after_seconds=settings.stale_after_seconds,
     )
     brain.sync_local()
+    sessions = build_session_factory(settings.database_url)
     app.state.settings = settings
     app.state.brain = brain
+    app.state.task_repository = TaskRepository(sessions)
     yield
 
 
