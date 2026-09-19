@@ -11,6 +11,7 @@ from fashionos_intelligence.persistence.tasks import TaskRepository
 from fashionos_intelligence.services.attention import AttentionService
 from fashionos_intelligence.services.background_synthesis import BackgroundSynthesisService
 from fashionos_intelligence.services.brain import BrainIndex
+from fashionos_intelligence.services.brain_snapshots import BrainSnapshotStore
 from fashionos_intelligence.services.cognition import CognitionService
 from fashionos_intelligence.services.contamination import ContaminationMonitor
 from fashionos_intelligence.services.creative_synthesis import CreativeSynthesisService
@@ -30,6 +31,7 @@ async def lifespan(app: FastAPI):
     brain = BrainIndex(
         settings.brain_root,
         stale_after_seconds=settings.stale_after_seconds,
+        snapshot_store=BrainSnapshotStore(settings.brain_snapshot_root),
     )
     brain.sync_local()
     sessions = build_session_factory(settings.database_url)
