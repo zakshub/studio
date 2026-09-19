@@ -70,10 +70,16 @@ Purpose: seed the first 50 distinct expert intelligences. This file is a candida
 
 ## Current ingestion status
 - EXP-001 Nick Knight — SYNTHESIZED / NOT VALIDATED
+- EXP-002 Steven Meisel — SYNTHESIZED / NOT VALIDATED
 - EXP-003 Tim Walker — SYNTHESIZED / NOT VALIDATED
+- EXP-004 Paolo Roversi — SYNTHESIZED / NOT VALIDATED
 - EXP-005 Mert Alas — SYNTHESIZED / NOT VALIDATED
 - EXP-006 Marcus Piggott — SYNTHESIZED / EVIDENCE LIMITED / NOT VALIDATED
-- Remaining 46 experts — CANDIDATE
+- EXP-007 Inez van Lamsweerde — SYNTHESIZED / NOT VALIDATED
+- EXP-008 Vinoodh Matadin — SYNTHESIZED / NOT VALIDATED
+- EXP-009 Mario Sorrenti — SYNTHESIZED / NOT VALIDATED
+- EXP-010 David Sims — SYNTHESIZED / NOT VALIDATED
+- Remaining 40 experts — CANDIDATE
 
 No profile is ACTIVE yet. Activation requires evidence review, contradiction check, anti-copy review, and human validation.
 
