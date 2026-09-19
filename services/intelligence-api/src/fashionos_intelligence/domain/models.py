@@ -335,3 +335,32 @@ class ResearchQuestionOut(BaseModel):
     evidence_needed: list[str] = Field(alias="evidenceNeeded")
 
     model_config = {"populate_by_name": True}
+
+class ExpertConsultationRequest(BaseModel):
+    councils: list[str]
+    max_experts: int = Field(default=12, alias="maxExperts", ge=1, le=50)
+    max_principles_per_council: int = Field(
+        default=5,
+        alias="maxPrinciplesPerCouncil",
+        ge=1,
+        le=20,
+    )
+
+    model_config = {"populate_by_name": True}
+
+
+class ExpertInsightOut(BaseModel):
+    council: str
+    principles: list[str]
+    expert_ids: list[str] = Field(alias="expertIds")
+    disagreements: list[str]
+    confidence: str
+
+    model_config = {"populate_by_name": True}
+
+
+class ExpertConsultationResponse(BaseModel):
+    selected_experts: list[str] = Field(alias="selectedExperts")
+    insights: list[ExpertInsightOut]
+
+    model_config = {"populate_by_name": True}
