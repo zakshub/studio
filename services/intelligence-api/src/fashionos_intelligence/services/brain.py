@@ -7,6 +7,8 @@ from pathlib import Path
 import re
 
 from fashionos_intelligence.domain.models import BrainRetrieveRequest
+from fashionos_intelligence.services.brain_snapshots import BrainSnapshotStore
+from fashionos_intelligence.services.structured_rules import RuleContext, StructuredRuleRegistry
 
 
 _ALLOWED_PREFIXES = (
@@ -37,13 +39,20 @@ class KnowledgeUnit:
 
 
 class BrainIndex:
-    def __init__(self, root: Path, stale_after_seconds: int = 3600):
+    def __init__(
+        self,
+        root: Path,
+        stale_after_seconds: int = 3600,
+        snapshot_store: BrainSnapshotStore | None = None,
+    ):
         self.root = root
         self.stale_after_seconds = stale_after_seconds
+        self.snapshot_store = snapshot_store
         self.revision = "uninitialized"
         self.units: list[KnowledgeUnit] = []
         self.last_sync_at: datetime | None = None
         self._snapshots: dict[str, tuple[KnowledgeUnit, ...]] = {}
+        self.structured_rules = StructuredRuleRegistry()
 
     @staticmethod
     def _eligible(relative_path: str) -> bool:
@@ -139,16 +148,30 @@ class BrainIndex:
         self.revision = digest.hexdigest()[:24]
         self.units = units
         self._snapshots[self.revision] = tuple(units)
+        if self.snapshot_store is not None:
+            self.snapshot_store.save(self.revision, units)
         self.last_sync_at = datetime.now(timezone.utc)
         return self.revision
 
     def available_revisions(self) -> tuple[str, ...]:
-        return tuple(self._snapshots.keys())
+        revisions = set(self._snapshots.keys())
+        if self.snapshot_store is not None:
+            revisions.update(self.snapshot_store.revisions())
+        return tuple(sorted(revisions))
+
+    def _load_revision(self, revision: str) -> tuple[KnowledgeUnit, ...]:
+        snapshot = self._snapshots.get(revision)
+        if snapshot is not None:
+            return snapshot
+        if self.snapshot_store is None:
+            raise KeyError("BRAIN_REVISION_NOT_FOUND")
+        raw = self.snapshot_store.load_raw(revision)
+        snapshot = tuple(KnowledgeUnit(**item) for item in raw)
+        self._snapshots[revision] = snapshot
+        return snapshot
 
     def rollback(self, revision: str) -> str:
-        snapshot = self._snapshots.get(revision)
-        if snapshot is None:
-            raise KeyError("BRAIN_REVISION_NOT_FOUND")
+        snapshot = self._load_revision(revision)
         self.units = list(snapshot)
         self.revision = revision
         self.last_sync_at = datetime.now(timezone.utc)
@@ -162,9 +185,7 @@ class BrainIndex:
     ) -> list[KnowledgeUnit]:
         current_revision = self.revision
         current_units = self.units
-        snapshot = self._snapshots.get(revision)
-        if snapshot is None:
-            raise KeyError("BRAIN_REVISION_NOT_FOUND")
+        snapshot = self._load_revision(revision)
         try:
             self.revision = revision
             self.units = list(snapshot)
@@ -187,7 +208,7 @@ class BrainIndex:
             "indexUnitCount": len(self.units),
             "lastSyncAt": self.last_sync_at.isoformat() if self.last_sync_at else None,
             "ageSeconds": age_seconds,
-            "availableRevisionCount": len(self._snapshots),
+            "availableRevisionCount": len(self.available_revisions()),
         }
 
     @staticmethod
@@ -197,6 +218,26 @@ class BrainIndex:
             for t in re.findall(r"[a-z0-9_\-]+", text.lower())
             if len(t) > 2
         }
+
+    def conflicts_for(self, request: BrainRetrieveRequest) -> list[dict[str, object]]:
+        context = RuleContext(
+            mode=request.mode.value,
+            preservation_required=request.preservation_required,
+            rights_statuses=tuple(request.rights_statuses),
+            hard_locks=tuple(request.hard_locks),
+            allowed_changes=tuple(request.allowed_changes),
+        )
+        results = self.structured_rules.evaluate(context)
+        return [
+            {
+                "subject": result.subject,
+                "selectedRuleId": result.selected_rule_id,
+                "unresolvedRuleIds": list(result.unresolved_rule_ids),
+                "reason": result.reason,
+            }
+            for result in results
+            if result.unresolved_rule_ids or result.reason != "NO_EFFECT_CONFLICT"
+        ]
 
     def retrieve(
         self,
@@ -211,13 +252,20 @@ class BrainIndex:
                 request.mode.value,
                 request.reality_class or "",
                 " ".join(request.source_roles),
+                " ".join(request.rights_statuses),
+                " ".join(request.hard_locks),
+                " ".join(request.allowed_changes),
                 " ".join(request.required_capabilities),
             ]
         )
         qtokens = self._tokens(query)
 
         always_domains = {"constitution"}
-        if "PRESERVATION" in request.mode.value or "EDIT" in request.mode.value:
+        if (
+            request.preservation_required
+            or "PRESERVATION" in request.mode.value
+            or "EDIT" in request.mode.value
+        ):
             always_domains.update(
                 {"source_preservation", "qc", "anti_ai_realism"}
             )
