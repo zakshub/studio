@@ -1,7 +1,7 @@
 # FashionOS Intelligence Integration — Master Roadmap
 
 ## Current program state
-Status: FOUNDATION COMPLETE / INTEGRATION PHASE STARTING
+Status: M2 COMPLETE / M3 EXECUTION + BENCHMARKING IN PROGRESS
 
 The Studio Brain architecture and repository QA are complete enough to stop expanding abstract theory and begin system integration.
 
@@ -88,22 +88,24 @@ Result: PASSED — contract frozen in `backend/API-CONTRACT-V1-FREEZE.md` and QA
 ---
 
 ## Milestone M2 — Studio Brain Service + Retrieval Layer
-Status: IN PROGRESS — CORE RETRIEVAL EXIT CRITERION MET; HARDENING REMAINS
+Status: COMPLETE
 Depends on: M1
 
 Goal: make the repository consumable by FashionOS programmatically.
 
 ### Tasks
-- [ ] Brain sync service implementation
+- [x] Local brain sync/index runtime
+- [x] Remote GitHub mirror refresh bootstrap with last-known-good fallback
 - [x] GitHub pull/update strategy specification
-- [ ] local cache/index implementation
-- [x] knowledge-domain indexing specification
-- [x] task-to-knowledge retrieval specification
-- [x] rule precedence specification
-- [x] conflict handling specification
-- [x] brain-health status specification
-- [x] stale-cache behavior specification
-- [x] internal version tracking specification
+- [x] Local normalized index implementation
+- [x] Knowledge-domain indexing
+- [x] Task-to-knowledge retrieval
+- [x] Rule precedence + structured conflict integration
+- [x] Brain-health/stale status
+- [x] Durable revision snapshots
+- [x] Rollback/version pinning bootstrap
+- [ ] Semantic/vector retrieval enhancement
+- [ ] Deployment-grade persistent cache/webhook refresh enhancement
 
 ### Creative Organism parallel track
 - [x] Creative Organism architecture defined
@@ -125,41 +127,42 @@ Goal: make the repository consumable by FashionOS programmatically.
 - [x] Novelty + contamination + failure-learning + background-synthesis bootstrap
 - [x] Creative synthesis runtime bootstrap
 - [x] Sensory source registry + change-detection bootstrap
-- [x] First 4 expert source packs/profiles synthesized
+- [x] First 10 expert source packs/profiles synthesized
 - [ ] Validate and activate expert profiles
 - [ ] Complete all 50 expert intelligence profiles
-- [ ] Build expert-content aggregator runtime
+- [x] Build expert-content aggregator runtime bootstrap
 - [ ] Build production visual/video sensory collector runtime
 - [ ] Connect practice and creative synthesis to real executors/QC
 
 ### Exit criteria
 Given a task context, the service returns the relevant intelligence without loading the entire repository.
 
-Core exit behavior: MET by the local indexed/retrieval runtime.
-M2 remains open for production hardening: remote refresh, persistent index/cache, conflict integration, revision rollback/pinning, and broader regression coverage.
+Result: PASSED — local/remote sync path, traceable retrieval, structured conflict handling, durable revisions and rollback are implemented and regression-tested. QA: `qc/reports/2026-09-19-m2-hardening-organism-loop-qa.md`.
+
+Semantic/vector retrieval and deployment-grade cache/webhook refresh remain enhancements rather than M2 blockers.
 
 ---
 
 ## Milestone M3 — Executor Gateway + Model Benchmarking
-Status: PLANNED
+Status: IN PROGRESS
 Depends on: M1, partially M2
 
 Goal: use Gemini/OpenAI/other executors based on evidence, not preference.
 
 ### Tasks
-- provider adapter interface
-- Gemini adapter
-- OpenAI adapter
-- deterministic image-processing adapter
-- optional future/self-hosted adapter contract
-- benchmark dataset
-- benchmark runner
-- capability-specific score history
-- routing rules
-- fallback rules
-- competitive mode
-- verifier mode
-- cost/latency logging
+- [x] Provider-neutral executor adapter interface
+- [ ] Gemini adapter
+- [ ] OpenAI adapter
+- [x] Deterministic processing adapter bootstrap
+- [ ] Optional future/self-hosted adapter contract
+- [ ] Representative benchmark dataset
+- [x] Benchmark evidence service
+- [x] Capability-specific score/history persistence
+- [x] Evidence-driven routing rules
+- [x] Fallback-capable ordered execution
+- [x] Competitive mode bootstrap
+- [ ] Two-stage verifier execution
+- [ ] End-to-end cost/latency telemetry
 
 ### Exit criteria
 FashionOS can choose an executor by task type and recorded performance.
