@@ -1,8 +1,10 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from uuid import uuid4
+
+from fashionos_intelligence.persistence.cognition_records import DecisionRepository, StoredDecision
 
 
 @dataclass(frozen=True)
@@ -24,6 +26,9 @@ class DecisionRecord:
 
 
 class DecisionRecordService:
+    def __init__(self, repository: DecisionRepository | None = None) -> None:
+        self.repository = repository
+
     def create(
         self,
         *,
@@ -39,8 +44,9 @@ class DecisionRecordService:
         flags: list[str],
         unresolved_risks: list[str],
         human_review_required: bool,
+        task_id: str | None = None,
     ) -> DecisionRecord:
-        return DecisionRecord(
+        record = DecisionRecord(
             decision_id=f"decision_{uuid4().hex[:16]}",
             objective=objective,
             selected_option=selected_option,
@@ -56,3 +62,12 @@ class DecisionRecordService:
             human_review_required=human_review_required,
             created_at=datetime.now(timezone.utc).isoformat(),
         )
+        if self.repository is not None:
+            self.repository.upsert(
+                StoredDecision(
+                    decision_id=record.decision_id,
+                    task_id=task_id,
+                    payload=asdict(record),
+                )
+            )
+        return record
