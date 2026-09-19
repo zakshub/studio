@@ -19,15 +19,15 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [x] P1 Define event/audit model
 
 ## Epic B — Brain Service
-- [ ] P0 GitHub sync
+- [x] P0 GitHub sync / remote mirror bootstrap
 - [x] P0 local cache/index bootstrap (in-memory index; persistent cache still pending)
 - [x] P0 domain tagging
 - [x] P0 retrieval service bootstrap
-- [ ] P0 precedence/conflict integration into retrieval (structured resolver implemented)
+- [x] P0 precedence/conflict integration into retrieval
 - [x] P1 cache freshness / stale health bootstrap
 - [x] P1 health endpoint
 - [x] P1 in-process rollback/version pinning bootstrap
-- [ ] P1 durable revision snapshot persistence
+- [x] P1 durable revision snapshot persistence
 
 ## Epic C — Executor Gateway
 - [x] P0 common executor interface bootstrap
@@ -35,7 +35,7 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [ ] P0 OpenAI adapter
 - [x] P0 deterministic-processing adapter bootstrap
 - [x] P0 fallback-capable executor gateway bootstrap
-- [ ] P1 competitive routing
+- [x] P1 competitive routing bootstrap
 - [ ] P1 verifier mode
 - [ ] P1 cost/latency capture
 - [ ] P2 self-hosted adapter contract
@@ -47,31 +47,31 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [ ] P0 generation benchmark
 - [ ] P0 research benchmark
 - [ ] P0 QC benchmark
-- [ ] P1 scoring/history store
+- [x] P1 scoring/history store bootstrap
 - [ ] P1 model-version re-benchmark trigger
 
 ## Epic E — Website / Source Intake
 - [ ] P0 primary-site input
 - [ ] P0 secondary-reference input
-- [ ] P0 asset discovery
-- [ ] P0 source URL capture
-- [ ] P0 dedupe
+- [x] P0 asset discovery bootstrap (HTML media discovery)
+- [x] P0 source URL capture bootstrap
+- [x] P0 exact URL/media dedupe bootstrap
 - [ ] P0 quality screening
-- [ ] P0 rights status
-- [ ] P0 source role
+- [x] P0 rights status field/runtime gate
+- [x] P0 source role/authority metadata bootstrap
 - [ ] P1 batch selection
 - [ ] P1 crawl exclusions
-- [ ] P1 change detection
+- [x] P1 deterministic change detection bootstrap
 
 ## Epic F — QC / Provenance
 - [x] P0 QC policy runtime bootstrap
 - [x] P0 provenance/lineage runtime bootstrap
-- [ ] P0 execution record
-- [ ] P0 source lineage
+- [x] P0 execution record persistence bootstrap
+- [x] P0 source lineage/provenance bootstrap
 - [ ] P0 preservation QC
 - [ ] P0 anti-AI QC
-- [ ] P0 pass/warn/fail
-- [ ] P0 human review trigger
+- [x] P0 pass/warn/fail policy runtime
+- [x] P0 human review trigger runtime
 - [ ] P1 retry strategy
 - [ ] P1 rollback
 - [ ] P1 comparison viewer data
@@ -135,10 +135,11 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [x] P0 Define Sensory Harvester architecture
 - [ ] P0 Create evidence-backed roster for 50 expert intelligences
 - [x] P0 Create expert-profile schema and source requirements
-- [ ] P0 Research and populate first 10 expert profiles (4/10 synthesized, not validated)
+- [x] P0 Research and populate first 10 expert profiles (10/10 synthesized, not validated)
 - [ ] P1 Complete all 50 expert profiles
 - [x] P1 Implement expert council selector runtime
 - [x] P1 Implement expert aggregator bootstrap
+- [x] P1 Implement production expert-profile loader/consultation bootstrap
 - [x] P1 Implement normalized visual observation intake bootstrap
 - [x] P1 Implement structured video intelligence intake bootstrap
 - [ ] P1 Implement novelty/weak-signal detection (novelty + synthesis bootstrap done; production weak-signal pipeline pending)
@@ -165,5 +166,19 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [ ] P1 Replace bootstrap scheduler with durable production worker
 - [ ] P1 Connect practice engine to real executors + QC
 - [ ] P1 Connect creativity engine to real generation/editing executors
-- [ ] P1 Persist DecisionRecord, PracticeSession and Observation records
+- [x] P1 Persist DecisionRecord, PracticeSession and Observation records
 - [x] P1 Build multidimensional bias/coverage monitor
+
+## Epic M — Closed Creative Organism Loop
+- [x] P0 Brain retrieval -> cognition -> expert consultation
+- [x] P0 Creative divergence -> evidence routing
+- [x] P0 Deterministic execution -> QC
+- [x] P0 Execution/provenance persistence
+- [x] P0 Episodic memory write
+- [x] P0 Failed-QC learning-candidate path
+- [x] P0 Hard-lock conflict blocks before execution
+- [ ] P0 Connect real image-generation executor
+- [ ] P0 Connect real image-editing executor
+- [ ] P0 Connect model-backed visual QC
+- [ ] P1 Connect production source harvester
+- [ ] P1 Connect Figma execution body
