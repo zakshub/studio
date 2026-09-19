@@ -104,7 +104,7 @@ def retrieve_brain(
             )
             for u in units
         ],
-        conflicts=[],
+        conflicts=brain.conflicts_for(payload),
     )
 
 
