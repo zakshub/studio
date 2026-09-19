@@ -17,6 +17,9 @@ from fashionos_intelligence.domain.models import (
     CreativeSynthesisRequest,
     FailureLearningRequest,
     FailureLearningResponse,
+    ExpertConsultationRequest,
+    ExpertConsultationResponse,
+    ExpertInsightOut,
     KnowledgeUnitOut,
     LearningCandidateCreate,
     LearningCandidateOut,
@@ -40,6 +43,7 @@ from fashionos_intelligence.services.contamination import ContaminationMonitor
 from fashionos_intelligence.services.creative_synthesis import CreativeSynthesisService
 from fashionos_intelligence.services.curiosity import CuriosityService
 from fashionos_intelligence.services.failure_learning import FailureLearningService
+from fashionos_intelligence.services.expert_intelligence import ExpertIntelligenceService
 from fashionos_intelligence.services.learning import LearningService
 from fashionos_intelligence.services.memory import MemoryService
 from fashionos_intelligence.services.novelty import NoveltyService
@@ -540,3 +544,37 @@ def brain_rollback(
         "activeRevision": active,
         "state": brain.health()["state"],
     }
+
+
+def get_expert_intelligence(request: Request) -> ExpertIntelligenceService:
+    return request.app.state.expert_intelligence_service
+
+
+@router.post(
+    "/experts/consult",
+    response_model=ExpertConsultationResponse,
+    response_model_by_alias=True,
+    dependencies=[Depends(require_internal_access)],
+)
+def consult_experts(
+    payload: ExpertConsultationRequest,
+    service: ExpertIntelligenceService = Depends(get_expert_intelligence),
+) -> ExpertConsultationResponse:
+    consultation = service.consult(
+        councils=payload.councils,
+        max_experts=payload.max_experts,
+        max_principles_per_council=payload.max_principles_per_council,
+    )
+    return ExpertConsultationResponse(
+        selectedExperts=list(consultation.selected_experts),
+        insights=[
+            ExpertInsightOut(
+                council=item.council,
+                principles=list(item.principles),
+                expertIds=list(item.expert_ids),
+                disagreements=list(item.disagreements),
+                confidence=item.confidence,
+            )
+            for item in consultation.insights
+        ],
+    )
