@@ -33,6 +33,19 @@ class ExpertProfileLoader:
         return match.group(1).strip() if match else ""
 
     @staticmethod
+    def _normalize_council(value: str) -> str:
+        normalized = re.sub(r"[^a-z0-9]+", "_", value.lower()).strip("_")
+        aliases = {
+            "fashion_garment": "fashion_garment",
+            "fine_art_perception": "fine_art_perception",
+            "graphic_digital_design": "graphic_digital_design",
+            "camera_lens": "camera_lens",
+            "color_lut_finishing": "color_finishing",
+            "color_finishing": "color_finishing",
+        }
+        return aliases.get(normalized, normalized)
+
+    @staticmethod
     def _principles(text: str) -> tuple[ExpertPrinciple, ...]:
         section = text.split("## Documented decision principles", 1)
         if len(section) < 2:
@@ -74,7 +87,7 @@ class ExpertProfileLoader:
         text = path.read_text(encoding="utf-8")
         title = text.splitlines()[0].removeprefix("# Expert Intelligence — ").strip()
         councils = tuple(
-            item.strip()
+            self._normalize_council(item.strip())
             for item in self._field(text, "Primary councils").split(",")
             if item.strip()
         )
