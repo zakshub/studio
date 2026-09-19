@@ -23,6 +23,7 @@ from fashionos_intelligence.services.brain_snapshots import BrainSnapshotStore
 from fashionos_intelligence.services.observations import ObservationService
 from fashionos_intelligence.services.practice import PracticeService
 from fashionos_intelligence.services.source_harvester import WebsiteHarvester
+from fashionos_intelligence.services.remote_brain import RemoteBrainRefresher, RemoteManifest
 
 
 def _brain_root(tmp_path: Path) -> Path:
@@ -187,3 +188,30 @@ def test_practice_and_observation_persistence():
         ],
     )
     assert len(result) == 1
+
+def test_remote_brain_refresh_builds_versioned_mirror(tmp_path: Path):
+    class FakeTransport:
+        def manifest(self):
+            return RemoteManifest(
+                revision="rev123",
+                files=(
+                    "SKILL.md",
+                    "architecture/operating-constitution.md",
+                    "services/secret.py",
+                ),
+            )
+
+        def read_text(self, path: str):
+            payloads = {
+                "SKILL.md": "# Skill\nCanonical.",
+                "architecture/operating-constitution.md": "# Constitution\nNeutral.",
+            }
+            return payloads[path]
+
+    refresher = RemoteBrainRefresher(tmp_path / "mirror", FakeTransport())
+    root = refresher.refresh()
+    assert root.name == "rev123"
+    assert (root / "SKILL.md").exists()
+    assert (root / "architecture" / "operating-constitution.md").exists()
+    assert not (root / "services" / "secret.py").exists()
+    assert refresher.current() == root
