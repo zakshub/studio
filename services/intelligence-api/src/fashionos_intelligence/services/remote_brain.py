@@ -82,6 +82,7 @@ class RemoteBrainRefresher:
         "qc/",
         "workflows/",
         "research/learned-rules/",
+        "expert-intelligence/",
     )
     ALLOWED_ROOT_FILES = {"README.md", "SKILL.md", "research/research-policy.md"}
     EXCLUDED_PREFIXES = (
