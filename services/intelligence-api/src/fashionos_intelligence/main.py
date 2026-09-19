@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fashionos_intelligence.api.internal import router as internal_router
 from fashionos_intelligence.api.public import router as public_router
 from fashionos_intelligence.persistence.db import build_session_factory
+from fashionos_intelligence.persistence.benchmarks import BenchmarkRepository
 from fashionos_intelligence.persistence.cognition_records import (
     DecisionRepository,
     ObservationRepository,
@@ -12,9 +13,15 @@ from fashionos_intelligence.persistence.cognition_records import (
 )
 from fashionos_intelligence.persistence.learning import LearningRepository
 from fashionos_intelligence.persistence.memory import MemoryRepository
+from fashionos_intelligence.persistence.runtime_records import (
+    ExecutionRepository,
+    ProvenanceRepository,
+    QCRepository,
+)
 from fashionos_intelligence.persistence.tasks import TaskRepository
 from fashionos_intelligence.services.attention import AttentionService
 from fashionos_intelligence.services.background_synthesis import BackgroundSynthesisService
+from fashionos_intelligence.services.benchmarks import BenchmarkService
 from fashionos_intelligence.services.brain import BrainIndex
 from fashionos_intelligence.services.brain_snapshots import BrainSnapshotStore
 from fashionos_intelligence.services.cognition import CognitionService
@@ -25,11 +32,15 @@ from fashionos_intelligence.services.curiosity import CuriosityService
 from fashionos_intelligence.services.failure_learning import FailureLearningService
 from fashionos_intelligence.services.expert_profiles import ExpertProfileLoader
 from fashionos_intelligence.services.expert_intelligence import ExpertIntelligenceService
+from fashionos_intelligence.services.executors import ExecutorGateway
 from fashionos_intelligence.services.learning import LearningService
 from fashionos_intelligence.services.memory import MemoryService
 from fashionos_intelligence.services.novelty import NoveltyService
 from fashionos_intelligence.services.observations import ObservationService
+from fashionos_intelligence.services.organism_loop import CreativeOrganismLoop
 from fashionos_intelligence.services.practice import PracticeService
+from fashionos_intelligence.services.provenance import ProvenanceService
+from fashionos_intelligence.services.qc_runtime import QCRuntime
 from fashionos_intelligence.services.remote_brain import (
     GitHubRepositoryTransport,
     RemoteBrainRefresher,
@@ -89,6 +100,24 @@ async def lifespan(app: FastAPI):
         brain_root / "expert-intelligence" / "profiles"
     ).load_all()
     app.state.expert_intelligence_service = ExpertIntelligenceService(expert_profiles)
+    app.state.benchmark_service = BenchmarkService(BenchmarkRepository(sessions))
+    app.state.executor_gateway = ExecutorGateway()
+    app.state.qc_runtime = QCRuntime()
+    app.state.provenance_service = ProvenanceService(ProvenanceRepository(sessions))
+    app.state.organism_loop = CreativeOrganismLoop(
+        brain=brain,
+        cognition=app.state.cognition_service,
+        experts=app.state.expert_intelligence_service,
+        creativity=app.state.creative_synthesis_service,
+        benchmarks=app.state.benchmark_service,
+        executors=app.state.executor_gateway,
+        qc=app.state.qc_runtime,
+        provenance=app.state.provenance_service,
+        memory=app.state.memory_service,
+        learning=app.state.learning_service,
+        execution_repository=ExecutionRepository(sessions),
+        qc_repository=QCRepository(sessions),
+    )
     yield
 
 
