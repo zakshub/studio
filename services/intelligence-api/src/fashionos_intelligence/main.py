@@ -28,6 +28,10 @@ from fashionos_intelligence.services.memory import MemoryService
 from fashionos_intelligence.services.novelty import NoveltyService
 from fashionos_intelligence.services.observations import ObservationService
 from fashionos_intelligence.services.practice import PracticeService
+from fashionos_intelligence.services.remote_brain import (
+    GitHubRepositoryTransport,
+    RemoteBrainRefresher,
+)
 from fashionos_intelligence.services.sensory import SensoryRegistry
 from fashionos_intelligence.settings import Settings
 
@@ -35,8 +39,28 @@ from fashionos_intelligence.settings import Settings
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings = Settings.from_env()
+    brain_root = settings.brain_root
+    if settings.brain_remote_repo and settings.brain_remote_mirror_root:
+        owner, repository = settings.brain_remote_repo.split("/", 1)
+        refresher = RemoteBrainRefresher(
+            settings.brain_remote_mirror_root,
+            GitHubRepositoryTransport(
+                owner=owner,
+                repository=repository,
+                ref=settings.brain_remote_ref,
+                token=settings.github_token,
+            ),
+        )
+        try:
+            brain_root = refresher.refresh()
+        except Exception:
+            current = refresher.current()
+            if current is None:
+                raise
+            brain_root = current
+
     brain = BrainIndex(
-        settings.brain_root,
+        brain_root,
         stale_after_seconds=settings.stale_after_seconds,
         snapshot_store=BrainSnapshotStore(settings.brain_snapshot_root),
     )
