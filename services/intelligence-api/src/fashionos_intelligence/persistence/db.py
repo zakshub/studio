@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, Float, JSON, String, Text, create_engine
+from sqlalchemy import Boolean, DateTime, Float, JSON, String, Text, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -28,6 +28,94 @@ class TaskRow(Base):
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),
+    )
+
+
+class AssetRow(Base):
+    __tablename__ = "source_assets_runtime"
+
+    asset_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    workspace_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    source_type: Mapped[str] = mapped_column(String(32), index=True)
+    source_url: Mapped[str | None] = mapped_column(Text, nullable=True)
+    role: Mapped[str] = mapped_column(String(32))
+    rights_status: Mapped[str] = mapped_column(String(32), index=True)
+    content_hash: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
+    storage_uri: Mapped[str | None] = mapped_column(Text, nullable=True)
+    metadata_json: Mapped[dict] = mapped_column(JSON, default=dict)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+    )
+
+
+class ExecutionRecordRow(Base):
+    __tablename__ = "execution_records_runtime"
+
+    execution_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    task_id: Mapped[str] = mapped_column(String(64), index=True)
+    brain_revision: Mapped[str] = mapped_column(String(128), index=True)
+    source_asset_ids: Mapped[list[str]] = mapped_column(JSON, default=list)
+    output_asset_ids: Mapped[list[str]] = mapped_column(JSON, default=list)
+    knowledge_unit_ids: Mapped[list[str]] = mapped_column(JSON, default=list)
+    executor_class: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    status: Mapped[str] = mapped_column(String(24), index=True)
+    payload: Mapped[dict] = mapped_column(JSON, default=dict)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+    )
+
+
+class QCResultRow(Base):
+    __tablename__ = "qc_results_runtime"
+
+    qc_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    execution_id: Mapped[str] = mapped_column(String(64), index=True)
+    status: Mapped[str] = mapped_column(String(16), index=True)
+    dimensions: Mapped[dict] = mapped_column(JSON, default=dict)
+    critical_failures: Mapped[list[str]] = mapped_column(JSON, default=list)
+    requires_rework: Mapped[bool] = mapped_column(Boolean, default=False)
+    human_review_required: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+    )
+
+
+class ApprovalRow(Base):
+    __tablename__ = "approvals_runtime"
+
+    approval_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    workspace_id: Mapped[str] = mapped_column(String(64), index=True)
+    task_id: Mapped[str] = mapped_column(String(64), index=True)
+    subject_type: Mapped[str] = mapped_column(String(32))
+    subject_id: Mapped[str] = mapped_column(String(64))
+    status: Mapped[str] = mapped_column(String(24), default="pending", index=True)
+    reason: Mapped[str | None] = mapped_column(Text, nullable=True)
+    decided_by: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+    )
+    decided_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class ProvenanceRow(Base):
+    __tablename__ = "provenance_records"
+
+    provenance_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    execution_id: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    task_id: Mapped[str] = mapped_column(String(64), index=True)
+    brain_revision: Mapped[str] = mapped_column(String(128))
+    source_asset_ids: Mapped[list[str]] = mapped_column(JSON, default=list)
+    output_asset_ids: Mapped[list[str]] = mapped_column(JSON, default=list)
+    knowledge_unit_ids: Mapped[list[str]] = mapped_column(JSON, default=list)
+    qc_status: Mapped[str] = mapped_column(String(16))
+    lineage: Mapped[list[dict]] = mapped_column(JSON, default=list)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
     )
 
 
