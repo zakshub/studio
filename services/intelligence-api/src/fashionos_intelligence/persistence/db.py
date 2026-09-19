@@ -119,6 +119,23 @@ class ProvenanceRow(Base):
     )
 
 
+class BenchmarkRow(Base):
+    __tablename__ = "benchmark_records_runtime"
+
+    benchmark_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    case_id: Mapped[str] = mapped_column(String(64), index=True)
+    capability: Mapped[str] = mapped_column(String(64), index=True)
+    executor_name: Mapped[str] = mapped_column(String(128), index=True)
+    scores: Mapped[dict] = mapped_column(JSON, default=dict)
+    latency_ms: Mapped[float | None] = mapped_column(Float, nullable=True)
+    cost_estimate: Mapped[float | None] = mapped_column(Float, nullable=True)
+    accepted: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+    )
+
+
 class MemoryRow(Base):
     __tablename__ = "memory_records"
 
