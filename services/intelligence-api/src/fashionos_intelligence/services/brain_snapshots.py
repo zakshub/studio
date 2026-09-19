@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from dataclasses import asdict
 from pathlib import Path
+from typing import Any
 import json
-
-from fashionos_intelligence.services.brain import KnowledgeUnit
 
 
 class BrainSnapshotStore:
@@ -14,7 +13,7 @@ class BrainSnapshotStore:
         self.root = root
         self.root.mkdir(parents=True, exist_ok=True)
 
-    def save(self, revision: str, units: list[KnowledgeUnit]) -> Path:
+    def save(self, revision: str, units: list[Any]) -> Path:
         target = self.root / f"{revision}.json"
         temp = self.root / f".{revision}.tmp"
         payload = {
@@ -25,14 +24,14 @@ class BrainSnapshotStore:
         temp.replace(target)
         return target
 
-    def load(self, revision: str) -> list[KnowledgeUnit]:
+    def load_raw(self, revision: str) -> list[dict[str, Any]]:
         target = self.root / f"{revision}.json"
         if not target.exists():
             raise KeyError("BRAIN_REVISION_NOT_FOUND")
         payload = json.loads(target.read_text(encoding="utf-8"))
         if payload.get("revision") != revision:
             raise ValueError("BRAIN_SNAPSHOT_REVISION_MISMATCH")
-        return [KnowledgeUnit(**item) for item in payload.get("units", [])]
+        return list(payload.get("units", []))
 
     def revisions(self) -> tuple[str, ...]:
         return tuple(sorted(path.stem for path in self.root.glob("*.json")))
