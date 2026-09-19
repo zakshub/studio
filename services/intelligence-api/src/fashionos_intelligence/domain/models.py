@@ -44,6 +44,10 @@ class BrainRetrieveRequest(BaseModel):
     task_id: str = Field(alias="taskId")
     mode: TaskMode
     source_roles: list[str] = Field(default_factory=list, alias="sourceRoles")
+    rights_statuses: list[str] = Field(default_factory=list, alias="rightsStatuses")
+    hard_locks: list[str] = Field(default_factory=list, alias="hardLocks")
+    allowed_changes: list[str] = Field(default_factory=list, alias="allowedChanges")
+    preservation_required: bool = Field(default=False, alias="preservationRequired")
     reality_class: str | None = Field(default=None, alias="realityClass")
     required_capabilities: list[str] = Field(default_factory=list, alias="requiredCapabilities")
 
