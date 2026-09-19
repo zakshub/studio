@@ -75,18 +75,27 @@ class StructuredRuleRegistry:
                 )
             )
 
-        if context.hard_locks and any(
-            change in set(context.hard_locks) for change in context.allowed_changes
-        ):
-            rules.append(
-                StructuredRule(
-                    rule_id="REQUESTED_CHANGE_CONFLICTS_WITH_HARD_LOCK",
-                    subject="hard_lock_conflict",
-                    effect="forbid",
-                    authority=100,
-                    specificity=100,
-                    source="runtime_contract",
-                )
+        conflicting_changes = sorted(set(context.hard_locks) & set(context.allowed_changes))
+        for change in conflicting_changes:
+            rules.extend(
+                [
+                    StructuredRule(
+                        rule_id=f"HARD_LOCK_FORBIDS_{change.upper()}",
+                        subject=f"change:{change}",
+                        effect="forbid",
+                        authority=100,
+                        specificity=100,
+                        source="runtime_contract",
+                    ),
+                    StructuredRule(
+                        rule_id=f"REQUEST_ALLOWS_{change.upper()}",
+                        subject=f"change:{change}",
+                        effect="allow",
+                        authority=80,
+                        specificity=100,
+                        source="task_request",
+                    ),
+                ]
             )
 
         return rules
