@@ -23,6 +23,8 @@ from fashionos_intelligence.services.creative_synthesis import CreativeSynthesis
 from fashionos_intelligence.services.decision_records import DecisionRecordService
 from fashionos_intelligence.services.curiosity import CuriosityService
 from fashionos_intelligence.services.failure_learning import FailureLearningService
+from fashionos_intelligence.services.expert_profiles import ExpertProfileLoader
+from fashionos_intelligence.services.expert_intelligence import ExpertIntelligenceService
 from fashionos_intelligence.services.learning import LearningService
 from fashionos_intelligence.services.memory import MemoryService
 from fashionos_intelligence.services.novelty import NoveltyService
@@ -83,6 +85,10 @@ async def lifespan(app: FastAPI):
     app.state.curiosity_service = CuriosityService()
     app.state.observation_service = ObservationService(ObservationRepository(sessions))
     app.state.decision_record_service = DecisionRecordService(DecisionRepository(sessions))
+    expert_profiles = ExpertProfileLoader(
+        brain_root / "expert-intelligence" / "profiles"
+    ).load_all()
+    app.state.expert_intelligence_service = ExpertIntelligenceService(expert_profiles)
     yield
 
 
