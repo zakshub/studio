@@ -152,7 +152,7 @@ Goal: use Gemini/OpenAI/other executors based on evidence, not preference.
 ### Tasks
 - [x] Provider-neutral executor adapter interface
 - [ ] Gemini adapter
-- [ ] OpenAI adapter
+- [x] OpenAI image-generation + vision-QC transport/adapters (live credential validation pending)
 - [x] Deterministic processing adapter bootstrap
 - [ ] Optional future/self-hosted adapter contract
 - [ ] Representative benchmark dataset
@@ -161,11 +161,14 @@ Goal: use Gemini/OpenAI/other executors based on evidence, not preference.
 - [x] Evidence-driven routing rules
 - [x] Fallback-capable ordered execution
 - [x] Competitive mode bootstrap
-- [ ] Two-stage verifier execution
+- [x] Two-stage generator -> visual verifier execution path (live credential validation pending)
 - [ ] End-to-end cost/latency telemetry
 
 ### Exit criteria
 FashionOS can choose an executor by task type and recorded performance.
+
+Current M3 gate:
+The real provider path is wired and regression-tested with controlled adapters. The first credential-backed live image workflow was attempted but stopped safely before execution because no `OPENAI_API_KEY` repository secret is configured. M3 remains open until live provider evidence and representative benchmarks exist.
 
 ---
 
