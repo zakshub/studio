@@ -154,8 +154,12 @@ Remaining expert profiles: 40.
 - M0 repository QA: PASS
 - M1 backend-contract QA: PASS
 - M2 hardening + Creative Organism loop QA: PASS
-- GitHub Actions Intelligence API CI for commit `f5b70f54b228e94946db661f44a3274694aaee76`: SUCCESS
-- QA report: `qc/reports/2026-09-19-m2-hardening-organism-loop-qa.md`
+- Full Creative Organism acceptance suite: PASS after finding and fixing one real expert-profile parsing defect
+- Final acceptance CI: 68 passed, 2 warnings, 0 failed
+- Final acceptance tested commit: `ba6c6f2dc2adf02360a5ce104152b8dec59812ab`
+- QA reports:
+  - `qc/reports/2026-09-19-m2-hardening-organism-loop-qa.md`
+  - `qc/reports/2026-09-20-full-organism-acceptance-test.md`
 
 ## Immediate next actions
 1. Continue M3: provider adapters + representative benchmark cases + verifier mode.
