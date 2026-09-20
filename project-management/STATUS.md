@@ -160,7 +160,16 @@ Remaining expert profiles: 40.
 - FashionOS v2 page map frozen
 - customer/internal UX boundary documented
 - image-slot plan documented
-- high-fidelity Figma v2 build pending
+- target Figma file now has the complete v2 page structure (00–05, 10–20, 90–92)
+- existing FOS token system validated: 52 variables, 8 text styles, 3 elevation styles
+- Cover, Design Foundations and Intelligence Usage Map implemented
+- reusable components implemented: Button, Status Badge, Navigation Item, Summary Card, Search Field, Review Action Bar, App Sidebar
+- high-fidelity customer screens implemented: Dashboard, Assets Library, Review & Approval, Workspace Settings
+- user-safe asset lineage/version history and review-decision history implemented in the product surfaces
+- restricted role-based screens implemented: Internal Operations, Intelligence Administration, Integration Administration
+- every completed page includes an external design annotation documenting which intelligence capabilities shaped it
+- remaining Figma v2 high-fidelity pages: Product Architecture, Core User Flows, Source Intake, Website Import, Collection Studio, Design Intelligence, Visualization Studio, Existing Image Treatment, Campaign Studio
+- final responsive/component-state/accessibility QA still pending
 
 ## QA state
 - M0 repository QA: PASS
@@ -179,7 +188,7 @@ Remaining expert profiles: 40.
 3. Continue EXP-011 onward and validate the first 10 profiles before activation.
 4. Advance Source Harvester from HTML discovery to governed fetch/crawl + asset metadata pipeline.
 5. Re-run the now-wired live image generation + visual-verifier path once a provider credential is configured; then expand QC to preservation/identity comparison for edits.
-6. Begin high-fidelity Figma v2 against the frozen public API/runtime states.
+6. Continue high-fidelity Figma v2: Source Intake -> Website Import -> Collection Studio -> Design Intelligence -> Visualization Studio -> Existing Image Treatment -> Campaign Studio, then final component/accessibility QA.
 7. Add the real image-editing transport and a second provider so generation and verification can be cross-provider when appropriate.
 
 ## Guardrails
