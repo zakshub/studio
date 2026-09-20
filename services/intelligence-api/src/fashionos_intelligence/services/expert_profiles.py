@@ -46,11 +46,39 @@ class ExpertProfileLoader:
         return aliases.get(normalized, normalized)
 
     @staticmethod
+    def _principle_section(text: str) -> str:
+        """Return the first major section explicitly devoted to principles.
+
+        Expert files may label the evidence section differently
+        (for example "Documented decision principles", "Evidence-backed
+        principles", or a deliberately conservative partnership-level
+        principles section). The loader should preserve that editorial
+        distinction instead of requiring one exact heading.
+        """
+        matches = list(
+            re.finditer(
+                r"^##\s+(.+?)\s*$",
+                text,
+                re.MULTILINE,
+            )
+        )
+        for index, match in enumerate(matches):
+            heading = match.group(1).strip().lower()
+            if "principle" not in heading:
+                continue
+            start = match.end()
+            end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
+            body = text[start:end]
+            if re.search(r"^###\s+", body, re.MULTILINE):
+                return body
+        return ""
+
+    @staticmethod
     def _principles(text: str) -> tuple[ExpertPrinciple, ...]:
-        section = text.split("## Documented decision principles", 1)
-        if len(section) < 2:
+        body = ExpertProfileLoader._principle_section(text)
+        if not body:
             return ()
-        body = section[1].split("## Problem-solving model", 1)[0]
+
         chunks = re.split(r"\n###\s+", body)
         output: list[ExpertPrinciple] = []
         for chunk in chunks[1:]:
