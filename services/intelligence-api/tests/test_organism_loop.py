@@ -92,3 +92,187 @@ def test_organism_loop_blocks_hard_lock_conflict_before_execution(tmp_path: Path
     assert result.status == "blocked"
     assert "HARD_LOCK_CONFLICT:garment" in result.blockers
     assert result.executor_classes == ()
+
+
+def test_organism_loop_uses_separate_visual_verifier_when_candidate_has_storage_uri(tmp_path: Path):
+    from fashionos_intelligence.services.executors import (
+        CallableExecutorAdapter,
+        ExecutionRequest,
+        ExecutionResult,
+    )
+
+    brain_root = tmp_path / "brain_live"
+    brain_root.mkdir()
+    (brain_root / "SKILL.md").write_text(
+        "# Constitution\nPreserve truth and use independent verification.",
+        encoding="utf-8",
+    )
+    brain = BrainIndex(brain_root)
+    brain.sync_local()
+    sessions = build_session_factory("sqlite+pysqlite:///:memory:")
+
+    generator = CallableExecutorAdapter(
+        name="generator",
+        capabilities={"image_generation"},
+        runner=lambda request: ExecutionResult(
+            executor_class="generator",
+            status="succeeded",
+            output={
+                "assetIds": ["asset_candidate"],
+                "storageUri": "memory://candidate",
+                "mimeType": "image/png",
+            },
+            diagnostics={},
+        ),
+    )
+    verifier_calls = {"count": 0}
+
+    def verify(request: ExecutionRequest) -> ExecutionResult:
+        verifier_calls["count"] += 1
+        assert request.payload["candidateStorageUri"] == "memory://candidate"
+        return ExecutionResult(
+            executor_class="vision-verifier",
+            status="succeeded",
+            output={
+                "accepted": True,
+                "dimensions": {
+                    "brief_adherence": 4.5,
+                    "anatomy": 4.0,
+                    "garment_material": 4.5,
+                    "lighting_realism": 4.5,
+                    "anti_ai_realism": 4.0,
+                },
+                "criticalDimensions": [
+                    "anatomy",
+                    "garment_material",
+                    "anti_ai_realism",
+                ],
+                "reasons": ["No critical visible defect detected."],
+            },
+            diagnostics={},
+        )
+
+    verifier = CallableExecutorAdapter(
+        name="vision-verifier",
+        capabilities={"vision_qc"},
+        runner=verify,
+    )
+
+    loop = CreativeOrganismLoop(
+        brain=brain,
+        cognition=CognitionService(),
+        experts=ExpertIntelligenceService([]),
+        creativity=CreativeSynthesisService(),
+        benchmarks=BenchmarkService(BenchmarkRepository(sessions)),
+        executors=ExecutorGateway([generator]),
+        qc=QCRuntime(),
+        provenance=ProvenanceService(ProvenanceRepository(sessions)),
+        memory=MemoryService(MemoryRepository(sessions)),
+        learning=LearningService(LearningRepository(sessions)),
+        execution_repository=ExecutionRepository(sessions),
+        qc_repository=QCRepository(sessions),
+        visual_verifier=verifier,
+    )
+
+    result = loop.run(
+        OrganismTask(
+            task_id="task_live_verifier",
+            objective="Create an original editorial fashion image.",
+            mode=TaskMode.FASHION_EDITORIAL,
+            capability="image_generation",
+            rights_statuses=("authorized",),
+            independent_source_count=2,
+        ),
+        qc_evaluator=lambda _: [
+            QCDimension("fallback_should_not_run", 1, critical=True)
+        ],
+    )
+
+    assert verifier_calls["count"] == 1
+    assert result.qc_status == "pass"
+    assert result.status == "completed"
+    assert result.verifier_class == "vision-verifier"
+
+
+def test_visual_verifier_rejection_forces_rework(tmp_path: Path):
+    from fashionos_intelligence.services.executors import (
+        CallableExecutorAdapter,
+        ExecutionResult,
+    )
+
+    brain_root = tmp_path / "brain_reject"
+    brain_root.mkdir()
+    (brain_root / "SKILL.md").write_text(
+        "# Constitution\nDo not approve critical visual defects.",
+        encoding="utf-8",
+    )
+    brain = BrainIndex(brain_root)
+    brain.sync_local()
+    sessions = build_session_factory("sqlite+pysqlite:///:memory:")
+
+    generator = CallableExecutorAdapter(
+        name="generator",
+        capabilities={"image_generation"},
+        runner=lambda request: ExecutionResult(
+            executor_class="generator",
+            status="succeeded",
+            output={
+                "assetIds": ["asset_bad"],
+                "storageUri": "memory://bad",
+                "mimeType": "image/png",
+            },
+            diagnostics={},
+        ),
+    )
+    verifier = CallableExecutorAdapter(
+        name="vision-verifier",
+        capabilities={"vision_qc"},
+        runner=lambda request: ExecutionResult(
+            executor_class="vision-verifier",
+            status="succeeded",
+            output={
+                "accepted": False,
+                "dimensions": {
+                    "anatomy": 1.5,
+                    "garment_material": 4.0,
+                    "anti_ai_realism": 2.0,
+                },
+                "criticalDimensions": ["anatomy", "anti_ai_realism"],
+                "reasons": ["Visible hand anatomy failure."],
+            },
+            diagnostics={},
+        ),
+    )
+
+    loop = CreativeOrganismLoop(
+        brain=brain,
+        cognition=CognitionService(),
+        experts=ExpertIntelligenceService([]),
+        creativity=CreativeSynthesisService(),
+        benchmarks=BenchmarkService(BenchmarkRepository(sessions)),
+        executors=ExecutorGateway([generator]),
+        qc=QCRuntime(),
+        provenance=ProvenanceService(ProvenanceRepository(sessions)),
+        memory=MemoryService(MemoryRepository(sessions)),
+        learning=LearningService(LearningRepository(sessions)),
+        execution_repository=ExecutionRepository(sessions),
+        qc_repository=QCRepository(sessions),
+        visual_verifier=verifier,
+    )
+
+    result = loop.run(
+        OrganismTask(
+            task_id="task_live_reject",
+            objective="Create an original editorial fashion image.",
+            mode=TaskMode.FASHION_EDITORIAL,
+            capability="image_generation",
+            rights_statuses=("authorized",),
+            independent_source_count=2,
+        ),
+        qc_evaluator=lambda _: [],
+    )
+
+    assert result.qc_status == "fail"
+    assert result.status == "rework_required"
+    assert result.human_review_required is True
+    assert result.verifier_class == "vision-verifier"
