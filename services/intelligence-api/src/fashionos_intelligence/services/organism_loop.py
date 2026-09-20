@@ -19,6 +19,7 @@ from fashionos_intelligence.services.creative_synthesis import CreativeSynthesis
 from fashionos_intelligence.services.executors import (
     ExecutionRequest,
     ExecutionResult,
+    ExecutorAdapter,
     ExecutorGateway,
 )
 from fashionos_intelligence.services.expert_intelligence import ExpertIntelligenceService
@@ -62,6 +63,7 @@ class OrganismLoopResult:
     blockers: tuple[str, ...]
     warnings: tuple[str, ...]
     human_review_required: bool
+    verifier_class: str | None = None
 
 
 class CreativeOrganismLoop:
@@ -85,6 +87,7 @@ class CreativeOrganismLoop:
         learning: LearningService,
         execution_repository: ExecutionRepository | None = None,
         qc_repository: QCRepository | None = None,
+        visual_verifier: ExecutorAdapter | None = None,
     ) -> None:
         self.brain = brain
         self.cognition = cognition
@@ -99,11 +102,12 @@ class CreativeOrganismLoop:
         self.learning = learning
         self.execution_repository = execution_repository
         self.qc_repository = qc_repository
+        self.visual_verifier = visual_verifier
 
     @staticmethod
     def _best_candidate(
-        candidates: list[tuple[ExecutionResult, QCOutcome]],
-    ) -> tuple[ExecutionResult, QCOutcome]:
+        candidates: list[tuple[ExecutionResult, QCOutcome, ExecutionResult | None]],
+    ) -> tuple[ExecutionResult, QCOutcome, ExecutionResult | None]:
         rank = {"pass": 3, "warn": 2, "fail": 1}
         return max(
             candidates,
@@ -112,6 +116,42 @@ class CreativeOrganismLoop:
                 -len(item[1].critical_failures),
             ),
         )
+
+    @staticmethod
+    def _verifier_dimensions(verifier: ExecutionResult) -> list[QCDimension]:
+        raw = verifier.output.get("dimensions", {})
+        critical = {
+            str(item)
+            for item in verifier.output.get("criticalDimensions", [])
+        }
+        reasons = tuple(str(item) for item in verifier.output.get("reasons", []))
+        dimensions: list[QCDimension] = []
+
+        if isinstance(raw, dict):
+            for name, value in raw.items():
+                try:
+                    score = float(value)
+                except (TypeError, ValueError):
+                    score = None
+                dimensions.append(
+                    QCDimension(
+                        name=str(name),
+                        score=score,
+                        critical=str(name) in critical,
+                        notes=reasons,
+                    )
+                )
+
+        if verifier.output.get("accepted") is False:
+            dimensions.append(
+                QCDimension(
+                    name="verifier_acceptance",
+                    score=1.0,
+                    critical=True,
+                    notes=reasons,
+                )
+            )
+        return dimensions
 
     def run(
         self,
@@ -167,6 +207,7 @@ class CreativeOrganismLoop:
                 blockers=tuple(cognition.blockers),
                 warnings=warnings,
                 human_review_required=True,
+                verifier_class=None,
             )
 
         consultation = self.experts.consult(councils=list(cognition.councils))
@@ -208,6 +249,7 @@ class CreativeOrganismLoop:
                 blockers=("EXECUTOR_UNAVAILABLE",),
                 warnings=warnings,
                 human_review_required=True,
+                verifier_class=None,
             )
 
         request = ExecutionRequest(
@@ -232,15 +274,61 @@ class CreativeOrganismLoop:
         raw = self.executors.run_decision(request, route)
         results = raw if isinstance(raw, list) else [raw]
 
-        evaluated: list[tuple[ExecutionResult, QCOutcome]] = []
+        evaluated: list[tuple[ExecutionResult, QCOutcome, ExecutionResult | None]] = []
         for result in results:
+            verifier_result: ExecutionResult | None = None
+            dimensions: list[QCDimension]
+
+            if (
+                self.visual_verifier is not None
+                and self.visual_verifier.supports("vision_qc")
+                and result.output.get("storageUri")
+            ):
+                try:
+                    verifier_result = self.visual_verifier.execute(
+                        ExecutionRequest(
+                            task_id=task.task_id,
+                            capability="vision_qc",
+                            operation="verify",
+                            payload={
+                                "candidateStorageUri": result.output.get("storageUri"),
+                                "mimeType": result.output.get("mimeType", "image/png"),
+                                "objective": task.objective,
+                                "preservationRequired": task.preservation_required,
+                                "hardLocks": list(task.hard_locks),
+                            },
+                            source_asset_ids=task.source_asset_ids,
+                        )
+                    )
+                    dimensions = self._verifier_dimensions(verifier_result)
+                    if not dimensions:
+                        dimensions = [
+                            QCDimension(
+                                "visual_verifier",
+                                None,
+                                critical=True,
+                                notes=("Verifier returned no usable dimensions.",),
+                            )
+                        ]
+                except Exception as exc:
+                    dimensions = [
+                        QCDimension(
+                            "visual_verifier",
+                            None,
+                            critical=True,
+                            notes=(f"Verifier failed: {type(exc).__name__}",),
+                        )
+                    ]
+            else:
+                dimensions = qc_evaluator(result)
+
             outcome = self.qc.evaluate(
-                qc_evaluator(result),
+                dimensions,
                 preservation_required=task.preservation_required,
             )
-            evaluated.append((result, outcome))
+            evaluated.append((result, outcome, verifier_result))
 
-        selected_result, selected_qc = self._best_candidate(evaluated)
+        selected_result, selected_qc, selected_verifier = self._best_candidate(evaluated)
         execution_id = f"exec_{uuid4().hex[:16]}"
         output_asset_ids = list(selected_result.output.get("assetIds", []))
         knowledge_ids = [unit.unit_id for unit in units]
@@ -259,6 +347,11 @@ class CreativeOrganismLoop:
                     payload={
                         "routingStrategy": route.strategy,
                         "routingReason": route.reason_code,
+                        "visualVerifier": (
+                            selected_verifier.executor_class
+                            if selected_verifier is not None
+                            else None
+                        ),
                     },
                 )
             )
@@ -299,7 +392,8 @@ class CreativeOrganismLoop:
             scope=f"task:{task.task_id}",
             content=(
                 f"Task {task.task_id} executed via {selected_result.executor_class}; "
-                f"QC={selected_qc.status}; brain={self.brain.revision}."
+                f"QC={selected_qc.status}; brain={self.brain.revision}; "
+                f"verifier={selected_verifier.executor_class if selected_verifier else 'none'}."
             ),
             evidence_ids=[execution_id, provenance.provenance_id],
             weight=1.0,
@@ -344,4 +438,9 @@ class CreativeOrganismLoop:
             blockers=tuple(cognition.blockers),
             warnings=warnings,
             human_review_required=human_review,
+            verifier_class=(
+                selected_verifier.executor_class
+                if selected_verifier is not None
+                else None
+            ),
         )
