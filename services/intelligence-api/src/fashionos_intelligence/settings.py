@@ -16,6 +16,10 @@ class Settings:
     stale_after_seconds: int = 3600
     internal_token: str | None = None
     database_url: str = "sqlite+pysqlite:///:memory:"
+    openai_api_key: str | None = None
+    openai_image_model: str = "gpt-image-2"
+    openai_vision_model: str = "gpt-5.6-luna"
+    generated_asset_root: Path | None = None
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -45,6 +49,15 @@ class Settings:
             "FASHIONOS_DATABASE_URL",
             "sqlite+pysqlite:///:memory:",
         )
+        openai_api_key = os.getenv("OPENAI_API_KEY") or None
+        openai_image_model = os.getenv("FASHIONOS_OPENAI_IMAGE_MODEL", "gpt-image-2")
+        openai_vision_model = os.getenv("FASHIONOS_OPENAI_VISION_MODEL", "gpt-5.6-luna")
+        generated_asset_root = Path(
+            os.getenv(
+                "FASHIONOS_GENERATED_ASSET_ROOT",
+                str(root / ".fashionos-cache" / "generated-assets"),
+            )
+        ).resolve()
         return cls(
             brain_root=root,
             brain_snapshot_root=snapshot_root,
@@ -55,4 +68,8 @@ class Settings:
             stale_after_seconds=stale,
             internal_token=token,
             database_url=database_url,
+            openai_api_key=openai_api_key,
+            openai_image_model=openai_image_model,
+            openai_vision_model=openai_vision_model,
+            generated_asset_root=generated_asset_root,
         )
