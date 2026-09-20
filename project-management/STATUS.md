@@ -72,13 +72,25 @@ Implemented:
 - benchmark evidence service
 - evidence-driven router
 - cold-start behavior that does not invent a global provider winner
+- live OpenAI image-generation transport (credential-gated)
+- live OpenAI multimodal visual-QC transport (credential-gated)
+- runtime wiring through environment configuration
+- separate generator -> visual verifier path integrated into the Creative Organism loop
+- verifier rejection can force rework before approval
+- live image E2E smoke workflow + artifact capture
+- regression tests for verifier accept/reject paths
+
+Live validation attempt:
+- Workflow run 35493854471 reached the provider-credential gate.
+- Result: BLOCKED before provider execution because repository secret `OPENAI_API_KEY` is not configured.
+- No claim is made that a live image was generated or visually verified.
 
 Pending:
-- Gemini adapter
-- OpenAI adapter
-- representative benchmark cases
-- two-stage verifier execution
-- real provider cost/latency telemetry
+- configure a deployment/repository provider credential and re-run live image E2E
+- Gemini adapter / second provider
+- cross-provider verifier option
+- representative benchmark source assets + runs
+- real provider cost/latency evidence
 - model-version rebenchmark triggers
 
 ## Source / sensory progress
@@ -166,9 +178,9 @@ Remaining expert profiles: 40.
 2. Validate authored migrations against PostgreSQL.
 3. Continue EXP-011 onward and validate the first 10 profiles before activation.
 4. Advance Source Harvester from HTML discovery to governed fetch/crawl + asset metadata pipeline.
-5. Add model-backed QC evaluators for preservation, identity, garment/material, anatomy, camera/light and anti-AI.
+5. Re-run the now-wired live image generation + visual-verifier path once a provider credential is configured; then expand QC to preservation/identity comparison for edits.
 6. Begin high-fidelity Figma v2 against the frozen public API/runtime states.
-7. Connect real image/editing executors so the organism loop moves from deterministic proof to production creative work.
+7. Add the real image-editing transport and a second provider so generation and verification can be cross-provider when appropriate.
 
 ## Guardrails
 - no provider/repository methodology in customer UI
