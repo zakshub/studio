@@ -33,6 +33,14 @@ from fashionos_intelligence.services.failure_learning import FailureLearningServ
 from fashionos_intelligence.services.expert_profiles import ExpertProfileLoader
 from fashionos_intelligence.services.expert_intelligence import ExpertIntelligenceService
 from fashionos_intelligence.services.executors import ExecutorGateway
+from fashionos_intelligence.services.live_openai import (
+    OpenAIImageGenerationTransport,
+    OpenAIVisionQCTransport,
+)
+from fashionos_intelligence.services.provider_adapters import (
+    OpenAIExecutorAdapter,
+    ProviderExecutorAdapter,
+)
 from fashionos_intelligence.services.learning import LearningService
 from fashionos_intelligence.services.memory import MemoryService
 from fashionos_intelligence.services.novelty import NoveltyService
@@ -46,6 +54,7 @@ from fashionos_intelligence.services.remote_brain import (
     RemoteBrainRefresher,
 )
 from fashionos_intelligence.services.sensory import SensoryRegistry
+from fashionos_intelligence.services.storage import LocalContentAddressedStore
 from fashionos_intelligence.settings import Settings
 
 
@@ -101,7 +110,37 @@ async def lifespan(app: FastAPI):
     ).load_all()
     app.state.expert_intelligence_service = ExpertIntelligenceService(expert_profiles)
     app.state.benchmark_service = BenchmarkService(BenchmarkRepository(sessions))
-    app.state.executor_gateway = ExecutorGateway()
+
+    executor_gateway = ExecutorGateway()
+    visual_verifier = None
+    if settings.openai_api_key:
+        asset_store = LocalContentAddressedStore(
+            settings.generated_asset_root or (brain_root / ".fashionos-cache" / "generated-assets")
+        )
+        executor_gateway.register(
+            OpenAIExecutorAdapter(
+                name="openai-image",
+                capabilities={"image_generation"},
+                transport=OpenAIImageGenerationTransport(
+                    api_key=settings.openai_api_key,
+                    store=asset_store,
+                    model=settings.openai_image_model,
+                ),
+            )
+        )
+        visual_verifier = ProviderExecutorAdapter(
+            name="openai-vision-qc",
+            capabilities={"vision_qc"},
+            transport=OpenAIVisionQCTransport(
+                api_key=settings.openai_api_key,
+                store=asset_store,
+                model=settings.openai_vision_model,
+            ),
+        )
+        app.state.generated_asset_store = asset_store
+
+    app.state.executor_gateway = executor_gateway
+    app.state.visual_verifier = visual_verifier
     app.state.qc_runtime = QCRuntime()
     app.state.provenance_service = ProvenanceService(ProvenanceRepository(sessions))
     app.state.organism_loop = CreativeOrganismLoop(
@@ -117,6 +156,7 @@ async def lifespan(app: FastAPI):
         learning=app.state.learning_service,
         execution_repository=ExecutionRepository(sessions),
         qc_repository=QCRepository(sessions),
+        visual_verifier=visual_verifier,
     )
     yield
 
