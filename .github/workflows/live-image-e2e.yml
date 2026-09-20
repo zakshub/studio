@@ -1,0 +1,52 @@
+name: FashionOS Live Image E2E
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/live-image-smoke-trigger.txt"
+
+jobs:
+  live-image-e2e:
+    runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      FASHIONOS_LIVE_OUTPUT_DIR: ${{ github.workspace }}/services/intelligence-api/live-artifacts
+      FASHIONOS_OPENAI_IMAGE_MODEL: gpt-image-2
+      FASHIONOS_OPENAI_VISION_MODEL: gpt-5.6-luna
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install service
+        working-directory: services/intelligence-api
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e '.[test]'
+
+      - name: Require live provider credential
+        shell: bash
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "LIVE_PROVIDER_CREDENTIAL_NOT_CONFIGURED"
+            exit 20
+          fi
+
+      - name: Run real FashionOS generation + independent verifier role
+        working-directory: services/intelligence-api
+        run: python scripts/live_image_smoke.py
+
+      - name: Upload live test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fashionos-live-image-e2e
+          path: services/intelligence-api/live-artifacts
+          if-no-files-found: warn
+          retention-days: 7
