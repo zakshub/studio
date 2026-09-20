@@ -32,11 +32,11 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 ## Epic C — Executor Gateway
 - [x] P0 common executor interface bootstrap
 - [ ] P0 Gemini adapter
-- [ ] P0 OpenAI adapter
+- [x] P0 OpenAI image-generation + vision-QC adapter runtime (live credential validation pending)
 - [x] P0 deterministic-processing adapter bootstrap
 - [x] P0 fallback-capable executor gateway bootstrap
 - [x] P1 competitive routing bootstrap
-- [ ] P1 verifier mode
+- [x] P1 separate visual verifier mode integrated into organism loop
 - [ ] P1 cost/latency capture
 - [ ] P2 self-hosted adapter contract
 
@@ -177,8 +177,10 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [x] P0 Episodic memory write
 - [x] P0 Failed-QC learning-candidate path
 - [x] P0 Hard-lock conflict blocks before execution
-- [ ] P0 Connect real image-generation executor
+- [x] P0 Connect real image-generation executor transport/runtime path (live credential validation pending)
 - [ ] P0 Connect real image-editing executor
-- [ ] P0 Connect model-backed visual QC
+- [x] P0 Connect model-backed visual QC transport/runtime path (live credential validation pending)
+- [ ] P0 Run first credential-backed live image E2E (workflow exists; current run blocked because OPENAI_API_KEY secret is absent)
+- [ ] P1 Add cross-provider verifier execution
 - [ ] P1 Connect production source harvester
 - [ ] P1 Connect Figma execution body
