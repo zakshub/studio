@@ -103,6 +103,10 @@ The supplied Production Intelligence Engine 170-Protocol Manual remains the mast
 ## Approval principle
 A result is not approved because it is attractive. It is approved only when it is coherent with the task intent, respects locks and source authority, and can be explained as a plausible production/capture/edit/delivery chain for the selected reality class.
 
+## Codex / Astra continuation
+- [Codex Operating Instructions](./AGENTS.md)
+- [Canonical Codex Handoff](./project-management/CODEX-HANDOFF.md)
+
 ## Project management
 - [Project Charter](./project-management/PROJECT-CHARTER.md)
 - [Master Roadmap](./project-management/MASTER-ROADMAP.md)
