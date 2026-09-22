@@ -31,7 +31,7 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 
 ## Epic C — Executor Gateway
 - [x] P0 common executor interface bootstrap
-- [ ] P0 Gemini adapter
+- [x] P0 Gemini adapter runtime (live credential validation pending)
 - [x] P0 OpenAI image-generation + vision-QC adapter runtime (live credential validation pending)
 - [x] P0 deterministic-processing adapter bootstrap
 - [x] P0 fallback-capable executor gateway bootstrap
@@ -68,7 +68,7 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [x] P0 provenance/lineage runtime bootstrap
 - [x] P0 execution record persistence bootstrap
 - [x] P0 source lineage/provenance bootstrap
-- [ ] P0 preservation QC
+- [ ] P0 preservation QC (source-aware model comparison bootstrap exists; production identity/garment/embroidery verifier still pending)
 - [ ] P0 anti-AI QC
 - [x] P0 pass/warn/fail policy runtime
 - [x] P0 human review trigger runtime
@@ -79,18 +79,18 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 ## Epic G — Product Design
 - [x] P0 page map
 - [x] P0 customer vs internal/admin UX boundary
-- [ ] P0 Dashboard
-- [ ] P0 Source Intake
+- [x] P0 Dashboard
+- [x] P0 Source Intake
 - [ ] P0 Visualization Studio
 - [ ] P0 Existing Image Treatment
-- [ ] P0 Review/QC UI
-- [ ] P0 Assets Library
+- [x] P0 Review/QC UI
+- [x] P0 Assets Library
 - [ ] P1 Collection Studio
 - [ ] P1 Campaign Studio
-- [ ] P1 Internal Settings
+- [x] P1 Internal Settings
 - [ ] P1 component states
 - [x] P1 image-slot plan
-- [ ] P2 design documentation
+- [x] P2 design documentation for completed pages
 
 ## Epic H — Backend MVP
 - [ ] P0 orchestration service
@@ -178,9 +178,9 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [x] P0 Failed-QC learning-candidate path
 - [x] P0 Hard-lock conflict blocks before execution
 - [x] P0 Connect real image-generation executor transport/runtime path (live credential validation pending)
-- [ ] P0 Connect real image-editing executor
+- [x] P0 Connect real image-editing executor runtime for OpenAI + Gemini (live credential validation pending)
 - [x] P0 Connect model-backed visual QC transport/runtime path (live credential validation pending)
 - [ ] P0 Run first credential-backed live image E2E (workflow exists; current run blocked because OPENAI_API_KEY secret is absent)
-- [ ] P1 Add cross-provider verifier execution
+- [x] P1 Add cross-provider verifier execution preference + fallback (live dual-provider validation pending)
 - [ ] P1 Connect production source harvester
 - [ ] P1 Connect Figma execution body
