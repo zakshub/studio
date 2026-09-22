@@ -114,17 +114,29 @@ Implemented:
 - authority/rights metadata
 - content fingerprint/change detection
 - HTML image/video discovery and dedup bootstrap
+- explicit access-review gate before live fetch
+- rights-aware governed crawler
+- robots enforcement before page retrieval
+- bounded public-host HTTP page transport with non-public host rejection
+- bounded image/video binary transport
+- reference-only sources cannot enter binary production storage
+- authorized website media can enter content-addressed storage with hash and provenance metadata
+- local content-addressed storage plus S3-compatible production object-store runtime
+- runtime selection between local and S3 object storage
 - normalized observations
 - structured video-segment intelligence contract
 - multidimensional coverage/bias monitor
 
+Validation:
+- governed source + object storage runtime CI: 80 passed, 2 warnings, 0 failed
+
 Pending:
-- production crawler/network policy layer
-- robots/terms/access handling
+- live validation against approved real websites
+- persisted source-specific terms/access registrations rather than runtime approval input
+- quality/dimension screening for discovered assets
 - permitted social adapters
 - model-backed image understanding
 - production video decode/keyframes/model analysis
-- object storage
 
 ## Persistence / provenance
 Implemented bootstrap persistence for:

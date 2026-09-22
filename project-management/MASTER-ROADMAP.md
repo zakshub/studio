@@ -179,24 +179,30 @@ The OpenAI and Gemini generation/edit paths plus source-aware verifier routing a
 ---
 
 ## Milestone M4 — Source Acquisition + Website Intake
-Status: PLANNED
+Status: IN PROGRESS
 Depends on: M1
 
 Goal: support existing customer imagery and secondary-reference websites.
 
 ### Tasks
-- primary website input
-- secondary reference input
-- browser/crawler/asset collector
-- image discovery
-- source URL capture
-- deduplication
-- dimensions/quality detection
-- source-role classification
-- rights-status field
-- primary-asset selection
-- reference-only treatment
-- source-lineage persistence
+- [x] primary website ingestion runtime
+- [x] secondary reference ingestion runtime
+- [x] governed crawler and asset collector bootstrap
+- [x] robots exclusion enforcement
+- [x] explicit source access review gate
+- [x] public-host and bounded-download network safeguards
+- [x] image/video discovery
+- [x] source URL capture
+- [x] deduplication
+- [ ] dimensions/quality detection
+- [x] source-role classification
+- [x] rights-status field
+- [ ] primary-asset selection
+- [x] reference-only treatment with binary storage prohibition
+- [x] source-lineage persistence
+- [x] local and S3-compatible content-addressed object storage
+- [ ] live approved-site validation
+- [ ] persisted source-specific terms/access registration
 
 ### Exit criteria
 A client site can be scanned and its authorized imagery can enter the treatment pipeline without confusing references with production assets.
