@@ -836,3 +836,41 @@ Still required for M3 evidence:
 5. collect real provider cost and latency evidence
 
 The next backend priority after those evidence gates is production grade preservation QC for identity, garment construction and embroidery detail, followed by PostgreSQL validation and the governed source harvester.
+
+
+---
+
+## 24. M4 governed source runtime update — 2026-09-22
+
+Implemented and regression tested:
+
+- explicit access-review gate before live website fetch
+- rights-aware source policy remains authoritative
+- robots exclusion evaluation before page retrieval
+- bounded public-host HTTP page fetch
+- non-public host rejection as an SSRF safety layer
+- bounded image/video binary fetch
+- reference-only sources cannot be silently stored as production binaries
+- authorized discovered media can be hashed, stored and written back to source provenance metadata
+- local content-addressed storage for development
+- S3-compatible content-addressed storage for production
+- runtime storage selection through environment configuration
+
+Latest CI:
+- 80 passed
+- 2 warnings
+- 0 failed
+
+QA report:
+- `qc/reports/2026-09-22-m4-governed-intake-object-storage-qa.md`
+
+Still open:
+1. live validation against specifically approved real websites
+2. persisted source-specific terms/access registration
+3. image dimensions and quality screening
+4. primary asset selection
+5. permitted social adapters
+6. model-backed image understanding
+7. production video decode and analysis
+
+Do not describe external website harvesting or S3 as production proven until a real approved endpoint and real object store have been exercised.
