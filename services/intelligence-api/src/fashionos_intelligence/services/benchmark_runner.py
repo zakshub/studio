@@ -20,6 +20,21 @@ class BenchmarkRunner:
     def __init__(self, service: BenchmarkService) -> None:
         self.service = service
 
+    @staticmethod
+    def _executor_version(executor: ExecutorAdapter, capability: str, output: object) -> str | None:
+        resolver = getattr(executor, "version_for", None)
+        if callable(resolver):
+            value = resolver(capability)
+            if isinstance(value, str) and value:
+                return value
+
+        diagnostics = getattr(output, "diagnostics", None)
+        if isinstance(diagnostics, dict):
+            value = diagnostics.get("model") or diagnostics.get("version")
+            if isinstance(value, str) and value:
+                return value
+        return None
+
     def run_case(
         self,
         *,
@@ -37,11 +52,13 @@ class BenchmarkRunner:
             latency_ms = (perf_counter() - started) * 1000.0
             scores, accepted = scorer(output, item.case)
             cost = cost_reader(output) if cost_reader else None
+            version = self._executor_version(executor, item.case.capability, output)
             results.append(
                 self.service.record(
                     case_id=item.case.case_id,
                     capability=item.case.capability,
                     executor_name=executor.name,
+                    executor_version=version,
                     scores=scores,
                     latency_ms=latency_ms,
                     cost_estimate=cost,
