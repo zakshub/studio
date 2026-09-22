@@ -195,3 +195,26 @@ def test_gemini_image_edit_sends_source_inline_and_stores_output(monkeypatch, tm
     assert result["diagnostics"]["operationClass"] == "edit"
     assert result["diagnostics"]["provider"] == "gemini"
     assert store.get(result["output"]["storageUri"]) == output_bytes
+
+
+def test_cross_provider_verifier_falls_back_when_only_same_provider_exists():
+    calls: list[str] = []
+    openai = ProviderExecutorAdapter(
+        name="openai-vision-qc",
+        capabilities={"vision_qc"},
+        provider="openai",
+        transport=RecordingTransport("openai", calls),
+    )
+    verifier = CrossProviderVerifierAdapter((openai,))
+
+    result = verifier.execute(
+        ExecutionRequest(
+            task_id="task_2",
+            capability="vision_qc",
+            operation="verify",
+            payload={"generatorProvider": "openai"},
+        )
+    )
+
+    assert calls == ["openai"]
+    assert result.diagnostics["sameProviderFallback"] is True
