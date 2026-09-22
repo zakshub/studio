@@ -11,9 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       FASHIONOS_LIVE_OUTPUT_DIR: ${{ github.workspace }}/services/intelligence-api/live-artifacts
-      FASHIONOS_OPENAI_IMAGE_MODEL: gpt-image-2
+      FASHIONOS_OPENAI_IMAGE_MODEL: gpt-image-2.5-flare
+      FASHIONOS_OPENAI_IMAGE_EDIT_MODEL: gpt-image-2.5-sunburst
       FASHIONOS_OPENAI_VISION_MODEL: gpt-5.6-luna
+      FASHIONOS_GEMINI_IMAGE_MODEL: gemini-3.1-flash-image
+      FASHIONOS_GEMINI_VISION_MODEL: gemini-3.8-flash
 
     steps:
       - name: Checkout
@@ -33,7 +37,7 @@ jobs:
       - name: Require live provider credential
         shell: bash
         run: |
-          if [ -z "$OPENAI_API_KEY" ]; then
+          if [ -z "$OPENAI_API_KEY" ] && [ -z "$GEMINI_API_KEY" ]; then
             echo "LIVE_PROVIDER_CREDENTIAL_NOT_CONFIGURED"
             exit 20
           fi
