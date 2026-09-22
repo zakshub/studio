@@ -73,22 +73,32 @@ Implemented:
 - evidence-driven router
 - cold-start behavior that does not invent a global provider winner
 - live OpenAI image-generation transport (credential-gated)
+- live OpenAI image-edit transport for strict/selective treatment modes (credential-gated)
+- live Gemini image generation/edit transport as a second provider (credential-gated)
 - live OpenAI multimodal visual-QC transport (credential-gated)
+- live Gemini multimodal visual-QC transport (credential-gated)
 - runtime wiring through environment configuration
 - separate generator -> visual verifier path integrated into the Creative Organism loop
+- cross-provider verifier preference with same-provider fallback
+- original-source -> candidate comparison context for identity/garment preservation QC
 - verifier rejection can force rework before approval
-- live image E2E smoke workflow + artifact capture
-- regression tests for verifier accept/reject paths
+- live image E2E smoke workflow + artifact capture for OpenAI and/or Gemini
+- current provider model defaults verified against official provider documentation
+- regression tests for edit transports, provider selection and verifier accept/reject paths
 
 Live validation attempt:
 - Workflow run 35493854471 reached the provider-credential gate.
 - Result: BLOCKED before provider execution because repository secret `OPENAI_API_KEY` is not configured.
 - No claim is made that a live image was generated or visually verified.
 
+Validation:
+- Intelligence API CI on PR #1: 74 passed, 2 warnings, 0 failed.
+- Provider transport and cross-provider changes are regression-tested without external credentials.
+- Credential-backed live provider execution is still not proven.
+
 Pending:
-- configure a deployment/repository provider credential and re-run live image E2E
-- Gemini adapter / second provider
-- cross-provider verifier option
+- configure at least one deployment/repository provider credential and re-run live image E2E
+- configure both providers to prove cross-provider verification live
 - representative benchmark source assets + runs
 - real provider cost/latency evidence
 - model-version rebenchmark triggers
@@ -183,13 +193,13 @@ Remaining expert profiles: 40.
   - `qc/reports/2026-09-20-full-organism-acceptance-test.md`
 
 ## Immediate next actions
-1. Continue M3: provider adapters + representative benchmark cases + verifier mode.
+1. Continue M3 with representative benchmark cases/runs, real cost/latency evidence and model-version rebenchmark triggers.
 2. Validate authored migrations against PostgreSQL.
 3. Continue EXP-011 onward and validate the first 10 profiles before activation.
 4. Advance Source Harvester from HTML discovery to governed fetch/crawl + asset metadata pipeline.
-5. Re-run the now-wired live image generation + visual-verifier path once a provider credential is configured; then expand QC to preservation/identity comparison for edits.
+5. Re-run the generation/edit + source-aware visual-verifier path once provider credentials are configured; use both providers to prove cross-provider QC live.
 6. Continue high-fidelity Figma v2: Collection Studio -> Design Intelligence -> Visualization Studio -> Existing Image Treatment -> Campaign Studio -> Product Architecture -> Core User Flows, then final component/accessibility/responsive QA.
-7. Add the real image-editing transport and a second provider so generation and verification can be cross-provider when appropriate.
+7. Harden preservation QC from model-backed comparison bootstrap into production-grade identity, garment and embroidery comparison.
 
 ## Guardrails
 - no provider/repository methodology in customer UI
