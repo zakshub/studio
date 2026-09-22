@@ -28,6 +28,14 @@ class ProviderExecutorAdapter:
     def supports(self, capability: str) -> bool:
         return capability in self.capabilities
 
+    def version_for(self, capability: str) -> str | None:
+        if capability == "image_edit":
+            value = getattr(self.transport, "edit_model", None)
+            if isinstance(value, str) and value:
+                return value
+        value = getattr(self.transport, "model", None)
+        return value if isinstance(value, str) and value else None
+
     def execute(self, request: ExecutionRequest) -> ExecutionResult:
         if not self.supports(request.capability):
             raise ValueError("OPERATION_UNSUPPORTED")
