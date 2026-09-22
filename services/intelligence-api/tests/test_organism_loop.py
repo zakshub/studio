@@ -190,7 +190,13 @@ def test_organism_loop_uses_separate_visual_verifier_when_candidate_has_storage_
             mode=TaskMode.FASHION_EDITORIAL,
             capability="image_generation",
             rights_statuses=("authorized",),
+            hard_locks=("identity",),
+            allowed_changes=("lighting",),
             independent_source_count=2,
+            execution_payload={
+                "sourceStorageUri": "memory://source",
+                "sourceMimeType": "image/png",
+            },
         ),
         qc_evaluator=lambda _: [
             QCDimension("fallback_should_not_run", 1, critical=True)
