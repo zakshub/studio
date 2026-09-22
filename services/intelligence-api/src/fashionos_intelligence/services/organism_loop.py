@@ -233,7 +233,7 @@ class CreativeOrganismLoop:
             capability=task.capability,
             available_executors=available,
             high_value=task.high_value,
-            verifier_available=False,
+            verifier_available=self.visual_verifier is not None,
         )
         if not route.ordered_executors:
             return OrganismLoopResult(
@@ -266,6 +266,9 @@ class CreativeOrganismLoop:
                     }
                     for direction in directions
                 ],
+                "hardLocks": list(task.hard_locks),
+                "allowedChanges": list(task.allowed_changes),
+                "preservationRequired": task.preservation_required,
                 **(task.execution_payload or {}),
             },
             source_asset_ids=task.source_asset_ids,
@@ -296,6 +299,11 @@ class CreativeOrganismLoop:
                                 "objective": task.objective,
                                 "preservationRequired": task.preservation_required,
                                 "hardLocks": list(task.hard_locks),
+                                "generatorProvider": result.diagnostics.get("provider"),
+                                "sourceStorageUris": (task.execution_payload or {}).get("sourceStorageUris", []),
+                                "sourceMimeTypes": (task.execution_payload or {}).get("sourceMimeTypes", []),
+                                "sourceStorageUri": (task.execution_payload or {}).get("sourceStorageUri"),
+                                "sourceMimeType": (task.execution_payload or {}).get("sourceMimeType"),
                             },
                             source_asset_ids=task.source_asset_ids,
                         )
