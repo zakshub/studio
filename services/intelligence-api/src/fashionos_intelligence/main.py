@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 
+import boto3
 from fastapi import FastAPI
 
 from fashionos_intelligence.api.internal import router as internal_router
@@ -60,8 +61,30 @@ from fashionos_intelligence.services.remote_brain import (
     RemoteBrainRefresher,
 )
 from fashionos_intelligence.services.sensory import SensoryRegistry
-from fashionos_intelligence.services.storage import LocalContentAddressedStore
+from fashionos_intelligence.services.storage import (
+    LocalContentAddressedStore,
+    S3ContentAddressedStore,
+)
 from fashionos_intelligence.settings import Settings
+
+
+def _build_asset_store(settings: Settings, brain_root):
+    if settings.blob_store_backend == "s3":
+        client_kwargs = {}
+        if settings.s3_region:
+            client_kwargs["region_name"] = settings.s3_region
+        if settings.s3_endpoint_url:
+            client_kwargs["endpoint_url"] = settings.s3_endpoint_url
+        client = boto3.client("s3", **client_kwargs)
+        return S3ContentAddressedStore(
+            client,
+            bucket=settings.s3_bucket or "",
+            prefix=settings.s3_prefix,
+        )
+    return LocalContentAddressedStore(
+        settings.generated_asset_root
+        or (brain_root / ".fashionos-cache" / "generated-assets")
+    )
 
 
 @asynccontextmanager
@@ -122,10 +145,7 @@ async def lifespan(app: FastAPI):
     asset_store = None
 
     if settings.openai_api_key or settings.gemini_api_key:
-        asset_store = LocalContentAddressedStore(
-            settings.generated_asset_root
-            or (brain_root / ".fashionos-cache" / "generated-assets")
-        )
+        asset_store = _build_asset_store(settings, brain_root)
         app.state.generated_asset_store = asset_store
 
     if settings.openai_api_key and asset_store is not None:
