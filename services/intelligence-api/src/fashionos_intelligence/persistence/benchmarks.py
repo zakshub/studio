@@ -13,6 +13,7 @@ class StoredBenchmark:
     case_id: str
     capability: str
     executor_name: str
+    executor_version: str | None
     scores: dict[str, float]
     latency_ms: float | None
     cost_estimate: float | None
@@ -31,6 +32,7 @@ class BenchmarkRepository:
                     case_id=item.case_id,
                     capability=item.capability,
                     executor_name=item.executor_name,
+                    executor_version=item.executor_version,
                     scores=dict(item.scores),
                     latency_ms=item.latency_ms,
                     cost_estimate=item.cost_estimate,
@@ -51,6 +53,7 @@ class BenchmarkRepository:
                     case_id=row.case_id,
                     capability=row.capability,
                     executor_name=row.executor_name,
+                    executor_version=row.executor_version,
                     scores=dict(row.scores or {}),
                     latency_ms=row.latency_ms,
                     cost_estimate=row.cost_estimate,
