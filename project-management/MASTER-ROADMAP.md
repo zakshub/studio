@@ -156,9 +156,12 @@ Goal: use Gemini/OpenAI/other executors based on evidence, not preference.
 - [x] Gemini image-generation + image-edit + vision-QC transport/adapters (live credential validation pending)
 - [x] Deterministic processing adapter bootstrap
 - [ ] Optional future/self-hosted adapter contract
-- [ ] Representative benchmark dataset
+- [ ] Representative benchmark source dataset (case catalog B-001 through B-010 is defined)
 - [x] Benchmark evidence service
 - [x] Capability-specific score/history persistence
+- [x] Benchmark latency and optional cost capture runtime
+- [x] Executor/model version attribution for benchmark evidence
+- [x] Model-version change invalidates stale routing evidence
 - [x] Evidence-driven routing rules
 - [x] Fallback-capable ordered execution
 - [x] Competitive mode bootstrap
@@ -171,7 +174,7 @@ Goal: use Gemini/OpenAI/other executors based on evidence, not preference.
 FashionOS can choose an executor by task type and recorded performance.
 
 Current M3 gate:
-The OpenAI and Gemini generation/edit paths plus source-aware verifier routing are wired. PR #1 passed the full Intelligence API CI with 74 passed, 2 warnings and 0 failed. A credential-backed provider run is still not proven because provider repository secrets are not configured. M3 remains open until live provider evidence, representative benchmark runs, real cost/latency evidence and model-version rebenchmark triggers exist.
+The OpenAI and Gemini generation/edit paths plus source-aware verifier routing are wired. Provider expansion passed the full Intelligence API CI with 74 passed, 2 warnings and 0 failed. Benchmark versioning then passed with 75 passed, 2 warnings and 0 failed. Benchmark evidence is now scoped to the configured executor/model version so stale evidence is not reused after a model change. A credential-backed provider run is still not proven because provider repository secrets are not configured. M3 remains open until live provider evidence, representative benchmark source assets/runs and real provider cost/latency evidence exist.
 
 ---
 
