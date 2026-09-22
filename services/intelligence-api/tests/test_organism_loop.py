@@ -59,13 +59,7 @@ def test_organism_loop_closes_think_execute_qc_memory_cycle(tmp_path: Path):
             mode=TaskMode.REFERENCE_RESEARCH,
             capability="noop",
             rights_statuses=("authorized",),
-            hard_locks=("identity",),
-            allowed_changes=("lighting",),
             independent_source_count=2,
-            execution_payload={
-                "sourceStorageUri": "memory://source",
-                "sourceMimeType": "image/png",
-            },
             execution_payload={"assetIds": []},
         ),
         qc_evaluator=lambda _: [
