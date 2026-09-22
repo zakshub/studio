@@ -22,6 +22,10 @@ from fashionos_intelligence.services.executors import ExecutorGateway
 from fashionos_intelligence.services.expert_intelligence import ExpertIntelligenceService
 from fashionos_intelligence.services.expert_profiles import ExpertProfileLoader
 from fashionos_intelligence.services.learning import LearningService
+from fashionos_intelligence.services.live_gemini import (
+    GeminiImageTransport,
+    GeminiVisionQCTransport,
+)
 from fashionos_intelligence.services.live_openai import (
     OpenAIImageGenerationTransport,
     OpenAIVisionQCTransport,
@@ -29,6 +33,8 @@ from fashionos_intelligence.services.live_openai import (
 from fashionos_intelligence.services.memory import MemoryService
 from fashionos_intelligence.services.organism_loop import CreativeOrganismLoop, OrganismTask
 from fashionos_intelligence.services.provider_adapters import (
+    CrossProviderVerifierAdapter,
+    GeminiExecutorAdapter,
     OpenAIExecutorAdapter,
     ProviderExecutorAdapter,
 )
@@ -38,8 +44,9 @@ from fashionos_intelligence.services.storage import LocalContentAddressedStore
 
 
 def main() -> int:
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
+    openai_key = os.getenv("OPENAI_API_KEY")
+    gemini_key = os.getenv("GEMINI_API_KEY")
+    if not openai_key and not gemini_key:
         raise RuntimeError("LIVE_PROVIDER_CREDENTIAL_NOT_CONFIGURED")
 
     service_root = Path(__file__).resolve().parents[1]
@@ -58,40 +65,92 @@ def main() -> int:
 
     brain = BrainIndex(repo_root)
     brain.sync_local()
-
     profiles = ExpertProfileLoader(
         repo_root / "expert-intelligence" / "profiles"
     ).load_all()
 
-    image_model = os.getenv("FASHIONOS_OPENAI_IMAGE_MODEL", "gpt-image-2")
-    vision_model = os.getenv("FASHIONOS_OPENAI_VISION_MODEL", "gpt-5.6-luna")
+    gateway = ExecutorGateway([])
+    verifiers: list[ProviderExecutorAdapter] = []
+    configured_providers: list[str] = []
 
-    generator = OpenAIExecutorAdapter(
-        name="openai-image",
-        capabilities={"image_generation"},
-        transport=OpenAIImageGenerationTransport(
-            api_key=api_key,
-            store=store,
-            model=image_model,
-        ),
-    )
-    verifier = ProviderExecutorAdapter(
-        name="openai-vision-qc",
-        capabilities={"vision_qc"},
-        transport=OpenAIVisionQCTransport(
-            api_key=api_key,
-            store=store,
-            model=vision_model,
-        ),
-    )
+    if openai_key:
+        configured_providers.append("openai")
+        gateway.register(
+            OpenAIExecutorAdapter(
+                name="openai-image",
+                capabilities={"image_generation", "image_edit"},
+                provider="openai",
+                transport=OpenAIImageGenerationTransport(
+                    api_key=openai_key,
+                    store=store,
+                    model=os.getenv(
+                        "FASHIONOS_OPENAI_IMAGE_MODEL",
+                        "gpt-image-2.5-flare",
+                    ),
+                    edit_model=os.getenv(
+                        "FASHIONOS_OPENAI_IMAGE_EDIT_MODEL",
+                        "gpt-image-2.5-sunburst",
+                    ),
+                ),
+            )
+        )
+        verifiers.append(
+            ProviderExecutorAdapter(
+                name="openai-vision-qc",
+                capabilities={"vision_qc"},
+                provider="openai",
+                transport=OpenAIVisionQCTransport(
+                    api_key=openai_key,
+                    store=store,
+                    model=os.getenv(
+                        "FASHIONOS_OPENAI_VISION_MODEL",
+                        "gpt-5.6-luna",
+                    ),
+                ),
+            )
+        )
 
+    if gemini_key:
+        configured_providers.append("gemini")
+        gateway.register(
+            GeminiExecutorAdapter(
+                name="gemini-image",
+                capabilities={"image_generation", "image_edit"},
+                provider="gemini",
+                transport=GeminiImageTransport(
+                    api_key=gemini_key,
+                    store=store,
+                    model=os.getenv(
+                        "FASHIONOS_GEMINI_IMAGE_MODEL",
+                        "gemini-3.1-flash-image",
+                    ),
+                ),
+            )
+        )
+        verifiers.append(
+            ProviderExecutorAdapter(
+                name="gemini-vision-qc",
+                capabilities={"vision_qc"},
+                provider="gemini",
+                transport=GeminiVisionQCTransport(
+                    api_key=gemini_key,
+                    store=store,
+                    model=os.getenv(
+                        "FASHIONOS_GEMINI_VISION_MODEL",
+                        "gemini-3.8-flash",
+                    ),
+                ),
+            )
+        )
+
+    verifier = CrossProviderVerifierAdapter(tuple(verifiers))
     loop = CreativeOrganismLoop(
         brain=brain,
         cognition=CognitionService(),
         experts=ExpertIntelligenceService(profiles),
         creativity=CreativeSynthesisService(),
         benchmarks=BenchmarkService(BenchmarkRepository(sessions)),
-        executors=ExecutorGateway([generator]),
+        executors=gateway,
         qc=QCRuntime(),
         provenance=ProvenanceService(ProvenanceRepository(sessions)),
         memory=MemoryService(MemoryRepository(sessions)),
@@ -118,7 +177,7 @@ def main() -> int:
             capability="image_generation",
             rights_statuses=("authorized",),
             independent_source_count=3,
-            high_value=False,
+            high_value=True,
             execution_payload={
                 "size": "1024x1536",
                 "quality": "medium",
@@ -127,7 +186,7 @@ def main() -> int:
                     "adult model",
                     "modest fully covered fashion styling",
                     "no logos or text",
-                    "no named-creator imitation",
+                    "no named creator imitation",
                     "photorealistic production logic",
                 ],
             },
@@ -156,10 +215,8 @@ def main() -> int:
         "warnings": list(result.warnings),
         "humanReviewRequired": result.human_review_required,
         "generatedFiles": files,
-        "imageModel": image_model,
-        "visionModel": vision_model,
-        "verifierRoleIndependent": True,
-        "crossProviderVerification": False,
+        "configuredProviders": configured_providers,
+        "crossProviderVerificationPossible": len(configured_providers) > 1,
     }
     (output_root / "result.json").write_text(
         json.dumps(summary, indent=2),
@@ -167,7 +224,6 @@ def main() -> int:
     )
     print(json.dumps(summary, indent=2))
 
-    # Integration succeeded if generation, verification and provenance all ran.
     if not result.executor_classes:
         return 10
     if result.verifier_class is None:

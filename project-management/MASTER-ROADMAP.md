@@ -151,24 +151,30 @@ Goal: use Gemini/OpenAI/other executors based on evidence, not preference.
 
 ### Tasks
 - [x] Provider-neutral executor adapter interface
-- [ ] Gemini adapter
-- [x] OpenAI image-generation + vision-QC transport/adapters (live credential validation pending)
+- [x] Gemini adapter runtime (live credential validation pending)
+- [x] OpenAI image-generation + image-edit + vision-QC transport/adapters (live credential validation pending)
+- [x] Gemini image-generation + image-edit + vision-QC transport/adapters (live credential validation pending)
 - [x] Deterministic processing adapter bootstrap
 - [ ] Optional future/self-hosted adapter contract
-- [ ] Representative benchmark dataset
+- [ ] Representative benchmark source dataset (case catalog B-001 through B-010 is defined)
 - [x] Benchmark evidence service
 - [x] Capability-specific score/history persistence
+- [x] Benchmark latency and optional cost capture runtime
+- [x] Executor/model version attribution for benchmark evidence
+- [x] Model-version change invalidates stale routing evidence
 - [x] Evidence-driven routing rules
 - [x] Fallback-capable ordered execution
 - [x] Competitive mode bootstrap
 - [x] Two-stage generator -> visual verifier execution path (live credential validation pending)
+- [x] Cross-provider verifier preference with same-provider fallback
+- [x] Source-aware identity/garment comparison context passed into visual QC
 - [ ] End-to-end cost/latency telemetry
 
 ### Exit criteria
 FashionOS can choose an executor by task type and recorded performance.
 
 Current M3 gate:
-The real provider path is wired and regression-tested with controlled adapters. The first credential-backed live image workflow was attempted but stopped safely before execution because no `OPENAI_API_KEY` repository secret is configured. M3 remains open until live provider evidence and representative benchmarks exist.
+The OpenAI and Gemini generation/edit paths plus source-aware verifier routing are wired. Provider expansion passed the full Intelligence API CI with 74 passed, 2 warnings and 0 failed. Benchmark versioning then passed with 75 passed, 2 warnings and 0 failed. Benchmark evidence is now scoped to the configured executor/model version so stale evidence is not reused after a model change. A credential-backed provider run is still not proven because provider repository secrets are not configured. M3 remains open until live provider evidence, representative benchmark source assets/runs and real provider cost/latency evidence exist.
 
 ---
 

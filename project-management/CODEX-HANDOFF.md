@@ -799,3 +799,40 @@ A continuation is correct only if it:
 - uses FashionOS intelligence to decide product behavior, not only visual styling
 
 This document should be updated whenever a major architecture, runtime, expert, Figma, or product decision changes.
+
+
+---
+
+## 23. M3 runtime update — 2026-09-22
+
+Implemented and regression tested in PR #1:
+
+- OpenAI image generation and image edit runtime
+- Gemini image generation and image edit runtime
+- OpenAI and Gemini multimodal visual QC transports
+- cross provider verifier preference with same provider fallback
+- source aware preservation comparison context
+- hard lock and allowed change propagation through the organism loop
+- benchmark latency and optional cost capture
+- benchmark evidence scoped to concrete executor/model version
+- stale routing evidence automatically ignored after a configured model version change
+- benchmark catalog B-001 through B-010 aligned with runtime capability names
+
+Latest CI:
+- 75 passed
+- 2 warnings
+- 0 failed
+
+QA report:
+- `qc/reports/2026-09-22-m3-dual-provider-versioned-benchmark-qa.md`
+
+Do not claim the provider runtime is production proven yet.
+
+Still required for M3 evidence:
+1. configure at least one real provider credential and complete the live workflow
+2. configure both providers and prove live cross provider verification
+3. add representative authorized benchmark source assets
+4. run the benchmark catalog against current provider/model versions
+5. collect real provider cost and latency evidence
+
+The next backend priority after those evidence gates is production grade preservation QC for identity, garment construction and embroidery detail, followed by PostgreSQL validation and the governed source harvester.

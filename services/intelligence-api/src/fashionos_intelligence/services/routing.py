@@ -25,8 +25,12 @@ class EvidenceRouter:
         available_executors: list[str],
         high_value: bool = False,
         verifier_available: bool = False,
+        current_versions: dict[str, str | None] | None = None,
     ) -> RoutingDecision:
-        evidence = self.benchmarks.route_evidence(capability)
+        evidence = self.benchmarks.route_evidence(
+            capability,
+            current_versions=current_versions,
+        )
         available = set(available_executors)
         ranked = tuple(name for name in evidence.ranked_executors if name in available)
 

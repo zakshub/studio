@@ -126,6 +126,7 @@ class BenchmarkRow(Base):
     case_id: Mapped[str] = mapped_column(String(64), index=True)
     capability: Mapped[str] = mapped_column(String(64), index=True)
     executor_name: Mapped[str] = mapped_column(String(128), index=True)
+    executor_version: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
     scores: Mapped[dict] = mapped_column(JSON, default=dict)
     latency_ms: Mapped[float | None] = mapped_column(Float, nullable=True)
     cost_estimate: Mapped[float | None] = mapped_column(Float, nullable=True)

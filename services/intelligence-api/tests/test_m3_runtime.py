@@ -15,7 +15,7 @@ def _exec(name: str, capability: str, accepted: bool = True):
             executor_class=name,
             status="succeeded",
             output={"accepted": accepted, "assetIds": [f"{name}_asset"]},
-            diagnostics={"cost": 0.01},
+            diagnostics={"cost": 0.01, "model": "model-v1"},
         )
     return CallableExecutorAdapter(
         name=name,
@@ -48,6 +48,7 @@ def test_benchmark_runner_records_same_case_for_multiple_executors():
     assert {r.executor_name for r in results} == {"alpha", "beta"}
     assert all(r.latency_ms is not None for r in results)
     assert all(r.cost_estimate == 0.01 for r in results)
+    assert all(r.executor_version == "model-v1" for r in results)
 
 
 def test_verifier_workflow_keeps_generation_and_verification_separate():
@@ -100,3 +101,40 @@ def test_provider_adapter_uses_injected_transport_without_provider_leak_logic():
     )
     assert result.status == "succeeded"
     assert result.output["value"] == 7
+
+
+
+def test_model_version_change_requires_rebenchmark_and_stale_evidence_is_not_routed():
+    service = BenchmarkService()
+    for case_id in ("B-A", "B-B"):
+        service.record(
+            case_id=case_id,
+            capability="image_generation",
+            executor_name="alpha",
+            executor_version="model-v1",
+            scores={"quality": 4.5},
+            accepted=True,
+        )
+
+    assert service.requires_rebenchmark(
+        capability="image_generation",
+        executor_name="alpha",
+        executor_version="model-v1",
+    ) is False
+    assert service.requires_rebenchmark(
+        capability="image_generation",
+        executor_name="alpha",
+        executor_version="model-v2",
+    ) is True
+
+    old_route = service.route_evidence(
+        "image_generation",
+        current_versions={"alpha": "model-v1"},
+    )
+    new_route = service.route_evidence(
+        "image_generation",
+        current_versions={"alpha": "model-v2"},
+    )
+    assert old_route.ranked_executors == ("alpha",)
+    assert new_route.ranked_executors == ()
+    assert new_route.evidence_counts == {}

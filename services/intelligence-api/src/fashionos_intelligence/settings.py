@@ -17,8 +17,12 @@ class Settings:
     internal_token: str | None = None
     database_url: str = "sqlite+pysqlite:///:memory:"
     openai_api_key: str | None = None
-    openai_image_model: str = "gpt-image-2"
+    openai_image_model: str = "gpt-image-2.5-flare"
+    openai_image_edit_model: str = "gpt-image-2.5-sunburst"
     openai_vision_model: str = "gpt-5.6-luna"
+    gemini_api_key: str | None = None
+    gemini_image_model: str = "gemini-3.1-flash-image"
+    gemini_vision_model: str = "gemini-3.8-flash"
     generated_asset_root: Path | None = None
 
     @classmethod
@@ -50,8 +54,27 @@ class Settings:
             "sqlite+pysqlite:///:memory:",
         )
         openai_api_key = os.getenv("OPENAI_API_KEY") or None
-        openai_image_model = os.getenv("FASHIONOS_OPENAI_IMAGE_MODEL", "gpt-image-2")
-        openai_vision_model = os.getenv("FASHIONOS_OPENAI_VISION_MODEL", "gpt-5.6-luna")
+        openai_image_model = os.getenv(
+            "FASHIONOS_OPENAI_IMAGE_MODEL",
+            "gpt-image-2.5-flare",
+        )
+        openai_image_edit_model = os.getenv(
+            "FASHIONOS_OPENAI_IMAGE_EDIT_MODEL",
+            "gpt-image-2.5-sunburst",
+        )
+        openai_vision_model = os.getenv(
+            "FASHIONOS_OPENAI_VISION_MODEL",
+            "gpt-5.6-luna",
+        )
+        gemini_api_key = os.getenv("GEMINI_API_KEY") or None
+        gemini_image_model = os.getenv(
+            "FASHIONOS_GEMINI_IMAGE_MODEL",
+            "gemini-3.1-flash-image",
+        )
+        gemini_vision_model = os.getenv(
+            "FASHIONOS_GEMINI_VISION_MODEL",
+            "gemini-3.8-flash",
+        )
         generated_asset_root = Path(
             os.getenv(
                 "FASHIONOS_GENERATED_ASSET_ROOT",
@@ -70,6 +93,10 @@ class Settings:
             database_url=database_url,
             openai_api_key=openai_api_key,
             openai_image_model=openai_image_model,
+            openai_image_edit_model=openai_image_edit_model,
             openai_vision_model=openai_vision_model,
+            gemini_api_key=gemini_api_key,
+            gemini_image_model=gemini_image_model,
+            gemini_vision_model=gemini_vision_model,
             generated_asset_root=generated_asset_root,
         )

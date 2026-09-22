@@ -5,7 +5,7 @@ Status: CASE CATALOG DEFINED / SOURCE ASSETS PENDING
 The benchmark does not produce a global provider winner. Scores are stored by capability.
 
 ## B-001 Strict Preservation — Identity + Garment
-Capability: image_editing
+Capability: image_edit
 Required dimensions:
 - identity_preservation
 - garment_preservation
@@ -17,7 +17,7 @@ Pass condition:
 No critical lock dimension <=2/5.
 
 ## B-002 Garment Detail — Embroidery
-Capability: image_editing
+Capability: image_edit
 Required dimensions:
 - embroidery_structure
 - seam_consistency
@@ -25,7 +25,7 @@ Required dimensions:
 - material_realism
 
 ## B-003 Product Fidelity
-Capability: image_editing
+Capability: image_edit
 Required dimensions:
 - geometry
 - logo_text

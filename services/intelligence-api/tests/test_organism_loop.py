@@ -111,10 +111,11 @@ def test_organism_loop_uses_separate_visual_verifier_when_candidate_has_storage_
     brain.sync_local()
     sessions = build_session_factory("sqlite+pysqlite:///:memory:")
 
-    generator = CallableExecutorAdapter(
-        name="generator",
-        capabilities={"image_generation"},
-        runner=lambda request: ExecutionResult(
+    def generate(request: ExecutionRequest) -> ExecutionResult:
+        assert request.payload["hardLocks"] == ["identity"]
+        assert request.payload["allowedChanges"] == ["lighting"]
+        assert request.payload["sourceStorageUri"] == "memory://source"
+        return ExecutionResult(
             executor_class="generator",
             status="succeeded",
             output={
@@ -122,14 +123,22 @@ def test_organism_loop_uses_separate_visual_verifier_when_candidate_has_storage_
                 "storageUri": "memory://candidate",
                 "mimeType": "image/png",
             },
-            diagnostics={},
-        ),
+            diagnostics={"provider": "openai"},
+        )
+
+    generator = CallableExecutorAdapter(
+        name="generator",
+        capabilities={"image_generation"},
+        runner=generate,
     )
     verifier_calls = {"count": 0}
 
     def verify(request: ExecutionRequest) -> ExecutionResult:
         verifier_calls["count"] += 1
         assert request.payload["candidateStorageUri"] == "memory://candidate"
+        assert request.payload["generatorProvider"] == "openai"
+        assert request.payload["sourceStorageUri"] == "memory://source"
+        assert request.payload["sourceMimeType"] == "image/png"
         return ExecutionResult(
             executor_class="vision-verifier",
             status="succeeded",
@@ -181,7 +190,13 @@ def test_organism_loop_uses_separate_visual_verifier_when_candidate_has_storage_
             mode=TaskMode.FASHION_EDITORIAL,
             capability="image_generation",
             rights_statuses=("authorized",),
+            hard_locks=("identity",),
+            allowed_changes=("lighting",),
             independent_source_count=2,
+            execution_payload={
+                "sourceStorageUri": "memory://source",
+                "sourceMimeType": "image/png",
+            },
         ),
         qc_evaluator=lambda _: [
             QCDimension("fallback_should_not_run", 1, critical=True)
