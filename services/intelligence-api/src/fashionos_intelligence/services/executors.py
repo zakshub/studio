@@ -83,6 +83,15 @@ class ExecutorGateway:
     def available(self, capability: str) -> list[str]:
         return [a.name for a in self.adapters if a.supports(capability)]
 
+    def versions(self, capability: str) -> dict[str, str | None]:
+        versions: dict[str, str | None] = {}
+        for adapter in self.adapters:
+            if not adapter.supports(capability):
+                continue
+            resolver = getattr(adapter, "version_for", None)
+            versions[adapter.name] = resolver(capability) if callable(resolver) else None
+        return versions
+
     def _adapter(self, name: str, capability: str) -> ExecutorAdapter | None:
         return next(
             (
