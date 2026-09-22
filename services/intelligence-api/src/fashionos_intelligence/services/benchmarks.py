@@ -23,6 +23,7 @@ class BenchmarkResult:
     case_id: str
     capability: str
     executor_name: str
+    executor_version: str | None
     scores: dict[str, float]
     latency_ms: float | None
     cost_estimate: float | None
@@ -38,7 +39,7 @@ class RouteEvidence:
 
 
 class BenchmarkService:
-    """Maintains capability-specific evidence. It deliberately has no global winner."""
+    """Maintains capability specific evidence. It deliberately has no global winner."""
 
     def __init__(self, repository: BenchmarkRepository | None = None) -> None:
         self.repository = repository
@@ -51,6 +52,7 @@ class BenchmarkService:
         capability: str,
         executor_name: str,
         scores: dict[str, float],
+        executor_version: str | None = None,
         latency_ms: float | None = None,
         cost_estimate: float | None = None,
         accepted: bool | None = None,
@@ -64,6 +66,7 @@ class BenchmarkService:
             case_id=case_id,
             capability=capability,
             executor_name=executor_name,
+            executor_version=executor_version,
             scores=clean_scores,
             latency_ms=latency_ms,
             cost_estimate=cost_estimate,
@@ -77,6 +80,7 @@ class BenchmarkService:
                     case_id=result.case_id,
                     capability=result.capability,
                     executor_name=result.executor_name,
+                    executor_version=result.executor_version,
                     scores=result.scores,
                     latency_ms=result.latency_ms,
                     cost_estimate=result.cost_estimate,
@@ -93,6 +97,7 @@ class BenchmarkService:
                     case_id=item.case_id,
                     capability=item.capability,
                     executor_name=item.executor_name,
+                    executor_version=item.executor_version,
                     scores=dict(item.scores),
                     latency_ms=item.latency_ms,
                     cost_estimate=item.cost_estimate,
@@ -102,13 +107,39 @@ class BenchmarkService:
             ]
         return [item for item in self._memory if item.capability == capability]
 
+    def requires_rebenchmark(
+        self,
+        *,
+        capability: str,
+        executor_name: str,
+        executor_version: str | None,
+        minimum_evidence: int = 2,
+    ) -> bool:
+        """True when current model or executor version lacks enough evidence."""
+        rows = [
+            item
+            for item in self.evidence_for(capability)
+            if item.executor_name == executor_name
+            and item.executor_version == executor_version
+        ]
+        return len(rows) < minimum_evidence
+
     def route_evidence(
         self,
         capability: str,
         *,
         minimum_evidence: int = 2,
+        current_versions: dict[str, str | None] | None = None,
     ) -> RouteEvidence:
         items = self.evidence_for(capability)
+        if current_versions is not None:
+            items = [
+                item
+                for item in items
+                if item.executor_name in current_versions
+                and item.executor_version == current_versions[item.executor_name]
+            ]
+
         by_executor: dict[str, list[BenchmarkResult]] = {}
         for item in items:
             by_executor.setdefault(item.executor_name, []).append(item)
@@ -131,7 +162,7 @@ class BenchmarkService:
 
             quality = mean(quality_values) if quality_values else 0.0
             acceptance = mean(acceptance_values) if acceptance_values else quality
-            # Quality/acceptance dominate. Cost and latency remain observability
+            # Quality and acceptance dominate. Cost and latency remain observability
             # dimensions and are not allowed to erase poor output quality.
             composite[executor] = round(0.7 * quality + 0.3 * acceptance, 6)
 
