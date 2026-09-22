@@ -33,11 +33,17 @@ from fashionos_intelligence.services.failure_learning import FailureLearningServ
 from fashionos_intelligence.services.expert_profiles import ExpertProfileLoader
 from fashionos_intelligence.services.expert_intelligence import ExpertIntelligenceService
 from fashionos_intelligence.services.executors import ExecutorGateway
+from fashionos_intelligence.services.live_gemini import (
+    GeminiImageTransport,
+    GeminiVisionQCTransport,
+)
 from fashionos_intelligence.services.live_openai import (
     OpenAIImageGenerationTransport,
     OpenAIVisionQCTransport,
 )
 from fashionos_intelligence.services.provider_adapters import (
+    CrossProviderVerifierAdapter,
+    GeminiExecutorAdapter,
     OpenAIExecutorAdapter,
     ProviderExecutorAdapter,
 )
@@ -112,32 +118,74 @@ async def lifespan(app: FastAPI):
     app.state.benchmark_service = BenchmarkService(BenchmarkRepository(sessions))
 
     executor_gateway = ExecutorGateway()
-    visual_verifier = None
-    if settings.openai_api_key:
+    verifier_candidates: list[ProviderExecutorAdapter] = []
+    asset_store = None
+
+    if settings.openai_api_key or settings.gemini_api_key:
         asset_store = LocalContentAddressedStore(
-            settings.generated_asset_root or (brain_root / ".fashionos-cache" / "generated-assets")
+            settings.generated_asset_root
+            or (brain_root / ".fashionos-cache" / "generated-assets")
         )
+        app.state.generated_asset_store = asset_store
+
+    if settings.openai_api_key and asset_store is not None:
         executor_gateway.register(
             OpenAIExecutorAdapter(
                 name="openai-image",
-                capabilities={"image_generation"},
+                capabilities={"image_generation", "image_edit"},
+                provider="openai",
                 transport=OpenAIImageGenerationTransport(
                     api_key=settings.openai_api_key,
                     store=asset_store,
                     model=settings.openai_image_model,
+                    edit_model=settings.openai_image_edit_model,
                 ),
             )
         )
-        visual_verifier = ProviderExecutorAdapter(
-            name="openai-vision-qc",
-            capabilities={"vision_qc"},
-            transport=OpenAIVisionQCTransport(
-                api_key=settings.openai_api_key,
-                store=asset_store,
-                model=settings.openai_vision_model,
-            ),
+        verifier_candidates.append(
+            ProviderExecutorAdapter(
+                name="openai-vision-qc",
+                capabilities={"vision_qc"},
+                provider="openai",
+                transport=OpenAIVisionQCTransport(
+                    api_key=settings.openai_api_key,
+                    store=asset_store,
+                    model=settings.openai_vision_model,
+                ),
+            )
         )
-        app.state.generated_asset_store = asset_store
+
+    if settings.gemini_api_key and asset_store is not None:
+        executor_gateway.register(
+            GeminiExecutorAdapter(
+                name="gemini-image",
+                capabilities={"image_generation", "image_edit"},
+                provider="gemini",
+                transport=GeminiImageTransport(
+                    api_key=settings.gemini_api_key,
+                    store=asset_store,
+                    model=settings.gemini_image_model,
+                ),
+            )
+        )
+        verifier_candidates.append(
+            ProviderExecutorAdapter(
+                name="gemini-vision-qc",
+                capabilities={"vision_qc"},
+                provider="gemini",
+                transport=GeminiVisionQCTransport(
+                    api_key=settings.gemini_api_key,
+                    store=asset_store,
+                    model=settings.gemini_vision_model,
+                ),
+            )
+        )
+
+    visual_verifier = (
+        CrossProviderVerifierAdapter(tuple(verifier_candidates))
+        if verifier_candidates
+        else None
+    )
 
     app.state.executor_gateway = executor_gateway
     app.state.visual_verifier = visual_verifier
