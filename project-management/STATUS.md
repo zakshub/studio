@@ -84,7 +84,11 @@ Implemented:
 - verifier rejection can force rework before approval
 - live image E2E smoke workflow + artifact capture for OpenAI and/or Gemini
 - current provider model defaults verified against official provider documentation
-- regression tests for edit transports, provider selection and verifier accept/reject paths
+- benchmark latency and optional cost capture runtime
+- benchmark evidence now records concrete executor/model version
+- routing ignores stale benchmark evidence when the configured model version changes
+- benchmark case catalog B-001 through B-010 aligned to runtime capability names
+- regression tests for edit transports, provider selection, verifier accept/reject paths and model-version invalidation
 
 Live validation attempt:
 - Workflow run 35493854471 reached the provider-credential gate.
@@ -92,7 +96,8 @@ Live validation attempt:
 - No claim is made that a live image was generated or visually verified.
 
 Validation:
-- Intelligence API CI on PR #1: 74 passed, 2 warnings, 0 failed.
+- Intelligence API CI on PR #1 after provider expansion: 74 passed, 2 warnings, 0 failed.
+- Intelligence API CI after benchmark versioning: 75 passed, 2 warnings, 0 failed.
 - Provider transport and cross-provider changes are regression-tested without external credentials.
 - Credential-backed live provider execution is still not proven.
 
@@ -101,7 +106,7 @@ Pending:
 - configure both providers to prove cross-provider verification live
 - representative benchmark source assets + runs
 - real provider cost/latency evidence
-- model-version rebenchmark triggers
+- credential-backed benchmark runs against current provider/model versions
 
 ## Source / sensory progress
 Implemented:
