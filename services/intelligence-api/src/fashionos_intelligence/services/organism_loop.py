@@ -234,6 +234,7 @@ class CreativeOrganismLoop:
             available_executors=available,
             high_value=task.high_value,
             verifier_available=self.visual_verifier is not None,
+            current_versions=self.executors.versions(task.capability),
         )
         if not route.ordered_executors:
             return OrganismLoopResult(
