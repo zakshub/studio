@@ -37,18 +37,18 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [x] P0 fallback-capable executor gateway bootstrap
 - [x] P1 competitive routing bootstrap
 - [x] P1 separate visual verifier mode integrated into organism loop
-- [ ] P1 cost/latency capture
+- [x] P1 cost/latency capture runtime bootstrap (real provider evidence pending)
 - [ ] P2 self-hosted adapter contract
 
 ## Epic D — Benchmarking
-- [ ] P0 create benchmark cases
+- [x] P0 create benchmark cases (B-001 through B-010 catalog defined; source assets pending)
 - [ ] P0 preservation benchmark
 - [ ] P0 garment benchmark
 - [ ] P0 generation benchmark
 - [ ] P0 research benchmark
 - [ ] P0 QC benchmark
 - [x] P1 scoring/history store bootstrap
-- [ ] P1 model-version re-benchmark trigger
+- [x] P1 model-version re-benchmark trigger via version-scoped routing evidence
 
 ## Epic E — Website / Source Intake
 - [ ] P0 primary-site input
