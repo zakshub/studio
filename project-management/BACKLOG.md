@@ -51,8 +51,8 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [x] P1 model-version re-benchmark trigger via version-scoped routing evidence
 
 ## Epic E — Website / Source Intake
-- [ ] P0 primary-site input
-- [ ] P0 secondary-reference input
+- [x] P0 primary-site ingestion runtime service (customer/API surface still separate)
+- [x] P0 secondary-reference ingestion runtime service with no binary persistence
 - [x] P0 asset discovery bootstrap (HTML media discovery)
 - [x] P0 source URL capture bootstrap
 - [x] P0 exact URL/media dedupe bootstrap
@@ -60,8 +60,10 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [x] P0 rights status field/runtime gate
 - [x] P0 source role/authority metadata bootstrap
 - [ ] P1 batch selection
-- [ ] P1 crawl exclusions
+- [x] P1 robots crawl exclusions + explicit access review gate
 - [x] P1 deterministic change detection bootstrap
+- [x] P1 governed live website fetch bootstrap
+- [x] P1 S3-compatible content-addressed object storage runtime
 
 ## Epic F — QC / Provenance
 - [x] P0 QC policy runtime bootstrap
