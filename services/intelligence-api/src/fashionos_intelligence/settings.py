@@ -24,6 +24,11 @@ class Settings:
     gemini_image_model: str = "gemini-3.1-flash-image"
     gemini_vision_model: str = "gemini-3.8-flash"
     generated_asset_root: Path | None = None
+    blob_store_backend: str = "local"
+    s3_bucket: str | None = None
+    s3_prefix: str = "fashionos"
+    s3_region: str | None = None
+    s3_endpoint_url: str | None = None
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -81,6 +86,15 @@ class Settings:
                 str(root / ".fashionos-cache" / "generated-assets"),
             )
         ).resolve()
+        blob_store_backend = os.getenv("FASHIONOS_BLOB_STORE_BACKEND", "local").strip().lower()
+        if blob_store_backend not in {"local", "s3"}:
+            raise ValueError("FASHIONOS_BLOB_STORE_BACKEND must be local or s3")
+        s3_bucket = os.getenv("FASHIONOS_S3_BUCKET") or None
+        s3_prefix = os.getenv("FASHIONOS_S3_PREFIX", "fashionos")
+        s3_region = os.getenv("FASHIONOS_S3_REGION") or None
+        s3_endpoint_url = os.getenv("FASHIONOS_S3_ENDPOINT_URL") or None
+        if blob_store_backend == "s3" and not s3_bucket:
+            raise ValueError("FASHIONOS_S3_BUCKET is required when S3 storage is enabled")
         return cls(
             brain_root=root,
             brain_snapshot_root=snapshot_root,
@@ -99,4 +113,9 @@ class Settings:
             gemini_image_model=gemini_image_model,
             gemini_vision_model=gemini_vision_model,
             generated_asset_root=generated_asset_root,
+            blob_store_backend=blob_store_backend,
+            s3_bucket=s3_bucket,
+            s3_prefix=s3_prefix,
+            s3_region=s3_region,
+            s3_endpoint_url=s3_endpoint_url,
         )
