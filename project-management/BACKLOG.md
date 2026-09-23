@@ -87,7 +87,7 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [ ] P0 Existing Image Treatment
 - [x] P0 Review/QC UI
 - [x] P0 Assets Library
-- [ ] P1 Collection Studio
+- [ ] P1 Collection Studio (desktop entry, list, overview, blocked review and image-backed demo implemented; remaining states and QA pending)
 - [ ] P1 Campaign Studio
 - [x] P1 Internal Settings
 - [ ] P1 component states
@@ -186,3 +186,17 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [x] P1 Add cross-provider verifier execution preference + fallback (live dual-provider validation pending)
 - [ ] P1 Connect production source harvester
 - [ ] P1 Connect Figma execution body
+## Collection Studio continuation gaps - 2026-09-20
+- [ ] P0 Resolve Collection/Look persistence and CRUD contract before wiring submission; preserve frozen v1 until explicitly extended
+- [ ] P1 Complete form focus/error/filled states, semantic input component, responsive behavior and accessibility QA
+- [x] P1 Build and verify desktop Collections empty state and context setup; reuse existing Figma components and tokens
+- [x] P1 Run local Windows regression: 70 passed, 2 warnings, 0 failed
+
+- [x] P1 Build and verify populated Collection Studio list and operational overview; document design fixtures and preserve list-to-setup return navigation
+
+- [x] P1 Collection Studio: rework look detail, unavailable-evidence comparison, blocked approval and navigation
+- [x] P1 Collection Studio: image-backed desktop demo detail/comparison, refinement request and sample approval/decision history (static fixtures, no live persistence)
+
+- [x] P1 Collection Studio: contributor/viewer restriction and approver rejection/history desktop design variants; remove unsafe viewer route and refinement search icon
+- [ ] P1 Collection Studio: real role-based navigation and authorization integration, submission failure/stale-decision states and complete responsive/accessibility QA
+- [x] P1 Reconcile local design progress with upstream M3/M4 main; preserve both batches and run 80-test regression

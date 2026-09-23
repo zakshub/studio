@@ -732,7 +732,7 @@ Do not place private methodology labels inside customer product surfaces.
 ## 20. Current recommended continuation order
 
 ### Product/Figma track
-1. 13 Collection Studio
+1. 13 Collection Studio - desktop entry/list/overview, blocked review, image-backed demo review/refinement/approval and rejection/permission variants implemented; next semantic input states, responsive/accessibility QA and Collection/Look contract resolution
 2. 14 Design Intelligence
 3. 15 Visualization Studio
 4. 16 Existing Image Treatment
@@ -742,16 +742,13 @@ Do not place private methodology labels inside customer product surfaces.
 8. final component-state/accessibility/naming/responsive QA
 
 ### Intelligence/backend track
-1. finish M3 real executor integration
-2. real image-edit executor
-3. second provider
-4. cross-provider verifier
-5. model-backed identity/garment/preservation QC
-6. representative benchmark assets/runs
-7. validate migrations against PostgreSQL
-8. production source harvester
-9. object storage
-10. video analysis runtime
+1. validate existing dual-provider generation/edit/verifier transports with configured credentials
+2. run representative authorized benchmark assets and collect real cost/latency evidence
+3. production identity/garment/preservation QC
+4. validate migrations against PostgreSQL
+5. validate governed source intake and S3 storage against approved resources
+6. persisted source access registration, quality screening and primary selection
+7. video analysis runtime
 
 ### Expert track
 1. validate first 10 profiles
@@ -874,3 +871,50 @@ Still open:
 7. production video decode and analysis
 
 Do not describe external website harvesting or S3 as production proven until a real approved endpoint and real object store have been exercised.
+
+## 25. Local continuation batch - 2026-09-20
+
+- Compared `D:\codex\fos` with origin/main: clean local `6ca4c09` was four commits behind remote `00f81a1`, with zero local-only commits. Safely fast-forwarded; no completed architecture or runtime changed.
+- Continued the first unfinished Product/Figma item using the canonical file `wdzD8DwmeulOeRUOqaQe64` and its existing design system.
+- Page `11:10`: Collections / Empty (`43:2`), Collections / Context setup (`43:52`), external Annotation / Intelligence Used (`45:88`). Both screens are 1440 x 1024.
+- Existing sidebar, buttons and field instances reused; shared main components unchanged. Entry action `43:93` navigates to setup; back action `45:81` returns to entry. Continue `45:83` is disabled in the empty form and has no reaction. Inputs are static Figma representations, not working forms.
+- Context fields map to Task.objective/hard_locks/allowed_changes. Source permissions and reviewer authority remain separate gates. Workspace context must not become universal knowledge.
+- Frozen v1 contains no Collection/Look entity or collection CRUD endpoint. Record this implementation gap; do not invent endpoints or silently store collection data as global workspace context.
+- Collection Studio remains IN PROGRESS. Next: populated list/overview, look detail, compare/refine, approval. Imagery, form states, semantic input component, responsive behavior and complete accessibility QA remain pending.
+- Local Windows regression: Python 3.13.15, **70 passed, 2 dependency deprecation warnings, 0 failed**. Missing pytest resolved through project-local `.venv` with declared test dependencies. Python artifact ignores added.
+- Visual and structural checks passed for this slice: Inter fonts, no child overflow, Collections active, no private customer terms, no unfinished shimmer, 48px action heights, correct prototype destinations.
+- Evidence: `qc/reports/2026-09-20-collection-entry-continuation.md`. No live-provider validation or M3 completion claimed. This batch is local and not pushed.
+
+## 26. Populated collection views - 2026-09-21
+
+- Canonical page `11:10`: Collections / List (`47:81`), Collection / Overview (`47:120`), Collections / Context setup from list (`48:278`), external intelligence annotation (`48:156`). Desktop screens remain 1440 x 1024.
+- Sample collection names, counts, look versions and statuses are design fixtures only, documented in the external annotation. No real customer records, live execution, source authorization or approval outcomes are claimed.
+- Operational list view uses existing Summary Card instances styled as rows, existing sidebar/buttons and FOS tokens. Shared main components and completed screens unchanged.
+- Overview distinguishes ready-for-review with human approval pending, preservation failure requiring rework, and unknown permission blocking production. A passed quality check never implies approval.
+- Prototype links: New collection `47:278` -> `48:278`; setup back `48:299` -> `47:81`; Open Studio collection `47:281` -> `47:120`; overview back `47:320` -> `47:81`. Existing empty-entry flow remains unchanged. Continue stays disabled; no submission behavior implemented.
+- Visual QA found instance text resize overrides reverting and aliased paints retaining black fallbacks. Fixed with FILL sizing and resolved token paint fallbacks while preserving variable bindings. Verified row text widths are 1072px, zero overflow, Inter only, correct Collections navigation and no private customer copy.
+- Regression: **70 passed, 2 known dependency warnings, 0 failed**, 4.28s on Windows/Python 3.13.15. QA report: `qc/reports/2026-09-21-collection-list-overview.md`.
+- Next unfinished product work: Look detail -> compare/refine -> approval. Visual asset imagery, Collection/Look persistence contract and full responsive/accessibility/component states remain open. The new screens are operational text-list views, not completed image-led look presentation.
+- Local docs remain uncommitted/unpushed. Figma changes are saved in the canonical file. Backend/API architecture unchanged.
+
+## 27. Look rework and blocked approval - 2026-09-21
+
+- Canonical Collection Studio page `11:10`: Look / Detail - Rework `50:191`, Compare and refine - Evidence unavailable `50:230`, Approval - Blocked `50:269`. External annotation `51:288`. All screens are 1440 x 1024.
+- Scope is the existing Look 02/version 3 design fixture, not an actual production result. The embroidery issue is illustrative; no image inspection or successful comparison is claimed. Original/result previews explicitly show unavailable states.
+- Overview row `47:311` and Open Look 02 `50:491` navigate to detail. Detail links to comparison and blocked approval; all have back links. Process correction `50:478` and Approve version 3 `50:488` are inactive and have no reactions.
+- Preservation requirements, allowed improvements, version-specific rework, unknown permissions and reviewer authority remain explicit. No real approval, correction request or persistence was performed. Frozen backend contract unchanged.
+- Visual/read-back checks: Inter only, zero overflow in all three screens and updated overview, no private customer terms, expected navigation destinations, inactive mutation buttons. Missing images are intentional error states. Full responsive/keyboard/accessibility/state QA remains open.
+- Regression: 70 passed, 2 known dependency deprecation warnings, 0 failed in 6.57s on Windows/Python 3.13.15. QA: `qc/reports/2026-09-21-look-rework-approval.md`.
+- Collection Studio remains IN PROGRESS. Next: image-backed successful detail/comparison using authorized sources or clearly labeled synthetic fixtures; refinement submission design; authorized reviewer approval and decision history. Do not skip directly to Design Intelligence or mark the whole collection workflow complete. Collection/Look persistence and comparison-view data remain contract gaps.
+- Figma saved; local documentation is uncommitted/unpushed.
+
+## 28. Image-backed review, role states and repository reconciliation - 2026-09-22
+
+- Recovered the image-backed prototype milestone whose local documentation write had failed approval review. Six screens: 53:288, 53:327, 53:366, 54:369, 54:408, 55:554; external annotation 56:463. Synthetic source/v2 PNG fixtures and provenance are under design/fixtures/collection-studio.
+- Added contributor restriction 59:463, rejection form 59:622, rejected history 59:669, viewer restriction 60:551. Confirm approval screen has a Reject version route. Role variants are standalone design scenarios, not runtime permission enforcement.
+- Fixed refinement search-icon misuse, removed viewer navigation into pending fixtures, and corrected action node names.
+- Ten-screen structural read-back passed: Inter, no visible overflow, FIT images and expected review routes. New screens visually inspected. Full responsive/accessibility and semantic input states remain unfinished.
+- Synced upstream main 0559388 while preserving local work; resolved BACKLOG and HANDOFF conflicts. Upstream M3/M4 code is retained unchanged. A separate remote quality-selection branch is not merged and must not be counted as delivered on main.
+- Full current regression: 80 passed, 2 dependency warnings, 0 failed (5.39s). QA: qc/reports/2026-09-22-collection-review-permissions-sync.md.
+- Next canonical product item: finish Collection Studio input/state/responsive/accessibility QA and resolve Collection/Look contract before wiring persistence; then Design Intelligence. Do not mark the entire product complete.
+- Pull/setup instructions and unresolved external gates are recorded in project-management/DELIVERY.md. Earlier 'local/unpushed' notes describe historical batches; verify the published commit and current Git state for delivery status.

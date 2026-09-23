@@ -2,7 +2,7 @@
 
 ## Overall
 Phase: Integration implementation
-Program health: GREEN
+Program health: IN PROGRESS — credential-independent regression passes; live integration and product completion gates remain open
 Completed milestones: M0 Canonical Foundation, M1 Backend Domain Model + API Contract, M2 Studio Brain Service + Retrieval Layer
 Current milestone: M3 Executor Gateway + Model Benchmarking
 Parallel tracks: Creative Organism Intelligence, M4 Source Intake bootstrap, M5 QC/Provenance bootstrap, Expert Intelligence population
@@ -184,6 +184,7 @@ No profile is ACTIVE yet. Activation requires evidence review, contradiction che
 Remaining expert profiles: 40.
 
 ## Product design progress
+- Latest batch (2026-09-22): Collection Studio desktop image-backed review/refinement/approval and rejection/permission variants implemented and checked. Next: semantic input/state/responsive/accessibility QA and Collection/Look contract resolution. All decisions remain design fixtures.
 - FashionOS v2 page map frozen
 - customer/internal UX boundary documented
 - image-slot plan documented
@@ -225,3 +226,29 @@ Remaining expert profiles: 40.
 - no claim of verification without evidence
 - no signature-style copying from expert profiles
 - no failed preservation output labeled successful
+## Continuation batch - 2026-09-20
+- GitHub was four commits ahead of the clean local checkout (0 local-only commits). Safely fast-forwarded local `6ca4c09` to `00f81a1`.
+- Collection Studio entry batch implemented on canonical Figma page `11:10`: desktop empty state `43:2`, context setup `43:52`, external intelligence/contract annotation `45:88`. Entry/back prototype links verified.
+- Collection Studio remains IN PROGRESS: populated list, overview, look detail, compare/refine, approval, imagery and full responsive/state/accessibility QA remain open.
+- Frozen v1 lacks Collection/Look entities and collection CRUD endpoints. This explicit contract gap must be resolved before wiring submission; no architecture or API changes were made.
+- Local Windows regression: Python 3.13.15, **70 passed, 2 dependency deprecation warnings, 0 failed**. Figma checks passed for fonts, bounds, customer secrecy, active navigation and prototype destinations.
+- Evidence: `qc/reports/2026-09-20-collection-entry-continuation.md`. No live-provider validation claimed. Changes remain local, not pushed.
+
+## Populated Collection Studio batch - 2026-09-21
+- Populated list `47:81`, operational overview `47:120`, list-origin setup `48:278`, annotation `48:156` implemented and verified in canonical Figma.
+- Next: look detail -> compare/refine -> approval. Collection/Look persistence, imagery and full responsive/accessibility/component-state work remain open.
+- Local regression: **70 passed, 2 warnings, 0 failed** in 4.28s. Visual/read-back checks passed after fixing instance width and paint fallback defects.
+- Evidence: `qc/reports/2026-09-21-collection-list-overview.md`. Fixture data only; no live provider, actual permission or approval claims.
+
+## Look review batch - 2026-09-21
+- Rework detail `50:191`, unavailable-evidence comparison `50:230`, blocked approval `50:269`, annotation `51:288` saved in canonical Figma. Overview entry and back links verified.
+- Process correction and approval remain inactive in this state. Fixture issue only; no images, live verification, production mutation or approval claimed.
+- Regression: **70 passed, 2 warnings, 0 failed** in 6.57s. Font/overflow/privacy/link checks passed. Report: `qc/reports/2026-09-21-look-rework-approval.md`.
+- Collection Studio remains IN PROGRESS. Next: image-backed happy-path detail/comparison, refinement and authorized approval/history; full responsive/accessibility QA and contract gaps remain open.
+
+## Current delivery reconciliation - 2026-09-22
+- Upstream M3/M4 main 0559388 integrated without changing its runtime architecture. Local design history preserved and conflicting canonical documents reconciled.
+- Six image-backed demo screens plus four restriction/rejection screens verified. Refinement search icon and unsafe viewer return link fixed.
+- Latest local full suite: **80 passed, 2 dependency warnings, 0 failed** in 5.39s. QA: qc/reports/2026-09-22-collection-review-permissions-sync.md.
+- M0/M1/M2 remain complete. M3/M4 and Collection Studio remain in progress. No live provider, S3 or PostgreSQL success is claimed.
+- See project-management/DELIVERY.md for repository, pull/setup instructions and the remaining completion gates.
