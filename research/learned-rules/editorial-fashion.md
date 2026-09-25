@@ -45,3 +45,20 @@ Campaign continuity can extend beyond one shoot. Carry a concept from runway/set
 
 ### EF-014 Terrain-responsive posing
 On visibly irregular, slippery, soft or hard terrain, stance, foot placement, balance, hand contact and garment fall must respond to the ground. Do not paste a neutral studio pose onto terrain that would physically change how a person stands.
+
+## 2026-09-25
+
+### EF-015 Narrative incompleteness as continuity
+A fashion story does not need to explain every scene. Repeated fragments of private action, still life, portrait and incomplete gesture can form a coherent campaign when they imply the same world and characters. Preserve enough product clarity for garments to remain active narrative elements; do not interrupt the scene merely to create conventional hero-product poses.
+
+### EF-016 Medium-switch continuity
+A campaign can intentionally alternate analogue/digital, still/motion, private/public or day/night representation without forcing one uniform finish. Maintain a clear invariant such as craft, character, location logic, palette family or subject direction so medium change reads as designed contrast rather than inconsistency.
+
+### EF-017 Chroma-budget isolation
+In a near-monochrome or very low-chroma environment, reserve the strongest chroma for the hero garment/product and use silhouette, volume and motion for secondary hierarchy. Prefer environmental chroma restraint over indiscriminate saturation boosts to the garment.
+
+### EF-018 Lived-heritage direction
+When using an authentic heritage location, present-tense ordinary behavior, humor or relaxed interaction can keep the setting from becoming museum-like. Let the historical environment provide provenance while subject direction demonstrates that the brand or garment still belongs to lived contemporary culture.
+
+### EF-019 Spatially selective atmosphere
+Haze, glare, diffusion, chromatic bloom or dream-state distortion need not cover the entire frame. Keep face, garment construction and critical material detail locally legible while allowing atmosphere to accumulate in background, light sources or depth layers. This preserves product truth while supporting an altered mood.
