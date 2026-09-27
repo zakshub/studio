@@ -1,0 +1,40 @@
+{
+  "fileKey": "wdzD8DwmeulOeRUOqaQe64",
+  "fileUrl": "https://www.figma.com/design/wdzD8DwmeulOeRUOqaQe64/fos-brain",
+  "page": {
+    "id": "11:11",
+    "name": "14 — Design Intelligence"
+  },
+  "screens": {
+    "direction": "78:45",
+    "silhouette": "78:112",
+    "color": "78:186",
+    "motifAndSurface": "78:263",
+    "variations": "78:334",
+    "refineAndFinal": "78:404"
+  },
+  "annotation": "78:479",
+  "prototypeActions": {
+    "continueToSilhouette": "78:110",
+    "silhouetteBack": "78:182",
+    "continueToColor": "78:184",
+    "colorBack": "78:259",
+    "continueToSurface": "78:261",
+    "surfaceBack": "78:330",
+    "buildVariations": "78:332",
+    "variationsBack": "78:400",
+    "refineSelection": "78:402",
+    "finalBack": "78:475",
+    "submitForReview": "78:477"
+  },
+  "verified": {
+    "date": "2026-09-28",
+    "desktopSize": [1440, 1024],
+    "visualQa": "pass",
+    "structuralQa": "pass",
+    "fontFamilies": ["Inter"],
+    "detectedOverflowContainers": 0,
+    "privacyScan": "pass",
+    "notes": "All content is fixture data. Internal forward/back links are wired. Submit for review has no prototype reaction until runtime review creation is integrated."
+  }
+}

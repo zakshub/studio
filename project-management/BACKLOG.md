@@ -83,11 +83,12 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [x] P0 customer vs internal/admin UX boundary
 - [x] P0 Dashboard
 - [x] P0 Source Intake
+- [x] P0 Design Intelligence desktop workflow
 - [ ] P0 Visualization Studio
 - [ ] P0 Existing Image Treatment
 - [x] P0 Review/QC UI
 - [x] P0 Assets Library
-- [ ] P1 Collection Studio (desktop entry, list, overview, blocked review and image-backed demo implemented; remaining states and QA pending)
+- [x] P1 Collection Studio static product design (desktop workflow, semantic states, mobile responsive states and static accessibility contract)
 - [ ] P1 Campaign Studio
 - [x] P1 Internal Settings
 - [ ] P1 component states
