@@ -941,3 +941,14 @@ Do not describe external website harvesting or S3 as production proven until a r
 - Final checks: Inter only, zero detected child overflow, correct field variants and properties, semantic danger aliases intact, action opacity correct. Full regression: **84 passed, 2 warnings, 0 failed** in 10.87s.
 - Evidence: `design/figma-state/collection-form-field-2026-09-27.json` and `qc/reports/2026-09-27-collection-form-states-qa.md`.
 - Next canonical product item: complete Collection Studio responsive and accessibility QA, then begin Design Intelligence. Trusted identity-provider/frontend integration and PostgreSQL deployment validation remain open engineering gates.
+
+## 31. Collection responsive and static accessibility - 2026-09-27
+
+- Canonical Collection Studio page `11:10` now includes mobile filled `73:702`, validation error `73:744`, stale conflict `73:786` and accessibility annotation `73:831`. Mobile frames are 390 x 932.
+- The mobile forms reuse Form Field `67:41` and existing Button variants. Fields are 326 x 88; primary and secondary actions are 326 x 48. The documented linear focus order is Menu -> Objective -> Preserve -> Allowed changes -> primary action -> Back.
+- Static errors use border plus explicit helper text. Stale revisions keep draft values visible and require explicit reload. Customer copy remains inside the secrecy boundary.
+- Accessibility audit found two token defects: `danger/500` text on white measured 3.76:1 and muted `neutral/300` text measured 2.52:1. Added primitives `danger/300` `VariableID:72:37` and `danger/700` `VariableID:72:38`. `color/text/danger` now maps to danger/700 Light and danger/300 Dark; `color/text/muted` maps to neutral/500 Light and neutral/300 Dark.
+- Resulting reference contrasts: error text 6.47:1 Light and 10.41:1 Dark; muted/helper text 4.80:1 Light and 7.83:1 Dark.
+- Screenshot defects fixed: shortened one wrapping mobile value and restored a missing validation Back label. Final structural read-back found no child overflow and Inter-only typography.
+- Regression: **84 passed, 2 warnings, 0 failed** in 20.06s. Evidence: `design/figma-state/collection-form-field-2026-09-27.json` and `qc/reports/2026-09-27-collection-responsive-accessibility-qa.md`.
+- Next canonical design item: Design Intelligence. Runtime keyboard/screen-reader/browser validation, verified host integration and PostgreSQL deployment validation remain open engineering gates.

@@ -26,16 +26,22 @@
   "collectionScreens": {
     "filled": "69:579",
     "validationError": "69:659",
-    "staleConflict": "69:739"
+    "staleConflict": "69:739",
+    "mobileFilled": "73:702",
+    "mobileValidationError": "73:744",
+    "mobileStaleConflict": "73:786",
+    "responsiveAccessibilityAnnotation": "73:831"
   },
   "semanticVariablesAdded": {
     "color/border/danger": "VariableID:65:21",
-    "color/text/danger": "VariableID:65:22"
+    "color/text/danger": "VariableID:65:22",
+    "danger/300": "VariableID:72:37",
+    "danger/700": "VariableID:72:38"
   },
   "verified": {
     "date": "2026-09-27",
     "states": ["Default", "Focus", "Filled", "Error"],
     "visualQa": "pass",
-    "notes": "All states use existing FOS foundations. Danger aliases bind to danger/500 in Light and Dark modes. Three 1440x1024 Collection setup states passed screenshot and overflow checks."
+    "notes": "Desktop and 390x932 mobile states passed screenshot and overflow checks. Danger border remains danger/500. Error text maps to danger/700 in Light and danger/300 in Dark. Muted text maps to neutral/500 in Light and neutral/300 in Dark."
   }
 }

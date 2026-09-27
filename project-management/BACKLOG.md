@@ -189,7 +189,8 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 ## Collection Studio continuation gaps - 2026-09-20
 - [x] P0 Define and implement additive Collection/Look draft persistence and CRUD under `/api/v2`; preserve frozen v1 semantics
 - [x] P1 Complete semantic Form Field component and desktop focus/error/filled states
-- [ ] P1 Complete Collection Studio responsive behavior and accessibility QA
+- [x] P1 Complete Collection Studio mobile responsive designs and static accessibility contract
+- [ ] P1 Validate Collection Studio keyboard, screen-reader and browser contrast behavior in the implemented frontend
 - [x] P1 Build and verify desktop Collections empty state and context setup; reuse existing Figma components and tokens
 - [x] P1 Run local Windows regression: 70 passed, 2 warnings, 0 failed
 
@@ -202,5 +203,5 @@ Priority: P0 = blocking/core, P1 = important, P2 = enhancement, P3 = later.
 - [ ] P1 Collection Studio: connect verified host authentication and role-based navigation; backend membership checks now fail closed and are regression-tested
 - [x] P1 Collection Studio: optimistic concurrency, archived-state protection, idempotent create, source-rights/workspace gates and append-only mutation audit
 - [x] P1 Collection Studio: validation failure and optimistic-concurrency stale-conflict desktop UI states
-- [ ] P1 Collection Studio: runtime submission failure wiring and complete responsive/accessibility QA
+- [ ] P1 Collection Studio: runtime submission failure wiring and frontend accessibility validation
 - [x] P1 Reconcile local design progress with upstream M3/M4 main; preserve both batches and run 80-test regression
