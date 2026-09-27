@@ -929,3 +929,15 @@ Do not describe external website harvesting or S3 as production proven until a r
 - Mutation and audit writes are atomic. Safe response projections exclude storage locations, arbitrary metadata and provider details.
 - Full regression: **84 passed, 2 known dependency warnings, 0 failed** in 11.29s after syncing upstream `d0fbd8c`. Compileall and diff checks passed. QA: `qc/reports/2026-09-27-collection-persistence-qa.md`.
 - Next: connect a real verified identity source and role-aware frontend navigation; then finish Collection semantic input/stale-state/responsive/accessibility QA before moving to Design Intelligence.
+
+## 30. Collection semantic form states - 2026-09-27
+
+- Canonical Figma file remains `wdzD8DwmeulOeRUOqaQe64`. Components page `11:5` now includes Form Field component set `67:41` and documentation frame `67:42`.
+- Form Field variants: Default `67:21`, Focus `67:26`, Filled `67:31`, Error `67:36`. Exposed properties are Label, Value and Helper; State is the variant axis.
+- Added semantic FOS variables `color/border/danger` `VariableID:65:21` and `color/text/danger` `VariableID:65:22`. Both alias the existing `danger/500` primitive in Light and Dark modes; no unrelated foundations or components changed.
+- Collection Studio page `11:10` now includes filled setup `69:579`, validation error `69:659` and stale conflict `69:739`. Each is 1440 x 1024 and uses three instances of the local Form Field family.
+- The stale screen preserves visible draft values, explains that a newer version exists, and offers `Reload latest version`. It does not claim that edits were merged or overwritten. The validation screen keeps Continue disabled until the required objective is supplied.
+- First screenshots exposed auto-layout ordering: replacement fields appeared after guidance/actions because they had been appended. The instances were reordered before guidance/actions, non-stale form frames were enlarged to 620px, and all three screens were re-rendered.
+- Final checks: Inter only, zero detected child overflow, correct field variants and properties, semantic danger aliases intact, action opacity correct. Full regression: **84 passed, 2 warnings, 0 failed** in 10.87s.
+- Evidence: `design/figma-state/collection-form-field-2026-09-27.json` and `qc/reports/2026-09-27-collection-form-states-qa.md`.
+- Next canonical product item: complete Collection Studio responsive and accessibility QA, then begin Design Intelligence. Trusted identity-provider/frontend integration and PostgreSQL deployment validation remain open engineering gates.

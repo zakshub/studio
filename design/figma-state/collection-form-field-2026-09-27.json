@@ -1,0 +1,41 @@
+{
+  "fileKey": "wdzD8DwmeulOeRUOqaQe64",
+  "fileUrl": "https://www.figma.com/design/wdzD8DwmeulOeRUOqaQe64/fos-brain",
+  "page": {
+    "id": "11:5",
+    "name": "04 — Components"
+  },
+  "componentSet": {
+    "id": "67:41",
+    "name": "Form Field",
+    "description": "Semantic FOS form field family for collection setup. State reflects input or validation status without exposing internal prompts, providers, routing or reasoning."
+  },
+  "variants": {
+    "Default": "67:21",
+    "Focus": "67:26",
+    "Filled": "67:31",
+    "Error": "67:36"
+  },
+  "componentProperties": {
+    "Label": "Label#67:12",
+    "Value": "Value#67:13",
+    "Helper": "Helper#67:14",
+    "State": "State"
+  },
+  "documentationFrameId": "67:42",
+  "collectionScreens": {
+    "filled": "69:579",
+    "validationError": "69:659",
+    "staleConflict": "69:739"
+  },
+  "semanticVariablesAdded": {
+    "color/border/danger": "VariableID:65:21",
+    "color/text/danger": "VariableID:65:22"
+  },
+  "verified": {
+    "date": "2026-09-27",
+    "states": ["Default", "Focus", "Filled", "Error"],
+    "visualQa": "pass",
+    "notes": "All states use existing FOS foundations. Danger aliases bind to danger/500 in Light and Dark modes. Three 1440x1024 Collection setup states passed screenshot and overflow checks."
+  }
+}
