@@ -952,3 +952,14 @@ Do not describe external website harvesting or S3 as production proven until a r
 - Screenshot defects fixed: shortened one wrapping mobile value and restored a missing validation Back label. Final structural read-back found no child overflow and Inter-only typography.
 - Regression: **84 passed, 2 warnings, 0 failed** in 20.06s. Evidence: `design/figma-state/collection-form-field-2026-09-27.json` and `qc/reports/2026-09-27-collection-responsive-accessibility-qa.md`.
 - Next canonical design item: Design Intelligence. Runtime keyboard/screen-reader/browser validation, verified host integration and PostgreSQL deployment validation remain open engineering gates.
+
+## 32. Design Intelligence workflow - 2026-09-28
+
+- Canonical page `11:11` now contains the full desktop sequence: Direction `78:45`, Silhouette `78:112`, Color `78:186`, Motif and surface `78:263`, Variations `78:334`, Refine and final `78:404`.
+- External annotation `78:479` records the fixture, privacy, anti-copy and approval boundaries. Content is illustrative only; no customer data, live generation, authorization or approval result is claimed.
+- The flow translates the existing Collection direction fixture into explicit decisions while preserving construction, identity, labels and product color. Surface guidance states transferable principles and rejects signature-style reproduction.
+- Existing FOS App Sidebar and Button components, tokens and text styles are reused. Design is active in navigation on all screens.
+- Forward/back prototype routes are wired across the six same-page frames. Final `Submit for review` has no reaction because Figma rejects cross-page prototype destinations and runtime review creation is not implemented.
+- Screenshot and structural QA passed: 1440 x 1024, Inter only, zero detected child overflow, correct nav states, clean customer-secrecy scan and verified internal destinations.
+- Regression: **84 passed, 2 warnings, 0 failed** in 10.25s. Evidence: `design/figma-state/design-intelligence-2026-09-28.json` and `qc/reports/2026-09-28-design-intelligence-workflow-qa.md`.
+- Next canonical design item: Visualization Studio. Later cross-product responsive/accessibility QA and frontend/runtime integration remain open.

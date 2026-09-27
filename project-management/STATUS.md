@@ -184,6 +184,7 @@ No profile is ACTIVE yet. Activation requires evidence review, contradiction che
 Remaining expert profiles: 40.
 
 ## Product design progress
+- Latest workflow batch (2026-09-28): complete six-screen Design Intelligence desktop flow implemented and verified in canonical Figma: Direction, Silhouette, Color, Motif/surface, Variations and Refine/final. Next high-fidelity page is Visualization Studio.
 - Latest responsive batch (2026-09-27): Collection filled, validation-error and stale-conflict mobile screens plus static accessibility contract completed in canonical Figma. A contrast audit found and fixed insufficient danger/helper text tokens. Collection design can now continue to Design Intelligence; runtime frontend accessibility validation remains open.
 - Desktop design batch (2026-09-27): Collection setup semantic Form Field family and desktop filled, validation-error and stale-conflict states implemented and visually/structurally verified in canonical Figma.
 - Latest batch (2026-09-27): additive Collection/Look draft persistence and `/api/v2` CRUD implemented with workspace membership, source-rights checks, optimistic concurrency, archive/restore and atomic audit events. The API fails closed until a trusted host supplies verified identity. Next: host authentication/UI integration plus responsive/accessibility QA.
@@ -198,7 +199,7 @@ Remaining expert profiles: 40.
 - user-safe asset lineage/version history and review-decision history implemented in the product surfaces
 - restricted role-based screens implemented: Internal Operations, Intelligence Administration, Integration Administration
 - every completed page includes an external design annotation documenting which intelligence capabilities shaped it
-- remaining Figma v2 high-fidelity pages: Design Intelligence, Visualization Studio, Existing Image Treatment, Campaign Studio, Product Architecture and Core User Flows
+- remaining Figma v2 high-fidelity pages: Visualization Studio, Existing Image Treatment, Campaign Studio, Product Architecture and Core User Flows
 - final responsive/component-state/accessibility QA still pending
 
 ## QA state
@@ -218,7 +219,7 @@ Remaining expert profiles: 40.
 3. Continue EXP-011 onward and validate the first 10 profiles before activation.
 4. Advance Source Harvester from HTML discovery to governed fetch/crawl + asset metadata pipeline.
 5. Re-run the generation/edit + source-aware visual-verifier path once provider credentials are configured; use both providers to prove cross-provider QC live.
-6. Continue high-fidelity Figma v2: Design Intelligence -> Visualization Studio -> Existing Image Treatment -> Campaign Studio -> Product Architecture -> Core User Flows, then final cross-product component/accessibility/responsive QA.
+6. Continue high-fidelity Figma v2: Visualization Studio -> Existing Image Treatment -> Campaign Studio -> Product Architecture -> Core User Flows, then final cross-product component/accessibility/responsive QA.
 7. Harden preservation QC from model-backed comparison bootstrap into production-grade identity, garment and embroidery comparison.
 
 ## Guardrails
@@ -281,3 +282,11 @@ Remaining expert profiles: 40.
 - Screenshot QA found one wrapping field value and one missing secondary-button label; both were corrected and re-rendered.
 - Structural QA: Inter only, zero detected child overflow, expected variants/actions and 390 x 932 frames. Regression: **84 passed, 2 warnings, 0 failed** in 20.06s.
 - Evidence: `qc/reports/2026-09-27-collection-responsive-accessibility-qa.md`. Runtime keyboard, screen-reader and browser contrast checks remain a frontend implementation gate.
+
+## Design Intelligence workflow - 2026-09-28
+- Added Direction `78:45`, Silhouette `78:112`, Color `78:186`, Motif/surface `78:263`, Variations `78:334` and Refine/final `78:404` on canonical page `11:11`.
+- Added external fixture/privacy annotation `78:479`. All direction statements, palettes, shapes and variations are explicitly sample design fixtures.
+- The workflow exposes customer-safe decisions, preservation constraints, source state and human review boundaries. It does not expose providers, prompts, routing, internal rules, scoring or expert debate.
+- Internal forward/back prototype routes are verified. `Submit for review` remains without a prototype mutation because runtime review creation and cross-page integration are not implemented.
+- Visual and structural QA: six 1440 x 1024 frames, Design navigation active, Collections navigation inactive, Inter only, zero detected child overflow and clean privacy-term scan.
+- Regression: **84 passed, 2 warnings, 0 failed** in 10.25s. Evidence: `design/figma-state/design-intelligence-2026-09-28.json` and `qc/reports/2026-09-28-design-intelligence-workflow-qa.md`.
