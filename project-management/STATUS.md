@@ -184,19 +184,20 @@ No profile is ACTIVE yet. Activation requires evidence review, contradiction che
 Remaining expert profiles: 40.
 
 ## Product design progress
+- Latest design batch (2026-09-27): Collection setup semantic Form Field family and desktop filled, validation-error and stale-conflict states implemented and visually/structurally verified in canonical Figma. Remaining Collection work is responsive and complete accessibility QA; then continue to Design Intelligence.
 - Latest batch (2026-09-27): additive Collection/Look draft persistence and `/api/v2` CRUD implemented with workspace membership, source-rights checks, optimistic concurrency, archive/restore and atomic audit events. The API fails closed until a trusted host supplies verified identity. Next: host authentication/UI integration plus responsive/accessibility QA.
 - FashionOS v2 page map frozen
 - customer/internal UX boundary documented
 - image-slot plan documented
 - target Figma file now has the complete v2 page structure (00–05, 10–20, 90–92)
-- existing FOS token system validated: 52 variables, 8 text styles, 3 elevation styles
+- existing FOS token system extended and validated: 54 variables, 8 text styles, 3 elevation styles
 - Cover, Design Foundations and Intelligence Usage Map implemented
 - reusable components implemented: Button, Status Badge, Navigation Item, Summary Card, Search Field, Review Action Bar, App Sidebar
 - high-fidelity customer screens implemented: Dashboard, Source Intake, Website Import, Assets Library, Review & Approval, Workspace Settings
 - user-safe asset lineage/version history and review-decision history implemented in the product surfaces
 - restricted role-based screens implemented: Internal Operations, Intelligence Administration, Integration Administration
 - every completed page includes an external design annotation documenting which intelligence capabilities shaped it
-- remaining Figma v2 high-fidelity pages: Product Architecture, Core User Flows, Collection Studio, Design Intelligence, Visualization Studio, Existing Image Treatment, Campaign Studio
+- remaining Figma v2 work: Collection Studio responsive/accessibility QA, then Design Intelligence, Visualization Studio, Existing Image Treatment, Campaign Studio, Product Architecture and Core User Flows
 - final responsive/component-state/accessibility QA still pending
 
 ## QA state
@@ -262,3 +263,12 @@ Remaining expert profiles: 40.
 - Optimistic revisions prevent stale writes and parent/archive races. Exact create replay is idempotent; mutations and audit events commit atomically.
 - Validation: **84 passed, 2 dependency deprecation warnings, 0 failed** in 11.29s after syncing the latest upstream research commits; compileall and diff checks passed. QA: `qc/reports/2026-09-27-collection-persistence-qa.md`.
 - Remaining: trusted identity-provider/gateway integration, approved viewer projections/version review wiring, PostgreSQL deployment validation and Collection Studio responsive/accessibility/input-state work.
+
+## Collection form states and stale-conflict design - 2026-09-27
+- Added semantic danger aliases `color/border/danger` and `color/text/danger`, each bound to the existing danger primitive in Light and Dark modes.
+- Added the local Form Field component set `67:41` with Default, Focus, Filled and Error variants plus Label, Value and Helper properties. Component documentation is `67:42`.
+- Added desktop Collection setup states: filled `69:579`, validation error `69:659` and stale conflict `69:739`. The stale state requires an explicit reload and does not imply an automatic overwrite.
+- Screenshot QA found newly appended fields rendering after actions because the cloned form uses auto-layout. Reordered the children and enlarged the form containers; repeat screenshots and structural read-back passed.
+- Verified 1440 x 1024 screens, Inter-only typography, three semantic Form Field instances per screen, zero detected child overflow, correct enabled/disabled actions and customer-safe copy.
+- Regression: **84 passed, 2 known dependency warnings, 0 failed** in 10.87s. Evidence: `qc/reports/2026-09-27-collection-form-states-qa.md`.
+- Remaining Collection design gate: responsive layouts and complete keyboard/focus/contrast/accessibility QA. Runtime form submission and verified-host frontend integration remain separate implementation work.
