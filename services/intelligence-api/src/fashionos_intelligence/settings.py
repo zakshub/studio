@@ -15,6 +15,7 @@ class Settings:
     github_token: str | None = None
     stale_after_seconds: int = 3600
     internal_token: str | None = None
+    workspace_auth_secret: str | None = None
     database_url: str = "sqlite+pysqlite:///:memory:"
     openai_api_key: str | None = None
     openai_image_model: str = "gpt-image-2.5-flare"
@@ -53,6 +54,7 @@ class Settings:
         )
         stale = int(os.getenv("FASHIONOS_BRAIN_STALE_AFTER_SECONDS", "3600"))
         token = os.getenv("FASHIONOS_INTERNAL_TOKEN") or None
+        workspace_auth_secret = os.getenv("FASHIONOS_WORKSPACE_AUTH_SECRET") or None
         github_token = os.getenv("FASHIONOS_GITHUB_TOKEN") or None
         database_url = os.getenv(
             "FASHIONOS_DATABASE_URL",
@@ -104,6 +106,7 @@ class Settings:
             github_token=github_token,
             stale_after_seconds=stale,
             internal_token=token,
+            workspace_auth_secret=workspace_auth_secret,
             database_url=database_url,
             openai_api_key=openai_api_key,
             openai_image_model=openai_image_model,

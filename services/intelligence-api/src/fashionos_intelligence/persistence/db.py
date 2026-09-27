@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from sqlalchemy import Boolean, DateTime, Float, JSON, String, Text, create_engine
+from sqlalchemy import Boolean, DateTime, Float, Integer, JSON, String, Text, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -219,6 +219,48 @@ class LearningCandidateRow(Base):
         DateTime(timezone=True),
         nullable=True,
     )
+
+
+class WorkspaceMemberRow(Base):
+    __tablename__ = "workspace_members_runtime"
+    workspace_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    actor_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    role: Mapped[str] = mapped_column(String(24))
+
+
+class CollectionRow(Base):
+    __tablename__ = "collections_runtime"
+    collection_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    workspace_id: Mapped[str] = mapped_column(String(64), index=True)
+    name: Mapped[str] = mapped_column(String(160))
+    objective: Mapped[str] = mapped_column(Text)
+    hard_locks: Mapped[list[str]] = mapped_column(JSON, default=list)
+    allowed_changes: Mapped[list[str]] = mapped_column(JSON, default=list)
+    revision: Mapped[int] = mapped_column(Integer, default=1)
+    archived: Mapped[bool] = mapped_column(Boolean, default=False)
+
+
+class LookRow(Base):
+    __tablename__ = "looks_runtime"
+    look_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    workspace_id: Mapped[str] = mapped_column(String(64), index=True)
+    collection_id: Mapped[str] = mapped_column(String(64), index=True)
+    name: Mapped[str] = mapped_column(String(160))
+    source_asset_id: Mapped[str] = mapped_column(String(64))
+    task_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    revision: Mapped[int] = mapped_column(Integer, default=1)
+
+
+class CollectionEventRow(Base):
+    __tablename__ = "collection_events_runtime"
+    event_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    workspace_id: Mapped[str] = mapped_column(String(64), index=True)
+    collection_id: Mapped[str] = mapped_column(String(64), index=True)
+    actor_id: Mapped[str] = mapped_column(String(64))
+    event_type: Mapped[str] = mapped_column(String(48))
+    subject_id: Mapped[str] = mapped_column(String(64))
+    revision: Mapped[int] = mapped_column(Integer)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
 
 def build_session_factory(database_url: str) -> sessionmaker[Session]:

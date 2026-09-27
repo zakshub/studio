@@ -19,7 +19,7 @@ This repository is a working intelligence service and product-design foundation,
 | M3 evidence | Configure provider secrets outside Git; run live generation/edit and dual-provider verification; authorized benchmark assets and actual cost/latency evidence |
 | M4 evidence | Approved website/terms registration, live storage validation, quality screening/primary selection; separate remote work is not delivery until merged/tested |
 | Persistence | Real PostgreSQL migration validation and storage/backup policy |
-| Collection Studio | Semantic input and error/focus/filled states, responsive/accessibility QA, submission failure/stale decisions, Collection/Look contract and CRUD integration |
+| Collection Studio | Collection/Look draft CRUD is implemented; trusted authentication/UI wiring, approved version/review projections, semantic input states, responsive/accessibility QA and submission failure/stale-decision UI remain |
 | Remaining product | Design Intelligence, Visualization, Image Treatment, Campaign, architecture/flow documentation, customer frontend/backend integration |
 | Governance | Validate first 10 expert profiles with human approval; remaining 40 profiles; production access/security/deployment QA |
 

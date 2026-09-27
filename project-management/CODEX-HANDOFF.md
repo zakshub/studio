@@ -732,7 +732,7 @@ Do not place private methodology labels inside customer product surfaces.
 ## 20. Current recommended continuation order
 
 ### Product/Figma track
-1. 13 Collection Studio - desktop entry/list/overview, blocked review, image-backed demo review/refinement/approval and rejection/permission variants implemented; next semantic input states, responsive/accessibility QA and Collection/Look contract resolution
+1. 13 Collection Studio - desktop flows plus additive draft Collection/Look v2 persistence implemented; next trusted authentication/UI wiring, semantic input states and responsive/accessibility QA
 2. 14 Design Intelligence
 3. 15 Visualization Studio
 4. 16 Existing Image Treatment
@@ -918,3 +918,14 @@ Do not describe external website harvesting or S3 as production proven until a r
 - Full current regression: 80 passed, 2 dependency warnings, 0 failed (5.39s). QA: qc/reports/2026-09-22-collection-review-permissions-sync.md.
 - Next canonical product item: finish Collection Studio input/state/responsive/accessibility QA and resolve Collection/Look contract before wiring persistence; then Design Intelligence. Do not mark the entire product complete.
 - Pull/setup instructions and unresolved external gates are recorded in project-management/DELIVERY.md. Earlier 'local/unpushed' notes describe historical batches; verify the published commit and current Git state for delivery status.
+
+## 29. Collection/Look persistence extension - 2026-09-27
+
+- Resolved the frozen-v1 Collection/Look gap through an explicit additive v2 extension in `backend/collections-extension-v2.md`; existing v1 public fields and state meanings are unchanged.
+- Added workspace members, Collections, Looks and append-only collection events to runtime persistence and PostgreSQL migration `0007_collections.sql`.
+- Added workspace-scoped draft collection and nested look operations under `/api/v2`. Archive/restore is supported; physical deletion is absent. Caller UUID create replay is idempotent and all updates require expected revisions.
+- Source attachment is restricted to authorized primary/production assets in the same workspace; linked Tasks must share the workspace. Original source rows are never mutated by Collection operations.
+- Viewer cannot read draft collection metadata. Contributor, Approver and Admin require persisted membership. Raw user/role/workspace headers are ignored. Authentication accepts trusted `request.state.workspace_actor_id` or a five-minute HMAC-signed gateway assertion configured by `FASHIONOS_WORKSPACE_AUTH_SECRET`. This is a service authentication boundary, not a complete user-login system.
+- Mutation and audit writes are atomic. Safe response projections exclude storage locations, arbitrary metadata and provider details.
+- Full regression: **84 passed, 2 known dependency warnings, 0 failed** in 11.29s after syncing upstream `d0fbd8c`. Compileall and diff checks passed. QA: `qc/reports/2026-09-27-collection-persistence-qa.md`.
+- Next: connect a real verified identity source and role-aware frontend navigation; then finish Collection semantic input/stale-state/responsive/accessibility QA before moving to Design Intelligence.

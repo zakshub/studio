@@ -184,7 +184,7 @@ No profile is ACTIVE yet. Activation requires evidence review, contradiction che
 Remaining expert profiles: 40.
 
 ## Product design progress
-- Latest batch (2026-09-22): Collection Studio desktop image-backed review/refinement/approval and rejection/permission variants implemented and checked. Next: semantic input/state/responsive/accessibility QA and Collection/Look contract resolution. All decisions remain design fixtures.
+- Latest batch (2026-09-27): additive Collection/Look draft persistence and `/api/v2` CRUD implemented with workspace membership, source-rights checks, optimistic concurrency, archive/restore and atomic audit events. The API fails closed until a trusted host supplies verified identity. Next: host authentication/UI integration plus responsive/accessibility QA.
 - FashionOS v2 page map frozen
 - customer/internal UX boundary documented
 - image-slot plan documented
@@ -252,3 +252,13 @@ Remaining expert profiles: 40.
 - Latest local full suite: **80 passed, 2 dependency warnings, 0 failed** in 5.39s. QA: qc/reports/2026-09-22-collection-review-permissions-sync.md.
 - M0/M1/M2 remain complete. M3/M4 and Collection Studio remain in progress. No live provider, S3 or PostgreSQL success is claimed.
 - See project-management/DELIVERY.md for repository, pull/setup instructions and the remaining completion gates.
+
+## Collection persistence and authorization batch - 2026-09-27
+- Added the explicit `backend/collections-extension-v2.md` contract without changing frozen public v1 semantics.
+- Added Collection, Look, workspace membership and collection event persistence plus PostgreSQL migration `0007_collections.sql`.
+- Added `/api/v2/workspaces/{workspaceId}/collections` list/create/detail/update and nested Look operations. Physical delete is deliberately absent; archive/restore preserves records.
+- Draft access is workspace-scoped. Viewer receives no draft collection projection. Contributor/Approver/Admin mutations require persisted membership. Raw identity/role headers are ignored. A trusted host may set verified request state, or a gateway can use five-minute HMAC-signed actor assertions configured through `FASHIONOS_WORKSPACE_AUTH_SECRET`.
+- Production-source attachment requires an authorized primary/production asset in the same workspace. Linked tasks must also belong to that workspace. Returned payloads exclude storage URIs, arbitrary source metadata and provider details.
+- Optimistic revisions prevent stale writes and parent/archive races. Exact create replay is idempotent; mutations and audit events commit atomically.
+- Validation: **84 passed, 2 dependency deprecation warnings, 0 failed** in 11.29s after syncing the latest upstream research commits; compileall and diff checks passed. QA: `qc/reports/2026-09-27-collection-persistence-qa.md`.
+- Remaining: trusted identity-provider/gateway integration, approved viewer projections/version review wiring, PostgreSQL deployment validation and Collection Studio responsive/accessibility/input-state work.
