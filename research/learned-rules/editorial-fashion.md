@@ -62,3 +62,15 @@ When using an authentic heritage location, present-tense ordinary behavior, humo
 
 ### EF-019 Spatially selective atmosphere
 Haze, glare, diffusion, chromatic bloom or dream-state distortion need not cover the entire frame. Keep face, garment construction and critical material detail locally legible while allowing atmosphere to accumulate in background, light sources or depth layers. This preserves product truth while supporting an altered mood.
+
+
+## 2026-09-29
+
+### EF-020 Vernacular commerce as an active set
+For fashion imagery inside a functioning market, workshop, shop or commercial street, preserve the environment as an operating place rather than reducing it to decorative background. Let counters, shutters, merchandise, signage, doors, work surfaces and pedestrian circulation remain visually active. The garment should feel introduced into a real system of use, not placed onto a sanitized themed set.
+
+### EF-021 Motivated foreground occlusion
+Use physically plausible foreground objects such as shelves, door edges, hanging goods, counters or passing bodies to partially obscure the subject and create layered depth. Occlusion should imply a credible camera position and observational point of view while keeping critical garment construction and silhouette readable across the shot family. Avoid arbitrary blur objects added only to simulate cinematic depth.
+
+### EF-022 Micro-location sequencing inside one world
+A single neighborhood or market can produce a varied campaign by moving through connected micro-locations such as street edge, doorway, threshold, interior stall, counter, corridor and shuttered facade. Preserve recurring material, architectural and social cues so the sequence expands spatially without feeling like unrelated location hopping.
