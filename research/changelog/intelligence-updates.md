@@ -56,3 +56,26 @@ Source registry:
 research/rolling-observations/2026-09-25/sources.md
 
 No PNG frames were committed because the available repository write connector in this run did not support binary image commits; no placeholder frames were fabricated.
+
+
+## 2026-09-29 — User supplied fashion video dataset
+Extracted and reviewed all 959 source frames from a 39.958 second vertical fashion campaign video at 24 fps.
+
+Promoted 3 materially distinct rules:
+- Vernacular commerce as an active set
+- Motivated foreground occlusion
+- Micro-location sequencing inside one world
+
+Deliberately not promoted:
+- refined garment against rough environment because existing structural-background contrast already covers it
+- ordinary behavior in heritage settings because EF-018 already covers lived-heritage direction
+- generic frame-within-frame composition because it is already represented elsewhere in the production system
+- vertical social framing because it is too generic to qualify as durable intelligence
+
+Research report:
+research/rolling-observations/2026-09-29/report.md
+
+Source registry:
+research/rolling-observations/2026-09-29/sources.md
+
+All source frames were extracted locally. The repository update records the promoted intelligence and source metadata; the bulk 959-frame PNG archive remains a conversation artifact because the available GitHub text-write connector is not suitable for a 1.1 GB binary frame set.
