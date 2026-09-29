@@ -111,3 +111,21 @@ Use GitHub history and tests as evidence. Do not rely on memory alone.
 
 If Astra or another agent-orchestration layer is used, it must still treat this repository as canonical context. Agent-generated plans must respect the same value hierarchy, privacy boundary, preservation doctrine, QA gates, and status-update discipline.
 
+
+
+## Dataset ingestion discipline
+
+When a user supplies an image set, video, frame sequence, reference pack, or other visual dataset for Studio learning:
+
+1. extract and inspect the source locally when needed
+2. preserve source metadata and provenance
+3. separate observed facts from interpretation
+4. compare candidate learnings against existing Studio intelligence
+5. reject duplicates, weak one off observations, and brand specific signatures
+6. promote only genuinely new, reusable, physically plausible production intelligence
+7. record the dataset in research/rolling-observations with a source registry and report
+8. update the relevant learned rules file when promotion is justified
+9. update research/changelog/intelligence-updates.md in the same work batch
+10. commit the repository update as part of the task rather than treating GitHub sync as optional follow up
+
+Do not bulk commit large binary frame archives unless repository storage policy explicitly supports them. Keep the canonical GitHub record focused on provenance, metadata, representative references, accepted intelligence, rejected duplicates, and changelog history. If binary assets remain local or in a conversation artifact, say so explicitly.
