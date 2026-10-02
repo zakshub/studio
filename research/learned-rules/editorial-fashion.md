@@ -74,3 +74,24 @@ Use physically plausible foreground objects such as shelves, door edges, hanging
 
 ### EF-022 Micro-location sequencing inside one world
 A single neighborhood or market can produce a varied campaign by moving through connected micro-locations such as street edge, doorway, threshold, interior stall, counter, corridor and shuttered facade. Preserve recurring material, architectural and social cues so the sequence expands spatially without feeling like unrelated location hopping.
+
+
+## 2026 10 01
+
+### EF 023 Physical rephotography as truthful compositing
+When a campaign needs one globally consistent hero subject across many local environments, consider making the inserted subject a real physical object and photographing that object again on location. Real rephotography naturally introduces perspective, contact, ambient light contamination, surface interaction and local capture artifacts that purely digital compositing often has to simulate. Preserve the visible logic of the physical intervention rather than hiding it.
+
+### EF 024 Fixed frame comparative sequencing
+A repeated camera position, framing family and reduced set can function as a comparison instrument across a campaign. Hold the frame stable when the goal is to make changes in silhouette, construction, styling or body behavior easier to perceive. Repetition is useful when the changing variable is intentional and visually meaningful, not when it is merely production convenience.
+
+### EF 025 Capture fidelity as semantic direction
+Treat capture fidelity as part of art direction rather than an automatic quality ladder. MiniDV, VHS like softness, coarse grain, clipped response or other reduced fidelity can strengthen a concept when those artifacts belong to the story. Do not apply generic retro degradation after the fact. Critical garment structure and material evidence must remain sufficiently legible for the image purpose.
+
+### EF 026 Micro styling identity within an iconic product system
+When one iconic garment or product must remain immediately recognizable across a portrait series, let small wearing behaviors carry individuality. Collar position, belt tension, fastening, sleeve handling, layering and posture can create distinct character without redesigning the hero item or breaking campaign continuity.
+
+### EF 027 Photograph to artifact transformation
+A campaign photograph can deliberately become a second physical or graphic object such as a card, paper collage, panel or collectible. The transformation should add narrative or cultural meaning rather than decorative novelty. Preserve product hierarchy and enough photographic evidence that the treatment does not erase material truth.
+
+### EF 028 Historical visual grammar without period costume
+Historical reference does not require literal period styling. Borrow pose grammar, spacing, gaze, stillness, interior relationship and light logic from a historical visual tradition while keeping the wardrobe and subject identity contemporary. This creates temporal depth without collapsing the fashion image into costume recreation.
